@@ -33,7 +33,7 @@ int			count_argc(char **list)
 	{
 		if (str_chr(list[i], '=') != 1)
 		{
-			if (str_chr(list[i], '<') == 1 && str_chr(list[i], '>') == 1)
+			if (str_chr(list[i], '<') == 1 || str_chr(list[i], '>') == 1)
 				i++;
 			count++;
 		}
@@ -73,10 +73,9 @@ void		add_argv(char **words, t_command *command, int start, int argc)
 		{
 			if (str_chr(words[i], '>') == 1 || str_chr(words[i], '<') == 1)
 				i++;
-			else if (!(command->argv[j] = ft_strdup(words[i])))
-				command->argv[j] = NULL;
+			else if (!(command->argv[j++] = ft_strdup(words[i])))
+				command->argv[j++] = NULL;
 			i++;
-			j++;
 			argc--;
 		}
 	}
@@ -84,7 +83,7 @@ void		add_argv(char **words, t_command *command, int start, int argc)
 	j = 0;
 	while(command->argv[j] != NULL)
 	{
-		ft_printf("%s\n", command->argv[j]);
+		ft_printf("arg %s\n", command->argv[j]);
 		j++;
 	}
 }
