@@ -14,7 +14,7 @@
 
 int		is_separator(int c)
 {
-	if (c == ' ' || c == '\t' || c == '|' || c == '&' || c == ';' || c == '\n')
+	if (c == ' ' || c == '\t' || c == '|' || c == '&' || c == ';' || c == '\n' || c == '<' || c == '>')
 		return (1);
 	return (0);
 }
@@ -52,9 +52,9 @@ int		count_words(char *command, int count)
 			}
 		}
 		if (command[i] == '|' || command[i] == '&' || command[i] == ';' ||
-		command[i] == '\n')
+		command[i] == '\n' || command[i] == '<' || command[i] == '>')
 		{
-			if (command[i + 1] == '|' || command[i + 1] == '&')
+			if (command[i + 1] == '|' || command[i + 1] == '&' || command[i + 1] == '<' || command[i + 1] == '>')
 				i++;
 			count++;
 		}
@@ -69,10 +69,10 @@ int		count_wordlen(char *command)
 
 	i = 0;
 	if (command[0] == '|' || command[0] == '&' || command[0] == ';' ||
-	command[0] == '\n')
+	command[0] == '\n' || command[0] == '<' || command[0] == '>')
 	{
 		i++;
-		if (command[i] == '|' || command[i] == '&')
+		if (command[i] == '|' || command[i] == '&' || command[i] == '<' || command[i] == '>')
 			i++;
 		return (i);
 	}

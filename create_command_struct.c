@@ -22,6 +22,26 @@ int			count_vars(char **list)
 	return (i);
 }
 
+int			count_argc(char **list)
+{
+	int i;
+	int count;
+
+	i = 0;
+	count = 0;
+	while(list[i] != NULL)
+	{
+		if (str_chr(list[i], '=') != 1)
+		{
+			if (str_chr(list[i], '<') == 1 && str_chr(list[i], '>') == 1)
+				i++;
+			count++;
+		}
+		i++;
+	}
+	return(count);
+}
+
 void		add_variables(char **words, t_command *command, int vars)
 {
 	int i;
@@ -51,7 +71,9 @@ void		add_argv(char **words, t_command *command, int start, int argc)
 	{
 		while (words[i] != NULL && argc > 0)
 		{
-			if (!(command->argv[j] = ft_strdup(words[i])))
+			if (str_chr(words[i], '>') == 1 || str_chr(words[i], '<') == 1)
+				i++;
+			else if (!(command->argv[j] = ft_strdup(words[i])))
 				command->argv[j] = NULL;
 			i++;
 			j++;
@@ -59,6 +81,12 @@ void		add_argv(char **words, t_command *command, int start, int argc)
 		}
 	}
 	command->argv[j] = NULL;
+	j = 0;
+	while(command->argv[j] != NULL)
+	{
+		ft_printf("%s\n", command->argv[j]);
+		j++;
+	}
 }
 
 t_command	*fill_command_struct(char *comm, t_command *command, char **words)
@@ -67,9 +95,10 @@ t_command	*fill_command_struct(char *comm, t_command *command, char **words)
 	int			vars;
 	int			word_nbr;
 
+	//set_redirections(words, command);
 	word_nbr = count_list(words);
 	vars = count_vars(words);
-	argc = word_nbr - vars - 1;
+	argc = count_argc(words) - 1;
 	if (!(command->command = ft_strdup(comm)))
 		command->command = NULL;
 	add_variables(words, command, vars);
@@ -77,22 +106,33 @@ t_command	*fill_command_struct(char *comm, t_command *command, char **words)
 	command->argc = argc;
 	if (!(command->ctrl_op = ft_strdup(words[word_nbr - 1])))
 		command->ctrl_op = NULL;
+	ft_printf("cr %s\n", command->ctrl_op);
 	return (command);
 }
 
-t_command	*create_command_struct(char *cmd, char **env)
+t_command	**create_command_struct(char **command_list, char **env)
 {
 	char		**words;
-	t_command	*command;
+	t_command	**commands;
 	int			count;
+	int			i;
 
 	count = 0;
-	if ((words = word_splitting(cmd, count)))
+	i = 0;
+	if ((commands = (t_command**)malloc(count_arr(command_list) * sizeof(t_command*) + 1)))
 	{
-		word_expansion(&words, env);
-		if ((command = (t_command*)malloc(sizeof(t_command))))
-			command = fill_command_struct(cmd, command, words);
-		destroy_arr(words);
+		while (command_list[i] != NULL)
+		{
+			if ((words = word_splitting(command_list[i], count)))
+			{
+				word_expansion(&words, env);
+				if ((commands[i] = (t_command*)malloc(sizeof(t_command))))
+					commands[i] = fill_command_struct(command_list[i], commands[i], words);
+				destroy_arr(words);
+			}
+			i++;
+		}
 	}
-	return (command);
+	commands[i] = NULL;
+	return (commands);
 }

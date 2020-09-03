@@ -79,10 +79,7 @@ int		main(void)
 		{
 			command_list = create_command_list(prt_str);
 			if (command_list != NULL)
-			{
 				handle_command_list(command_list, &env);
-				destroy_arr(command_list);
-			}
 		}
 	}
 	destroy_arr(env);

@@ -12,13 +12,20 @@
 
 #include "minishell.h"
 
-void	destroy_command(t_command *command)
+void	destroy_command(t_command **command)
 {
-	destroy_arr(command->variables);
-	destroy_arr(command->argv);
-	free(command->command);
-	free(command->ctrl_op);
-	free(command);
+	int i;
+
+	i = 0;
+	while (command[i] != NULL)
+	{
+		//destroy_arr(command[i]->variables);
+		destroy_arr(command[i]->argv);
+		free(command[i]->command);
+		//free(command[i]->ctrl_op);
+		//free(command[i]);
+	}
+	//free(command);
 }
 
 int		ctrl_function(char *ctrl_op, int status)
@@ -36,21 +43,32 @@ int		handle_command_list(char **command_list, char ***env)
 {
 	int			status;
 	int			i;
-	t_command	*command;
+	t_command	**commands;
 
 	status = 0;
 	i = 0;
-	while (command_list[i] != NULL)
+	commands = create_command_struct(command_list, *env);
+	destroy_arr(command_list);
+	while (commands[i] != NULL)
 	{
-		if ((command = create_command_struct(command_list[i], *env)))
-			status = exec_command(command, command_list, env);
-		if (ctrl_function(command->ctrl_op, status) != 1)
+		//if ((command = create_command_struct(command_list[i], *env)))
+		/*if (ft_strcmp(commands[i]->ctrl_op, "|") == 0)
 		{
-			if (command_list[i + 1] != NULL)
+			status = create_pipe(commands[i], commands[i + 1], commands, env);
+			//i++;
+		}
+		else
+		{	*/
+			status = exec_command(commands[i], commands, env);
+		//}
+		if (ctrl_function(commands[i]->ctrl_op, status) != 1)
+		{
+			if (commands[i + 1] != NULL)
 				i++;
 		}
-		destroy_command(command);
+		//destroy_command(commands[i]);
 		i++;
 	}
-	return (status);
+	//destroy_command(commands);
+	return (status); // return print _exec erro
 }

@@ -109,7 +109,7 @@ int		run_command(t_command *command, char **env)
 	return ((print_exec_error(command, status, file_path)));
 }
 
-int		exec_command(t_command *command, char **command_list, char ***env)
+int		exec_command(t_command *command, t_command **commands, char ***env)
 {
 	int status;
 
@@ -117,9 +117,11 @@ int		exec_command(t_command *command, char **command_list, char ***env)
 	if (command->argc != 0)
 	{
 		if (is_builtin(command) == 1)
-			status = run_builtin(command, command_list, env, status);
+			status = run_builtin(command, commands, env, status);
 		else
+		{
 			status = run_command(command, *env);
+		}
 	}
 	return (status);
 }

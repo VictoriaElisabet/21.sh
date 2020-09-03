@@ -47,7 +47,12 @@ typedef struct	s_command
 	char		**argv;
 	int			argc;
 	char		*ctrl_op;
-
+	int			L;
+	int			LL;
+	int			G;
+	int			GG;
+	char		*infile;
+	char		*outfile;
 }				t_command;
 
 int				str_chr(char *str, int c);
@@ -57,18 +62,20 @@ int				ft_unsetenv(int argc, char **argv, char ***env);
 int				ft_cd (int argc, char **argv, char ***env);
 int				ft_echo(char **argv);
 int				is_builtin(t_command *command);
-int				run_builtin(t_command *command, char **command_list,
+int				run_builtin(t_command *command, t_command **commands,
 				char ***env, int status);
-int				exec_command(t_command *commands, char **command_list,
+int				exec_command(t_command *command, t_command **commands,
 				char ***env);
 int				find_env(const char *name, char **env);
 int				ft_env(t_command *command, char **env);
-int				ft_exit(t_command *command, char**command_list, char ***env,
+int				ft_exit(t_command *command, t_command **commands, char ***env,
 				int status);
 int				handle_command_list(char **command_list, char ***env);
 int				count_list(char **list);
 int				print_exec_error(t_command *command, int status,
 				char *file_path);
+int				create_pipe(t_command *command1, t_command *command2,
+				t_command **commands, char ***env);
 
 char			**word_splitting(char *command, int count);
 char			**create_command_list(char *prt_str);
@@ -76,6 +83,7 @@ char			**create_argv_list(char **argv, char **words);
 char			**copy_env(char **environ);
 char			**add_env(const char *name, const char *value, char **env,
 				int count);
+
 
 char			*tilde_expansion(char *word, char **env);
 char			*parameter_expansion(char *word, char **env);
@@ -88,10 +96,12 @@ char			*get_env_name(char *env);
 void			destroy_arr(char **arr);
 void			word_expansion(char ***words, char **env);
 void			destroy_env(t_env **env);
-void			destroy_command(t_command *command);
+void			destroy_command(t_command **command);
 void			print_env(char **env);
 void			auto_completion(char *prt_str);
+void			set_redirections(char **words, t_command *command);
+void			remove_word(char ***words, int word);
 
-t_command		*create_command_struct(char *cmd, char **env);
+t_command		**create_command_struct(char **command_list, char **env);
 
 #endif
