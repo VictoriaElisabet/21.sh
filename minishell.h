@@ -64,7 +64,7 @@ int				ft_echo(char **argv);
 int				is_builtin(t_command *command);
 int				run_builtin(t_command *command, t_command **commands,
 				char ***env, int status);
-int				exec_command(t_command *command, t_command **commands,
+int				exec_command(t_command *command, t_command **commands, pid_t pid,
 				char ***env);
 int				find_env(const char *name, char **env);
 int				ft_env(t_command *command, char **env);
@@ -101,6 +101,7 @@ void			print_env(char **env);
 void			auto_completion(char *prt_str);
 void			set_redirections(char **words, t_command *command);
 void			remove_word(char ***words, int word);
+void			set_struct(t_command *command);
 
 t_command		**create_command_struct(char **command_list, char **env);
 

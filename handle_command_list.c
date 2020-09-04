@@ -19,13 +19,18 @@ void	destroy_command(t_command **command)
 	i = 0;
 	while (command[i] != NULL)
 	{
-		//destroy_arr(command[i]->variables);
+		destroy_arr(command[i]->variables);
 		destroy_arr(command[i]->argv);
 		free(command[i]->command);
-		//free(command[i]->ctrl_op);
-		//free(command[i]);
+		free(command[i]->ctrl_op);
+		if(command[i]->infile != NULL)
+			free(command[i]->infile);
+		if(command[i]->outfile != NULL)
+			free(command[i]->outfile);
+		free(command[i]);
+		i++;
 	}
-	//free(command);
+	free(command);
 }
 
 int		ctrl_function(char *ctrl_op, int status)
@@ -44,6 +49,7 @@ int		handle_command_list(char **command_list, char ***env)
 	int			status;
 	int			i;
 	t_command	**commands;
+	pid_t		pid;
 
 	status = 0;
 	i = 0;
@@ -52,23 +58,30 @@ int		handle_command_list(char **command_list, char ***env)
 	while (commands[i] != NULL)
 	{
 		//if ((command = create_command_struct(command_list[i], *env)))
-		/*if (ft_strcmp(commands[i]->ctrl_op, "|") == 0)
+		if (ft_strcmp(commands[i]->ctrl_op, "|") == 0)
 		{
 			status = create_pipe(commands[i], commands[i + 1], commands, env);
-			//i++;
+			i++;
+		} 
+		else if (is_builtin(commands[i]) == 1)
+		{
+			status = run_builtin(commands[i], commands, env, status);
 		}
 		else
-		{	*/
-			status = exec_command(commands[i], commands, env);
-		//}
+		{
+			pid = fork();
+			exec_command(commands[i], commands, pid, env);
+			waitpid(pid, &status, 0);
+		}
+		
 		if (ctrl_function(commands[i]->ctrl_op, status) != 1)
 		{
 			if (commands[i + 1] != NULL)
 				i++;
 		}
-		//destroy_command(commands[i]);
 		i++;
 	}
-	//destroy_command(commands);
+
+	destroy_command(commands);
 	return (status); // return print _exec erro
 }

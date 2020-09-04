@@ -22,21 +22,19 @@ int			count_vars(char **list)
 	return (i);
 }
 
-int			count_argc(char **list)
+int			count_argc(char **list, int start)
 {
 	int i;
 	int count;
 
-	i = 0;
+	i = start;
 	count = 0;
 	while(list[i] != NULL)
 	{
-		if (str_chr(list[i], '=') != 1)
-		{
-			if (str_chr(list[i], '<') == 1 || str_chr(list[i], '>') == 1)
-				i++;
+		if (str_chr(list[i], '<') == 1 || str_chr(list[i], '>') == 1)
+			i = i + 2;
+		else
 			count++;
-		}
 		i++;
 	}
 	return(count);
@@ -80,12 +78,6 @@ void		add_argv(char **words, t_command *command, int start, int argc)
 		}
 	}
 	command->argv[j] = NULL;
-	j = 0;
-	while(command->argv[j] != NULL)
-	{
-		ft_printf("arg %s\n", command->argv[j]);
-		j++;
-	}
 }
 
 t_command	*fill_command_struct(char *comm, t_command *command, char **words)
@@ -94,10 +86,11 @@ t_command	*fill_command_struct(char *comm, t_command *command, char **words)
 	int			vars;
 	int			word_nbr;
 
-	//set_redirections(words, command);
+	set_struct(command);
+	set_redirections(words, command);
 	word_nbr = count_list(words);
 	vars = count_vars(words);
-	argc = count_argc(words) - 1;
+	argc = count_argc(words, vars) - 1;
 	if (!(command->command = ft_strdup(comm)))
 		command->command = NULL;
 	add_variables(words, command, vars);
@@ -105,7 +98,6 @@ t_command	*fill_command_struct(char *comm, t_command *command, char **words)
 	command->argc = argc;
 	if (!(command->ctrl_op = ft_strdup(words[word_nbr - 1])))
 		command->ctrl_op = NULL;
-	ft_printf("cr %s\n", command->ctrl_op);
 	return (command);
 }
 
