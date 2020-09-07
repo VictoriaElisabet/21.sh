@@ -30,8 +30,23 @@
 # define PIPE_AMP_OP	4
 # define AMP_OP 		8
 # define AND_OP 		16
-# define S_COL_OP		32
+# define SEMI			32
 # define NEWLINE		64
+
+# define L			1
+# define G			2
+# define LL			4
+# define GG			8
+# define CLOBBER	16
+# define LG			32
+# define L_AND		64
+# define G_AND		128
+
+# define WORD_ASSIGN	1
+# define WORD			2
+# define OPERATOR		4
+# define REDIR			8
+# define IO_NUM			16
 
 typedef struct	s_env
 {
@@ -40,19 +55,32 @@ typedef struct	s_env
 
 }				t_env;
 
+typedef struct	s_token
+{
+	int		type;
+	char	*token;
+	struct s_token *next;
+	struct s_token *prev;
+
+}				t_token;
+
+typedef struct	s_redir
+{
+	int 	fd;
+	int		redir_op;
+	char	*file;
+
+}				t_redir;
+
 typedef struct	s_command
 {
 	char		*command;
 	char		**variables;
 	char		**argv;
 	int			argc;
-	char		*ctrl_op;
-	int			L;
-	int			LL;
-	int			G;
-	int			GG;
-	char		*infile;
-	char		*outfile;
+	int			*ctrl_op;
+
+
 }				t_command;
 
 int				str_chr(char *str, int c);

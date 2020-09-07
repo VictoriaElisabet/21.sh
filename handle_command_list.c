@@ -61,7 +61,7 @@ int		handle_command_list(char **command_list, char ***env)
 		if (ft_strcmp(commands[i]->ctrl_op, "|") == 0)
 		{
 			status = create_pipe(commands[i], commands[i + 1], commands, env);
-			i++;
+			//i++;
 		} 
 		else if (is_builtin(commands[i]) == 1)
 		{
