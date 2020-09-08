@@ -122,7 +122,7 @@ char			*set_name(char *argv);
 char			*get_env_name(char *env);
 
 void			destroy_arr(char **arr);
-void			word_expansion(char ***words, char **env);
+void			word_expansion(t_token **head, char **env);
 void			destroy_env(t_env **env);
 void			destroy_command(t_command **command);
 void			print_env(char **env);
@@ -130,7 +130,12 @@ void			auto_completion(char *prt_str);
 void			set_redirections(char **words, t_command *command);
 void			remove_word(char ***words, int word);
 void			set_struct(t_command *command);
+void			destroy_tok_list(t_token *head);
 
-t_command		**create_command_struct(char **command_list, char **env);
+t_command		**create_command_struct_list(char **command_list, char **env);
+
+t_token			*create_tokens(char *command);
+
+void		print_token(t_token *head); // ta bort
 
 #endif

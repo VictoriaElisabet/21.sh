@@ -12,34 +12,24 @@
 
 #include "minishell.h"
 
-void	remove_word(char ***words, int word)
+void	remove_token(t_token **head, t_token *rem)
 {
-	int		i;
-	int		j;
-	char	**new;
-	int		count;
-
-	i = 0;
-	j = 0;
-	count = count_arr((*words)) - 1;
-	if ((new = (char**)malloc((count * sizeof(char*) + 1))))
+	ft_printf("token %s\n", rem->token);
+	if (*head == NULL || rem == NULL)
+		return ;
+	if (*head == rem)
+		*head = rem->next;
+	if (rem->prev != NULL)
+		rem->prev->next = rem->next;
+	if (rem->next != NULL)
 	{
-		while (j < count)
-		{
-			if (i == word)
-				i++;
-			if (!(new[j] = ft_strdup((*words)[i])))
-			{
-				//destroy_arr(new);
-				//return (NULL);
-			}
-			i++;
-			j++;
-		}
+		ft_printf("remne");
+		rem->next->prev = rem->prev;
 	}
-	new[j] = NULL;
-	destroy_arr((*words));
-	(*words) = new;
+	free(rem->token);
+	free(rem);
+	print_token(*head);
+	//måst char token freas å annars var e leak?
 }
 
 int		str_chr(char *str, int c)
@@ -56,30 +46,30 @@ int		str_chr(char *str, int c)
 	return (0);
 }
 
-void	word_expansion(char ***words, char **env)
+void	word_expansion(t_token **head, char **env)
 {
-	int		i;
-	//char	**tmp;
+	t_token *tmp;
 
-	i = 0;
-	while ((*words)[i] != NULL)
+	remove_token(head, (*head)->next);
+	tmp = *head;
+	while (tmp->next != NULL)
 	{
-		if (str_chr((*words)[i], '\'') != 1)
+		if (str_chr(tmp->token, '\'') != 1)
 		{
-			if (str_chr((*words)[i], '"') != 1)
-				(*words)[i] = tilde_expansion((*words)[i], env);
-			if (ft_strcmp(((*words)[i] =
-			parameter_expansion((*words)[i], env)), "\0") == 0)
+			if (str_chr(tmp->token, '"') != 1)
+				tmp->token = tilde_expansion(tmp->token, env);
+			if (ft_strcmp((tmp->token =
+			parameter_expansion(tmp->token, env)), "\0") == 0)
 			{
-				/*if ((tmp = remove_word((*words), i)))
+				ft_printf("hi");/*if ((tmp = remove_word((*words), i)))
 				{
 					destroy_arr((*words));
 					(*words) = tmp;
 				}*/
-				remove_word(words, i);
-				i--;
+				remove_token(head, tmp);
+				tmp = tmp->prev;
 			}
 		}
-		i++;
+		tmp = tmp->next;
 	}
 }

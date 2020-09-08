@@ -12,20 +12,6 @@
 
 #include "minishell.h"
 
-int		str_chr(char *str, int c)
-{
-	int i;
-
-	i = 0;
-	while (str[i] != '\0')
-	{
-		if (str[i] == c)
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
 int		is_separator(int c)
 {
 	if (c == ' ' || c == '\t' || c == '|' || c == '&' || c == ';' || c == '\n' || c == '<' || c == '>')
@@ -81,7 +67,7 @@ void	destroy_tok_list(t_token *head)
 	}
 }
 
-void		print_token(t_token *head)
+/*void		print_token(t_token *head)
 {
 		t_token *tmp = head;
     while (tmp != NULL)
@@ -89,7 +75,7 @@ void		print_token(t_token *head)
         ft_printf("%s\n", tmp->token);
         tmp = tmp->next;
     }
-}
+}*/
 
 t_token		*create_token(char *tok_type, char *tok)
 {
@@ -223,7 +209,7 @@ t_token		*create_tokens(char *command)
 		else		//i = create word or ass word
 			i++;
 	}
-		print_token(head);
-							destroy_tok_list(head);
+		//print_token(head);
+							//destroy_tok_list(head);
 	return(head);
 }

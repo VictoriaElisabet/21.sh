@@ -11,8 +11,8 @@
 # **************************************************************************** #
 
 NAME = minishell
-SRC = minishell.c word_splitting.c create_command_list.c environ.c parameter_expansion.c tilde_expansion.c handle_command_list.c create_command_struct.c expansions.c exec.c functions.c ./builtins/builtins.c ./builtins/setenv.c ./builtins/unsetenv.c ./builtins/cd.c ./builtins/echo.c ./builtins/env.c ./builtins/exit.c pipe.c set_redirection.c
-OBJECTS = minishell.o word_splitting.o create_command_list.o environ.o parameter_expansion.o tilde_expansion.o handle_command_list.o create_command_struct.o expansions.o exec.o functions.o builtins.o setenv.o unsetenv.o cd.o echo.o env.o exit.o pipe.o set_redirection.o
+SRC = minishell.c create_command_list.c environ.c parameter_expansion.c tilde_expansion.c handle_command_list.c create_command_struct_list.c expansions.c exec.c functions.c ./builtins/builtins.c ./builtins/setenv.c ./builtins/unsetenv.c ./builtins/cd.c ./builtins/echo.c ./builtins/env.c ./builtins/exit.c pipe.c set_redirection.c tokens.c
+OBJECTS = minishell.o create_command_list.o environ.o parameter_expansion.o tilde_expansion.o handle_command_list.o create_command_struct_list.o expansions.o exec.o functions.o builtins.o setenv.o unsetenv.o cd.o echo.o env.o exit.o pipe.o set_redirection.o tokens.o
 INC = ./
 
 all: $(NAME)

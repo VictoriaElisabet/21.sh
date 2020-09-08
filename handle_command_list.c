@@ -23,10 +23,10 @@ void	destroy_command(t_command **command)
 		destroy_arr(command[i]->argv);
 		free(command[i]->command);
 		free(command[i]->ctrl_op);
-		if(command[i]->infile != NULL)
+		/*if(command[i]->infile != NULL)
 			free(command[i]->infile);
 		if(command[i]->outfile != NULL)
-			free(command[i]->outfile);
+			free(command[i]->outfile);*/
 		free(command[i]);
 		i++;
 	}
@@ -47,15 +47,15 @@ int		ctrl_function(char *ctrl_op, int status)
 int		handle_command_list(char **command_list, char ***env)
 {
 	int			status;
-	int			i;
+	//int			i;
 	t_command	**commands;
-	pid_t		pid;
+	//pid_t		pid;
 
 	status = 0;
-	i = 0;
-	commands = create_command_struct(command_list, *env);
+	//i = 0;
+	commands = create_command_struct_list(command_list, *env);
 	destroy_arr(command_list);
-	while (commands[i] != NULL)
+	/*while (commands[i] != NULL)
 	{
 		//if ((command = create_command_struct(command_list[i], *env)))
 		if (ft_strcmp(commands[i]->ctrl_op, "|") == 0)
@@ -80,7 +80,7 @@ int		handle_command_list(char **command_list, char ***env)
 				i++;
 		}
 		i++;
-	}
+	}*/
 
 	destroy_command(commands);
 	return (status); // return print _exec erro
