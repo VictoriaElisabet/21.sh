@@ -29,7 +29,17 @@ int		count_ctrl_op(char *prt_str, int count)
 		if (prt_str[i + 1] == '\0' && prt_str[i] != ';' && prt_str[i] != '|' &&
 		prt_str[i] != '&')
 			count++;
-		if (prt_str[i] == '|' || prt_str[i] == '&' || prt_str[i] == ';')
+		if (prt_str[i] == '>' || prt_str[i] == '<')
+		{
+			i++;
+			if (prt_str[i] == '>' || prt_str[i] == '<' || prt_str[i] == '|' || prt_str[i] == '&')
+			{
+				i++;
+				if(prt_str[i] == '-')
+					i++;
+			}
+		}
+		if (prt_str[i] == '|' || prt_str[i] == '&' || prt_str[i] == ';' || prt_str[i] == '\n')
 		{
 			if (prt_str[i + 1] == '|' || prt_str[i + 1] == '&')
 				i++;
@@ -54,7 +64,17 @@ int		count_commlength(char *prt_str)
 			prt_str[i] != '\0')
 				i++;
 		}
-		if (prt_str[i] == '|' || prt_str[i] == '&' || prt_str[i] == ';')
+		if (prt_str[i] == '>' || prt_str[i] == '<')
+		{
+			i++;
+			if (prt_str[i] == '>' || prt_str[i] == '<' || prt_str[i] == '|' || prt_str[i] == '&')
+			{
+				i++;
+				if(prt_str[i] == '-')
+					i++;
+			}
+		}
+		if (prt_str[i] == '|' || prt_str[i] == '&' || prt_str[i] == ';' || prt_str[i] == '\n')
 		{
 			i++;
 			if (prt_str[i] == '|' || prt_str[i] == '&')
