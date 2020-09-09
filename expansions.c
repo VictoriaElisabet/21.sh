@@ -14,22 +14,30 @@
 
 void	remove_token(t_token **head, t_token *rem)
 {
-	ft_printf("token %s\n", rem->token);
-	if (*head == NULL || rem == NULL)
+	t_token *tmp;
+
+	if ((*head) == NULL || rem == NULL)
 		return ;
-	if (*head == rem)
-		*head = rem->next;
-	if (rem->prev != NULL)
-		rem->prev->next = rem->next;
-	if (rem->next != NULL)
+	if ((*head) == rem)
+		(*head) = rem->next;
+	else
 	{
-		ft_printf("remne");
-		rem->next->prev = rem->prev;
+		tmp = *head;
+		while (tmp->next != rem)
+			tmp = tmp->next;
+   		if(tmp->next == NULL)
+        	return;  
+    	else if(tmp->next->next == NULL)  
+        	tmp->next = NULL;  
+    	else  
+    	{   
+        	rem = tmp->next;  
+        	tmp->next = rem->next;  
+        	rem->next->prev = tmp;  
+		}
 	}
 	free(rem->token);
 	free(rem);
-	print_token(*head);
-	//måst char token freas å annars var e leak?
 }
 
 int		str_chr(char *str, int c)
@@ -50,16 +58,15 @@ void	word_expansion(t_token **head, char **env)
 {
 	t_token *tmp;
 
-	remove_token(head, (*head)->next);
 	tmp = *head;
-	while (tmp->next != NULL)
+	while (tmp != NULL)
 	{
 		if (str_chr(tmp->token, '\'') != 1)
 		{
 			if (str_chr(tmp->token, '"') != 1)
 				tmp->token = tilde_expansion(tmp->token, env);
 			if (ft_strcmp((tmp->token =
-			parameter_expansion(tmp->token, env)), "\0") == 0)
+			parameter_expansion(tmp->token, env)), "echo") == 0)
 			{
 				ft_printf("hi");/*if ((tmp = remove_word((*words), i)))
 				{
@@ -67,7 +74,7 @@ void	word_expansion(t_token **head, char **env)
 					(*words) = tmp;
 				}*/
 				remove_token(head, tmp);
-				tmp = tmp->prev;
+				//tmp = tmp->prev;
 			}
 		}
 		tmp = tmp->next;
