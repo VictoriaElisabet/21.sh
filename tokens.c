@@ -40,7 +40,7 @@ int		is_word(int c)
 	return (0);
 }
 
-void		set_type(char *tok_type, int *type_f)
+/*int		get_index(char *tok_type, int *type_f)
 {
 	int		i;
 	char	types[5][11] = {"WORD_ASSIGN", "WORD", "OPERATOR", "REDIR", "IO_NUM"};
@@ -49,10 +49,11 @@ void		set_type(char *tok_type, int *type_f)
 	while(i < 5)
 	{
 		if(ft_strcmp(types[i], tok_type) == 0)
-			*type_f |= 1 << i;
+			return (i);type_f |= 1 << i;
 		i++;
 	}
-}
+	return (-1);
+}*/
 
 void	destroy_tok_list(t_token *head)
 {
@@ -77,20 +78,20 @@ void	destroy_tok_list(t_token *head)
     }
 }*/
 
-t_token		*create_token(char *tok_type, char *tok)
+t_token		*create_token(int tok_type, char *tok)
 {
 	t_token *new;
 
 	new = (t_token*)malloc(sizeof(t_token));
 	new->token = ft_strdup(tok);
 	free(tok);
-	set_type(tok_type, &new->type);
+	new->type = tok_type;
 	new->next = NULL;
 	new->prev = NULL;
 	return (new);
 }
 
-void		add_token(t_token **head, char *tok_type, char *tok)
+void		add_token(t_token **head, int tok_type, char *tok)
 {
 	t_token	*new;
 	t_token *tmp;
@@ -142,10 +143,24 @@ int			create_word(t_token **head, char *command)
 	}
 	tmp = ft_strsub(command, 0, i);
 	if (str_chr(tmp, '=') == 1)
-		add_token(head, "WORD_ASSIGN", tmp);
+		add_token(head, WORD_ASSIGN, tmp);
 	else
-		add_token(head, "WORD", tmp);
+		add_token(head, WORD, tmp);
 	return (i);
+}
+
+void		get_IO_num(t_token **head)
+{
+	t_token *tmp;
+
+	tmp = *head;
+	while (tmp != NULL)
+		tmp = tmp->next;
+	if(ft_isdigit(ft_atoi(tmp->token)) == 1)
+	{
+
+		tmp->type = IO_NUM;
+	}
 }
 
 int			create_op(t_token **head, char *command)
@@ -159,6 +174,7 @@ int			create_op(t_token **head, char *command)
 	if(is_redir(command[0]) == 1) 
 	{
 		i++;
+		//get_IO_num(head);
 		if(command[i] == '>' || command[i] == '<' || command[i] == '|' || command[i] == '&')
 		{
 			i++;
@@ -168,7 +184,7 @@ int			create_op(t_token **head, char *command)
 			}
 		}
 		tmp = ft_strsub(command, 0, i);	
-		add_token(head, "REDIR", tmp);
+		add_token(head, REDIR, tmp);
 	}
 	else 
 	{
@@ -181,7 +197,7 @@ int			create_op(t_token **head, char *command)
 			}
 			tmp = ft_strsub(command, 0, i);
 			//ft_printf("ct to%s\n", tmp);
-			add_token(head, "OPERATOR", tmp);
+			add_token(head, OPERATOR, tmp);
 		}
 	}
 

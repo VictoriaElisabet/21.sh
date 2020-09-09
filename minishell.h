@@ -25,6 +25,9 @@
 
 # define BUF_SIZE 32
 
+# define SET_BIT(val, index) val |= (1 << index)
+# define CLEAR_BIT(val, index) val &= ~(1 << index)
+
 # define PIPE_OP		1
 # define OR_OP			2
 # define PIPE_AMP_OP	4
@@ -42,11 +45,14 @@
 # define L_AND		64
 # define G_AND		128
 
-# define WORD_ASSIGN	1
-# define WORD			2
-# define OPERATOR		4
-# define REDIR			8
-# define IO_NUM			16
+enum			e_token_type
+{
+	WORD_ASSIGN,
+	WORD,
+	OPERATOR,
+	REDIR,
+	IO_NUM,
+};
 
 typedef struct	s_env
 {
@@ -64,14 +70,6 @@ typedef struct	s_token
 
 }				t_token;
 
-typedef struct	s_redir
-{
-	int 	fd;
-	int		redir_op;
-	char	*file;
-
-}				t_redir;
-
 typedef struct	s_command
 {
 	char		*command;
@@ -79,8 +77,7 @@ typedef struct	s_command
 	char		**argv;
 	int			argc;
 	int			*ctrl_op;
-
-
+	int			fd[2];
 }				t_command;
 
 int				str_chr(char *str, int c);
@@ -122,7 +119,7 @@ char			*set_name(char *argv);
 char			*get_env_name(char *env);
 
 void			destroy_arr(char **arr);
-void			word_expansion(t_token **head, char **env);
+void			token_expansion(t_token **head, char **env);
 void			destroy_env(t_env **env);
 void			destroy_command(t_command **command);
 void			print_env(char **env);

@@ -54,7 +54,7 @@ int		str_chr(char *str, int c)
 	return (0);
 }
 
-void	word_expansion(t_token **head, char **env)
+void	token_expansion(t_token **head, char **env)
 {
 	t_token *tmp;
 
@@ -66,15 +66,9 @@ void	word_expansion(t_token **head, char **env)
 			if (str_chr(tmp->token, '"') != 1)
 				tmp->token = tilde_expansion(tmp->token, env);
 			if (ft_strcmp((tmp->token =
-			parameter_expansion(tmp->token, env)), "echo") == 0)
+			parameter_expansion(tmp->token, env)), "\0") == 0)
 			{
-				ft_printf("hi");/*if ((tmp = remove_word((*words), i)))
-				{
-					destroy_arr((*words));
-					(*words) = tmp;
-				}*/
 				remove_token(head, tmp);
-				//tmp = tmp->prev;
 			}
 		}
 		tmp = tmp->next;
