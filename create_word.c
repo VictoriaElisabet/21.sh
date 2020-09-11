@@ -35,21 +35,31 @@ int		count_quoting_word(char *command)
 
 int			create_word(t_token **head, char *command)
 {
-	int i;
-	char *tmp;
+	int		i;
+	char	*tmp;
+	int		flags;
 
 	i = 0;
 	tmp = NULL;
 	while (is_separator(command[i]) == 0 && command[i] != '\0')
 	{
-		if (command[i] == '"' || command[i] == '\'')
+		if (command[i] == '"')
+		{
+			flags |= DQ;
 			i = i + count_quoting_word(&command[i]);
+		}
+		if (command[i] == '\'')
+		{
+			flags |= SQ;
+			i = i + count_quoting_word(&command[i]);
+		}
 		i++;
 	}
 	tmp = ft_strsub(command, 0, i);
 	if (str_chr(tmp, '=') == 1)
-		add_token(head, WORD_ASSIGN, tmp);
+		add_token(head, WORD_ASSIGN, tmp, flags);
 	else
-		add_token(head, WORD, tmp);
+		add_token(head, WORD, tmp, flags);
+	free(tmp);
 	return (i);
 }

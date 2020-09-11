@@ -18,6 +18,10 @@ void		print_token(t_token *head)
 		t_token *tmp = head;
     while (tmp != NULL)
     {
+		if (tmp->flags & DQ)
+			ft_printf("DQ");
+		if (tmp->flags & SQ)
+			ft_printf("SQ");
         ft_printf("%s\n", tmp->token);
         tmp = tmp->next;
     }
@@ -36,26 +40,26 @@ void	destroy_tok_list(t_token *head)
 	}
 }
 
-t_token		*create_token(int tok_type, char *tok)
+t_token		*create_token(int tok_type, char *tok, int flags)
 {
 	t_token *new;
 
 	new = (t_token*)malloc(sizeof(t_token));
 	new->token = ft_strdup(tok);
-	free(tok);
+//	free(tok);
 	new->type = tok_type;
-	new->flags = 0;
+	new->flags = flags;
 	new->next = NULL;
 	new->prev = NULL;
 	return (new);
 }
 
-void		add_token(t_token **head, int tok_type, char *tok)
+void		add_token(t_token **head, int tok_type, char *tok, int flags)
 {
 	t_token	*new;
 	t_token *tmp;
 
-	new = create_token(tok_type, tok);
+	new = create_token(tok_type, tok, flags);
 	tmp = *head;
 	if (*head == NULL)
 	{

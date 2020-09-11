@@ -52,17 +52,20 @@ int			create_op(t_token **head, char *command)
 {
 	int		i;
 	char	*tmp;
+	int		flags;
 
 	i = 0;
 	tmp = NULL;
+	flags = 0;
 	if(is_part_op(command[i]) == 1)
 	{
 		i++;
 		if(command[i] == '|' || command[i] == '&' || command[i] == ';')
 			i++;
 		tmp = ft_strsub(command, 0, i);
-		add_token(head, OPERATOR, tmp);
+		add_token(head, OPERATOR, tmp, flags);
 	}
+	free(tmp);
 	return (i);
 }
 
