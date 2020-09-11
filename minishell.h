@@ -28,6 +28,9 @@
 # define SET_BIT(val, index) val |= (1 << index)
 # define CLEAR_BIT(val, index) val &= ~(1 << index)
 
+# define	SQ			1
+# define	DQ			2
+
 # define PIPE_OP		1
 # define OR_OP			2
 # define PIPE_AMP_OP	4
@@ -65,6 +68,7 @@ typedef struct	s_token
 {
 	int		type;
 	char	*token;
+	int		flags;
 	struct s_token *next;
 	struct s_token *prev;
 
@@ -72,11 +76,10 @@ typedef struct	s_token
 
 typedef struct	s_command
 {
-	char		*command;
-	char		**variables;
+	t_token		*tokens;
 	char		**argv;
 	int			argc;
-	int			*ctrl_op;
+	int			ctrl_op;
 	int			fd[2];
 }				t_command;
 
@@ -95,15 +98,19 @@ int				find_env(const char *name, char **env);
 int				ft_env(t_command *command, char **env);
 int				ft_exit(t_command *command, t_command **commands, char ***env,
 				int status);
-int				handle_command_list(char **command_list, char ***env);
+int				handle_command_list(t_command **command_list, char ***env);
 int				count_list(char **list);
 int				print_exec_error(t_command *command, int status,
 				char *file_path);
 int				create_pipe(t_command *command1, t_command *command2,
 				t_command **commands, char ***env);
+int				is_redir(int c);
+int				is_separator(int c);
+int 			create_redir(t_token **head, char *command);
+int				create_word(t_token **head, char *command);
 
 char			**word_splitting(char *command, int count);
-char			**create_command_list(char *prt_str);
+t_command			**create_command_list(char *prt_str);
 char			**create_argv_list(char **argv, char **words);
 char			**copy_env(char **environ);
 char			**add_env(const char *name, const char *value, char **env,
@@ -128,6 +135,7 @@ void			set_redirections(char **words, t_command *command);
 void			remove_word(char ***words, int word);
 void			set_struct(t_command *command);
 void			destroy_tok_list(t_token *head);
+void			add_token(t_token **head, int tok_type, char *tok);
 
 t_command		**create_command_struct_list(char **command_list, char **env);
 
