@@ -55,11 +55,13 @@ int			create_word(t_token **head, char *command)
 		}
 		i++;
 	}
-	tmp = ft_strsub(command, 0, i);
-	if (str_chr(tmp, '=') == 1)
-		add_token(head, WORD_ASSIGN, tmp, flags);
-	else
-		add_token(head, WORD, tmp, flags);
-	free(tmp);
+	if ((tmp = ft_strsub(command, 0, i)))
+	{
+		if (str_chr(tmp, '=') == 1)
+			add_token(head, WORD_ASSIGN, tmp, flags);
+		else
+			add_token(head, WORD, tmp, flags);
+		free(tmp);
+	}
 	return (i);
 }

@@ -45,7 +45,8 @@ int			create_heredoc_word(char *command, char *delim, char **doc)
 			j++;
 		if (delim[j] == '\0')
 		{
-			*doc = ft_strsub(command, 0, i);
+			if(!(*doc = ft_strsub(command, 0, i)))
+				*doc = NULL;
 			break ;
 		}
 		i++;
@@ -60,7 +61,8 @@ int			create_delim(char *command, char **delim, int *flags)
 	i = 0;
 	while(command[i] != '\0' && command[i] != 't') // ska ju vara \n å int t
 		i++;
-	*delim = ft_strsub(command, 0, i);
+	if(!(*delim = ft_strsub(command, 0, i)))
+		*delim = NULL;
 	if (str_chr(*delim, '"') == 1)
 		*flags |= DQ;
 	if(str_chr(*delim, '\'') == 1)
@@ -79,14 +81,18 @@ int			create_heredoc(t_token **head, char *command, char **doc)
 	j = 0;
 	flags = 0;
 	i = i + create_delim(command, &delim, &flags);
-	i = i + create_heredoc_word(&command[i], delim, doc);
-	while(command[i] != '\0' && command[i] == delim[j])
+	if(delim)
 	{
-		i++;
-		j++;
+		i = i + create_heredoc_word(&command[i], delim, doc);
+		while(command[i] != '\0' && command[i] == delim[j])
+		{
+			i++;
+			j++;
+		}
+		if (*doc)
+			add_token(head, WORD, *doc, flags);
+		free(delim);
 	}
-	add_token(head, WORD, *doc, flags);
-	free(delim);
 	free(*doc);
 	return(i);
 }
@@ -112,8 +118,8 @@ int 		create_redir(t_token **head, char *command)
 			if(command[i] == '-')
 				i++;
 		}
-		tmp = ft_strsub(command, 0, i);
-		add_token(head, REDIR, tmp, flags);
+		if ((tmp = ft_strsub(command, 0, i)))
+			add_token(head, REDIR, tmp, flags);
 		if (ft_strcmp(tmp, "<<") == 0 || ft_strcmp(tmp, "<<-") == 0)
 			i = i + create_heredoc(head, &command[i], &doc);
 	}

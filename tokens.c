@@ -36,7 +36,7 @@ int		is_word(int c)
 /*int		get_index(char *tok_type, int *type_f)
 {
 	int		i;
-	char	types[5][11] = {"WORD_ASSIGN", "WORD", "OPERATOR", "REDIR", "IO_NUM"};
+	char	types[2][7] = {"WORD_ASSIGN", "WORD", "OPERATOR", "REDIR", "IO_NUM"};
 
 	i = 0;
 	while(i < 5)
@@ -62,8 +62,8 @@ int			create_op(t_token **head, char *command)
 		i++;
 		if(command[i] == '|' || command[i] == '&' || command[i] == ';')
 			i++;
-		tmp = ft_strsub(command, 0, i);
-		add_token(head, OPERATOR, tmp, flags);
+		if((tmp = ft_strsub(command, 0, i)))
+			add_token(head, OPERATOR, tmp, flags);
 	}
 	free(tmp);
 	return (i);

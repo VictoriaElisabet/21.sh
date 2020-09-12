@@ -67,7 +67,7 @@ int		main(void)
 	extern char	**environ;
 	char		*prt_str;
 	char		**env;
-	char		**command_list;
+	t_command	**commands;
 	int			status;
 
 	status = 0;
@@ -77,9 +77,9 @@ int		main(void)
 		prt_str = read_prompt("$> ");
 		if (prt_str != NULL)
 		{
-			command_list = create_command_list(prt_str);
-			if (command_list != NULL)
-				handle_command_list(command_list, &env);
+			commands = create_command_list(prt_str, env);
+			if (commands != NULL)
+				handle_command_list(commands, &env);
 		}
 	}
 	destroy_arr(env);

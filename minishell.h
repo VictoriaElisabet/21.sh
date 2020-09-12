@@ -110,7 +110,7 @@ int 			create_redir(t_token **head, char *command);
 int				create_word(t_token **head, char *command);
 
 char			**word_splitting(char *command, int count);
-t_command			**create_command_list(char *prt_str);
+t_command			**create_command_list(char *prt_str, char **env);
 char			**create_argv_list(char **argv, char **words);
 char			**copy_env(char **environ);
 char			**add_env(const char *name, const char *value, char **env,
@@ -135,7 +135,7 @@ void			set_redirections(char **words, t_command *command);
 void			remove_word(char ***words, int word);
 void			set_struct(t_command *command);
 void			destroy_tok_list(t_token *head);
-void			add_token(t_token **head, int tok_type, char *tok);
+void			add_token(t_token **head, int tok_type, char *tok, int flags);
 
 t_command		**create_command_struct_list(char **command_list, char **env);
 
