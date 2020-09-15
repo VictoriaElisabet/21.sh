@@ -15,19 +15,21 @@
 //ta bort print token saan
 void		print_token(t_token *head)
 {
-		t_token *tmp = head;
-    while (tmp != NULL)
-    {
+	t_token *tmp;
+
+	tmp = head;
+	while (tmp != NULL)
+	{
 		if (tmp->flags & DQ)
 			ft_printf("DQ");
 		if (tmp->flags & SQ)
 			ft_printf("SQ");
-        ft_printf("%s\n", tmp->token);
-        tmp = tmp->next;
-    }
+		ft_printf("%s\n", tmp->token);
+		tmp = tmp->next;
+	}
 }
 
-void	destroy_tok_list(t_token *head)
+void		destroy_tok_list(t_token *head)
 {
 	t_token *tmp;
 
@@ -45,7 +47,7 @@ t_token		*create_token(int tok_type, char *tok, int flags)
 	t_token *new;
 
 	new = NULL;
-	if((new = (t_token*)malloc(sizeof(t_token))))
+	if ((new = (t_token*)malloc(sizeof(t_token))))
 	{
 		new->token = ft_strdup(tok);
 		new->type = tok_type;
@@ -61,7 +63,7 @@ void		add_token(t_token **head, int tok_type, char *tok, int flags)
 	t_token	*new;
 	t_token *tmp;
 
-	if((new = create_token(tok_type, tok, flags)))
+	if ((new = create_token(tok_type, tok, flags)))
 	{
 		tmp = *head;
 		if (*head == NULL)

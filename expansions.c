@@ -25,15 +25,15 @@ void	remove_token(t_token **head, t_token *rem)
 		tmp = *head;
 		while (tmp->next != rem)
 			tmp = tmp->next;
-   		if(tmp->next == NULL)
-        	return;  
-    	else if(tmp->next->next == NULL)  
-        	tmp->next = NULL;  
-    	else  
-    	{   
-        	rem = tmp->next;  
-        	tmp->next = rem->next;  
-        	rem->next->prev = tmp;  
+		if (tmp->next == NULL)
+			return ;
+		else if (tmp->next->next == NULL)
+			tmp->next = NULL;
+		else
+		{
+			rem = tmp->next;
+			tmp->next = rem->next;
+			rem->next->prev = tmp;
 		}
 	}
 	free(rem->token);

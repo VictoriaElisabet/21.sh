@@ -14,7 +14,8 @@
 
 int		is_separator(int c)
 {
-	if (c == ' ' || c == '\t' || c == '|' || c == '&' || c == ';' || c == '\n' || c == '<' || c == '>')
+	if (c == ' ' || c == '\t' || c == '|' || c == '&' ||
+		c == ';' || c == '\n' || c == '<' || c == '>')
 		return (1);
 	return (0);
 }
@@ -33,7 +34,7 @@ int		count_quoting_word(char *command)
 	return (i);
 }
 
-int			create_word(t_token **head, char *command)
+int		create_word(t_token **head, char *command)
 {
 	int		i;
 	char	*tmp;

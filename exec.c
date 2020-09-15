@@ -88,7 +88,6 @@ char	set_file_path(t_command *command, char **file_path, char **env)
 
 int		run_command(t_command *command, pid_t pid, char **env)
 {
-	//pid_t	pid;
 	char	*file_path;
 	int		status;
 
@@ -109,7 +108,8 @@ int		run_command(t_command *command, pid_t pid, char **env)
 	return ((print_exec_error(command, status, file_path)));
 }
 
-int		exec_command(t_command *command, t_command **commands, pid_t pid, char ***env)
+int		exec_command(t_command *command, t_command **commands,
+pid_t pid, char ***env)
 {
 	int status;
 

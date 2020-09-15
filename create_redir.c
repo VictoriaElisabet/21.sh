@@ -12,18 +12,18 @@
 
 #include "minishell.h"
 
-void		get_IO_num(t_token **head)
+void		get_io_num(t_token **head)
 {
 	t_token *tmp;
 	int		i;
 
 	i = 0;
-	if(*head != NULL)
+	if (*head != NULL)
 	{
 		tmp = *head;
 		while (tmp->next != NULL)
 			tmp = tmp->next;
-		while(tmp->token[i] != '\0')
+		while (tmp->token[i] != '\0')
 		{
 			if (ft_isdigit(tmp->token[i]) == 0)
 				return ;
@@ -48,7 +48,7 @@ int			create_heredoc_word(char *command, char *delim, char **doc)
 			j++;
 		if (delim[j] == '\0')
 		{
-			if(!(*doc = ft_strsub(command, 0, i)))
+			if (!(*doc = ft_strsub(command, 0, i)))
 				*doc = NULL;
 			break ;
 		}
@@ -57,25 +57,26 @@ int			create_heredoc_word(char *command, char *delim, char **doc)
 	//om int e hittas borde kanske -1 returnas och men he bord ju hittas..
 	return (i);
 }
+
 int			create_delim(char *command, char **delim, int *flags)
 {
 	int i;
 
 	i = 0;
-	while(command[i] != '\0' && command[i] != '\t') // ska ju vara \n å int t
+	while (command[i] != '\0' && command[i] != '\n')
 		i++;
-	if(!(*delim = ft_strsub(command, 0, i)))
+	if (!(*delim = ft_strsub(command, 0, i)))
 		*delim = NULL;
 	if (str_chr(*delim, '"') == 1)
 		*flags |= DQ;
-	if(str_chr(*delim, '\'') == 1)
+	if (str_chr(*delim, '\'') == 1)
 		*flags |= SQ;
 	return (i + 1);
 }
 
 int			create_heredoc(t_token **head, char *command, char **doc)
 {
-	char 	*delim;
+	char	*delim;
 	int		i;
 	int		j;
 	int		flags;
@@ -85,11 +86,10 @@ int			create_heredoc(t_token **head, char *command, char **doc)
 	flags = 0;
 	// remove tabs if <<-
 	i = i + create_delim(command, &delim, &flags);
-	if(delim)
+	if (delim)
 	{
-		ft_printf("%s\n", delim);
 		i = i + create_heredoc_word(&command[i], delim, doc);
-		while(command[i] != '\0' && command[i] == delim[j])
+		while (command[i] != '\0' && command[i] == delim[j])
 		{
 			i++;
 			j++;
@@ -99,10 +99,10 @@ int			create_heredoc(t_token **head, char *command, char **doc)
 		free(delim);
 		free(*doc);
 	}
-	return(i);
+	return (i);
 }
 
-int 		create_redir(t_token **head, char *command)
+int			create_redir(t_token **head, char *command)
 {
 	int		i;
 	char	*tmp;
@@ -113,14 +113,15 @@ int 		create_redir(t_token **head, char *command)
 	tmp = NULL;
 	doc = NULL;
 	flags = 0;
-	if(is_redir(command[i]) == 1) 
+	if (is_redir(command[i]) == 1)
 	{
 		i++;
-		get_IO_num(head);
-		if(command[i] == '>' || command[i] == '<' || command[i] == '|' || command[i] == '&')
+		get_io_num(head);
+		if (command[i] == '>' || command[i] == '<' || command[i] == '|' ||
+		command[i] == '&')
 		{
 			i++;
-			if(command[i] == '-')
+			if (command[i] == '-')
 				i++;
 		}
 		if ((tmp = ft_strsub(command, 0, i)))

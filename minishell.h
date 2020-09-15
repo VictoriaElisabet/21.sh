@@ -23,13 +23,10 @@
 # include <sys/wait.h>
 # include "./libft/libft.h"
 
-# define BUF_SIZE 32
+# define BUF_SIZE		32
 
-# define SET_BIT(val, index) val |= (1 << index)
-# define CLEAR_BIT(val, index) val &= ~(1 << index)
-
-# define	SQ			1
-# define	DQ			2
+# define SQ				1
+# define DQ				2
 
 # define PIPE_OP		1
 # define OR_OP			2
@@ -52,15 +49,6 @@ enum			redir_type
 	G_AND,
 	G_AND_H,
 	CLOBBER,
-
-/*# define L			1
-# define G			2
-# define LL			4
-# define GG			8
-# define CLOBBER	16
-# define LG			32
-# define L_AND		64
-# define G_AND		128*/
 };
 
 enum			e_token_type
@@ -81,11 +69,11 @@ typedef struct	s_env
 
 typedef struct	s_token
 {
-	int		type;
-	char	*token;
-	int		flags;
-	struct s_token *next;
-	struct s_token *prev;
+	int				type;
+	char			*token;
+	int				flags;
+	struct s_token	*next;
+	struct s_token	*prev;
 
 }				t_token;
 
@@ -107,8 +95,8 @@ int				ft_echo(char **argv);
 int				is_builtin(t_command *command);
 int				run_builtin(t_command *command, t_command **commands,
 				char ***env, int status);
-int				exec_command(t_command *command, t_command **commands, pid_t pid,
-				char ***env);
+int				exec_command(t_command *command, t_command **commands,
+				pid_t pid, char ***env);
 int				find_env(const char *name, char **env);
 int				ft_env(t_command *command, char **env);
 int				ft_exit(t_command *command, t_command **commands, char ***env,
@@ -117,20 +105,19 @@ int				handle_command_list(t_command **command_list, char ***env);
 int				count_list(char **list);
 int				print_exec_error(t_command *command, int status,
 				char *file_path);
-int				create_pipe(t_command **commands, char ***env);
+int				create_pipe(t_command **commands, char ***env, int *i);
 int				is_redir(int c);
 int				is_separator(int c);
-int 			create_redir(t_token **head, char *command);
+int				create_redir(t_token **head, char *command);
 int				create_word(t_token **head, char *command);
 int				set_redirections(t_command *command);
 
 char			**word_splitting(char *command, int count);
-t_command			**create_command_list(char *prt_str, char **env);
+
 char			**create_argv_list(char **argv, char **words);
 char			**copy_env(char **environ);
 char			**add_env(const char *name, const char *value, char **env,
 				int count);
-
 
 char			*tilde_expansion(char *word, char **env);
 char			*parameter_expansion(char *word, char **env);
@@ -154,7 +141,7 @@ void			add_token(t_token **head, int tok_type, char *tok, int flags);
 void			reset_redirections(int fd[3]);
 void			set_fd(int fd[3]);
 
-t_command		**create_command_struct_list(char **command_list, char **env);
+t_command		**create_command_list(char *prt_str, char **env);
 
 t_token			*create_tokens(char *command);
 
