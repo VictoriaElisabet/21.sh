@@ -33,7 +33,7 @@ int		ctrl_function(int ctrl_op, int status)
 		return (1);
 	if ((ctrl_op & AND_OP) && status == 0)
 		return (1);
-	if ((ctrl_op & SEMI) || (ctrl_op & NEWLINE))
+	if ((ctrl_op & SEMI) || (ctrl_op & NEWLINE) || (ctrl_op & PIPE_OP))
 		return (1);
 	return (0);
 }
@@ -65,12 +65,12 @@ int		handle_command_list(t_command **commands, char ***env)
 	while (commands[i] != NULL)
 	{
 		//if ((command = create_command_struct(command_list[i], *env)))
-		/*if (commands[i]->ctrl_op & PIPE_OP)
+		if (commands[i]->ctrl_op & PIPE_OP)
 		{
 			status = create_pipe(&commands[i], env);
-			//i++;
-		} */
-		if (is_builtin(commands[i]) == 1)
+			i = i + 2;
+		} 
+		else if (is_builtin(commands[i]) == 1)
 		{
 			status = run_builtin(commands[i], commands, env, status);
 		}

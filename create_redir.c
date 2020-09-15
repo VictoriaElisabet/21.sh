@@ -62,7 +62,7 @@ int			create_delim(char *command, char **delim, int *flags)
 	int i;
 
 	i = 0;
-	while(command[i] != '\0' && command[i] != '\n') // ska ju vara \n å int t
+	while(command[i] != '\0' && command[i] != '\t') // ska ju vara \n å int t
 		i++;
 	if(!(*delim = ft_strsub(command, 0, i)))
 		*delim = NULL;
