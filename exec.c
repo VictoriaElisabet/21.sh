@@ -114,6 +114,8 @@ int		exec_command(t_command *command, t_command **commands, pid_t pid, char ***e
 	int status;
 
 	status = 0;
+	if (set_redirections(command) == -1)
+		return (-1); // printa error ?
 	if (command->argc != 0)
 	{
 		if (is_builtin(command) == 1)
@@ -123,5 +125,6 @@ int		exec_command(t_command *command, t_command **commands, pid_t pid, char ***e
 			status = run_command(command, pid, *env);
 		}
 	}
+	reset_redirections(command->fd);
 	return (status);
 }

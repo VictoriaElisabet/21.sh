@@ -12,55 +12,84 @@
 
 #include "minishell.h"
 
-int create_pipe(t_command *command1, t_command *command2, t_command **commands, char ***env)
+int create_pipe(t_command **commands, char ***env)
 {
 	int     pipefd[2];
-	pid_t   pid1;
-	pid_t   pid2;
+	pid_t   pid;
+	//pid_t   pid2;
 	int     status;
+	int		fdout;
+	//int		fdin;
+	int		i;
+	int		fd[3];
 
 	status = 0;
-	if(pipe(pipefd) != -1)
+	i = 0;
+	set_fd(commands[i]->fd);
+	while (commands[i] != NULL && (commands[i]->ctrl_op & PIPE_OP))
 	{
-		if((pid1 = fork()) == -1)
-			return(EXIT_FAILURE); //print error?
-		else if (pid1 == 0)
+		if (commands[i + 1] == NULL)
 		{
-			close(pipefd[0]);
-			dup2(pipefd[1], STDOUT_FILENO);
-			close(pipefd[1]);
-			status = exec_command(command1, commands, pid1, env);
-			//if((execve("/bin/cat", command1->argv, *env)) == -1)
-				//exit(0);
-			//status = exec_command(command1, command_list, env);
+			reset_redirections(fd);
 		}
-		if((pid2 = fork()) == -1)
-			return(EXIT_FAILURE); //print error?
-		else if (pid2 == 0)
-		{
-			close(pipefd[1]);
-			dup2(pipefd[0], STDIN_FILENO);
-			close(pipefd[0]);
-			status = exec_command(command2, commands, pid2, env);
-			//if((execve("/bin/grep", command2->argv, *env)) == -1)
-				//exit(0);	
-			//status = exec_command(command2, command_list, env);
-		}
-						close(pipefd[0]);
-				close(pipefd[1]);
-			pid1 = waitpid(pid1, &status, 0);
-			pid2 = waitpid(pid2, &status, 0);
 
-		//wait(NULL);
-		//wait(NULL);
-		
-				//wait(NULL);
-			
-	}
-	else
-	{
-		return (EXIT_FAILURE);
+		else
+		{
+		if (pipe(pipefd) == -1)
+			return (-1);
+			//fdin = pipefd[0];
+		fdout = pipefd[1];
+		dup2(fdout, 1);
+		close(fdout);
+		}
+			if((pid = fork()) == -1)
+				return(EXIT_FAILURE); //print error?
+			else if (pid == 0)
+			{
+				//close(pipefd[0]);
+				//dup2(pipefd[1], STDOUT_FILENO);
+				//close(pipefd[1]);
+				dup2(pipefd[0], STDIN_FILENO);
+				close(pipefd[0]);
+				status = exec_command(commands[i], commands, pid, env);
+				exit(0);
+			}
+		/*if(pipe(pipefd) != -1)
+		{
+			if((pid1 = fork()) == -1)
+				return(EXIT_FAILURE); //print error?
+			else if (pid1 == 0)
+			{
+				close(pipefd[0]);
+				dup2(pipefd[1], STDOUT_FILENO);
+				close(pipefd[1]);
+				status = exec_command(commands[i], commands, pid1, env);
+				//exit(0);
+			}
+			if((pid2 = fork()) == -1)
+				return(EXIT_FAILURE); //print error?
+			else if (pid2 == 0)
+			{
+				close(pipefd[1]);
+				dup2(pipefd[0], STDIN_FILENO);
+				close(pipefd[0]);
+				status = exec_command(commands[i + 1], commands, pid2, env);
+				//exit(0);	
+			}
+
+		}	
+		else
+		{
+			return (EXIT_FAILURE);
 		//print pipe error? bara print här å änder status ti -1 ?
+		}*/
+		i++;
 	}
+	reset_redirections(fd);
+				//close(pipefd[0]);
+			//close(pipefd[1]);
+			pid = waitpid(pid, &status, 0);
+			//pid2 = waitpid(pid2, &status, 0);
+	
 	return (status);
 }

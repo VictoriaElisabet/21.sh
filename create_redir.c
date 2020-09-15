@@ -17,17 +17,20 @@ void		get_IO_num(t_token **head)
 	t_token *tmp;
 	int		i;
 
-	tmp = *head;
 	i = 0;
-	while (tmp->next != NULL)
-		tmp = tmp->next;
-	while(tmp->token[i] != '\0')
+	if(*head != NULL)
 	{
-		if (ft_isdigit(tmp->token[i]) == 0)
-			return ;
-		i++;
+		tmp = *head;
+		while (tmp->next != NULL)
+			tmp = tmp->next;
+		while(tmp->token[i] != '\0')
+		{
+			if (ft_isdigit(tmp->token[i]) == 0)
+				return ;
+			i++;
+		}
+		tmp->type = IO_NUM;
 	}
-	tmp->type = IO_NUM;
 }
 
 int			create_heredoc_word(char *command, char *delim, char **doc)
@@ -59,7 +62,7 @@ int			create_delim(char *command, char **delim, int *flags)
 	int i;
 
 	i = 0;
-	while(command[i] != '\0' && command[i] != 't') // ska ju vara \n å int t
+	while(command[i] != '\0' && command[i] != '\n') // ska ju vara \n å int t
 		i++;
 	if(!(*delim = ft_strsub(command, 0, i)))
 		*delim = NULL;
@@ -80,9 +83,11 @@ int			create_heredoc(t_token **head, char *command, char **doc)
 	i = 0;
 	j = 0;
 	flags = 0;
+	// remove tabs if <<-
 	i = i + create_delim(command, &delim, &flags);
 	if(delim)
 	{
+		ft_printf("%s\n", delim);
 		i = i + create_heredoc_word(&command[i], delim, doc);
 		while(command[i] != '\0' && command[i] == delim[j])
 		{
@@ -92,8 +97,8 @@ int			create_heredoc(t_token **head, char *command, char **doc)
 		if (*doc)
 			add_token(head, WORD, *doc, flags);
 		free(delim);
+		free(*doc);
 	}
-	free(*doc);
 	return(i);
 }
 

@@ -12,10 +12,10 @@
 
 #include "minishell.h"
 
-int		get_index(char *token, int *ctrl_op)
+void		get_index(char *token, int *ctrl_op)
 {
 	int		i;
-	char	types[7][2] = {"|", "||", "|&", "&", "&&", ";", "\n"};
+	char	types[7][3] = {"|", "||", "|&", "&", "&&", ";", "\n"};
 
 	i = 0;
 	while(i < 7)
@@ -24,7 +24,6 @@ int		get_index(char *token, int *ctrl_op)
 			*ctrl_op |= 1 << i;
 		i++;
 	}
-	return (-1);
 }
 
 int		count_words(t_token *tokens)
@@ -86,7 +85,7 @@ void		copy_tokens(t_command *command, t_token **tok_ls)
 	}
 	add_token(&command->tokens, (*tok_ls)->type, (*tok_ls)->token, (*tok_ls)->flags);
 	if ((*tok_ls)->type == OPERATOR)
-		command->ctrl_op = get_index((*tok_ls)->token, &command->ctrl_op);
+		get_index((*tok_ls)->token, &command->ctrl_op);
 }
 
 t_command	*fill_command_struct(t_command *command, t_token **tok_ls, char **env)

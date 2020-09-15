@@ -39,14 +39,29 @@
 # define SEMI			32
 # define NEWLINE		64
 
-# define L			1
+enum			redir_type
+{
+	L,
+	LL,
+	L_AND,
+	L_AND_H,
+	LL_H,
+	LG,
+	G,
+	GG,
+	G_AND,
+	G_AND_H,
+	CLOBBER,
+
+/*# define L			1
 # define G			2
 # define LL			4
 # define GG			8
 # define CLOBBER	16
 # define LG			32
 # define L_AND		64
-# define G_AND		128
+# define G_AND		128*/
+};
 
 enum			e_token_type
 {
@@ -80,7 +95,7 @@ typedef struct	s_command
 	char		**argv;
 	int			argc;
 	int			ctrl_op;
-	int			fd[2];
+	int			fd[3];
 }				t_command;
 
 int				str_chr(char *str, int c);
@@ -102,12 +117,12 @@ int				handle_command_list(t_command **command_list, char ***env);
 int				count_list(char **list);
 int				print_exec_error(t_command *command, int status,
 				char *file_path);
-int				create_pipe(t_command *command1, t_command *command2,
-				t_command **commands, char ***env);
+int				create_pipe(t_command **commands, char ***env);
 int				is_redir(int c);
 int				is_separator(int c);
 int 			create_redir(t_token **head, char *command);
 int				create_word(t_token **head, char *command);
+int				set_redirections(t_command *command);
 
 char			**word_splitting(char *command, int count);
 t_command			**create_command_list(char *prt_str, char **env);
@@ -131,11 +146,13 @@ void			destroy_env(t_env **env);
 void			destroy_command(t_command **command);
 void			print_env(char **env);
 void			auto_completion(char *prt_str);
-void			set_redirections(char **words, t_command *command);
+
 void			remove_word(char ***words, int word);
 void			set_struct(t_command *command);
 void			destroy_tok_list(t_token *head);
 void			add_token(t_token **head, int tok_type, char *tok, int flags);
+void			reset_redirections(int fd[3]);
+void			set_fd(int fd[3]);
 
 t_command		**create_command_struct_list(char **command_list, char **env);
 
