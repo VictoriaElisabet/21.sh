@@ -6,7 +6,7 @@
 /*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 10:24:05 by vgrankul          #+#    #+#             */
-/*   Updated: 2020/02/27 13:01:07 by vgrankul         ###   ########.fr       */
+/*   Updated: 2020/09/16 15:19:48 by vgrankul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <fcntl.h>
 # include <dirent.h>
 # include <sys/wait.h>
-# include "./libft/libft.h"
+# include "../libft/libft.h"
 
 # define BUF_SIZE		32
 

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   create_command_struct.c                            :+:      :+:    :+:   */
+/*   set_redirection.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgrankul <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 11:28:19 by vgrankul          #+#    #+#             */
-/*   Updated: 2019/10/31 13:49:20 by vgrankul         ###   ########.fr       */
+/*   Updated: 2020/09/16 15:14:30 by vgrankul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "./includes/minishell.h"
 
 int		is_digits(t_token *tmp)
 {
@@ -70,6 +70,7 @@ int		set_redir_out(t_token *tmp, int r_type)
 	int dash;
 
 	dash = 0;
+	fd = 0; //check if ok
 	//clobber?
 	if (tmp->prev != NULL)
 		n = tmp->prev->type == IO_NUM ? ft_atoi(tmp->token) : STDOUT_FILENO;
@@ -113,6 +114,7 @@ int		set_redir_in(t_token *tmp, int r_type)
 	int fds[2];
 
 	dash = 0;
+	fd = 0; // check up if ok
 	if (tmp->prev != NULL)
 		n = tmp->prev->type == IO_NUM ? ft_atoi(tmp->token) : STDIN_FILENO;
 	if (r_type == L && tmp->next != NULL)

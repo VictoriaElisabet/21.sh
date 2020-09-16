@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_env.c                                           :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgrankul <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 11:28:19 by vgrankul          #+#    #+#             */
-/*   Updated: 2019/10/31 13:49:20 by vgrankul         ###   ########.fr       */
+/*   Updated: 2020/09/16 15:19:16 by vgrankul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+//#include "../minishell.h"
 
-char	*new_command(char **argv, char *ctrl_op, int i)
+/*char	*new_command(char **argv, char *ctrl_op, int i)
 {
 	char	*arg;
 	char	*tmp;
@@ -94,4 +94,4 @@ int		ft_env(t_command *command, char **env)
 	}
 	destroy_arr(tmp);
 	return (status);
-}
+}*/

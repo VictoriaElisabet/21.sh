@@ -1,29 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   ft_isspace.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rklein <rklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/22 11:28:19 by vgrankul          #+#    #+#             */
-/*   Updated: 2020/09/16 15:19:07 by vgrankul         ###   ########.fr       */
+/*   Created: 2020/09/10 11:46:46 by rklein            #+#    #+#             */
+/*   Updated: 2020/09/10 11:54:40 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
-
-int		ft_echo(char **argv)
+int	ft_isspace(int c)
 {
-	int i;
-
-	i = 1;
-	while (argv[i] != NULL)
-	{
-		ft_printf("%s", argv[i]);
-		if (argv[i + 1] != NULL)
-			ft_printf(" ");
-		i++;
-	}
-	ft_printf("\n");
-	return (0);
+	if (c == ' ' || c == '\n' || c == '\t')
+		return (1);
+	else
+		return (0);
 }
+

@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgrankul <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 11:28:19 by vgrankul          #+#    #+#             */
-/*   Updated: 2019/10/31 13:49:20 by vgrankul         ###   ########.fr       */
+/*   Updated: 2020/09/16 15:16:17 by vgrankul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "./includes/minishell.h"
+#include "./includes/sh.h"
 
 void	destroy_arr(char **arr)
 {
@@ -65,23 +66,29 @@ char	*read_prompt(char *prompt)
 int		main(void)
 {
 	extern char	**environ;
-	char		*prt_str;
+	//char		*prt_str;
 	char		**env;
-	t_command	**commands;
+	//t_command	**commands;
 	int			status;
+	t_sh		*sh;
 
 	status = 0;
 	env = copy_env(environ);
-	while (1)
+	sh = (t_sh*)malloc(sizeof(t_sh));
+	sh->in = (t_in*)malloc(sizeof(t_in));
+	ft_validate_term();
+	tcgetattr(STDIN_FILENO, &sh->orig);
+	status = ft_sh(sh, env);
+	/*while (1)
 	{
 		prt_str = read_prompt("$> ");
 		if (prt_str != NULL)
 		{
 			commands = create_command_list(prt_str, env);
 			if (commands != NULL)
-				handle_command_list(commands, &env);
+				status = handle_command_list(commands, &env);
 		}
-	}
+	}*/
 	destroy_arr(env);
 	return (status);
 }

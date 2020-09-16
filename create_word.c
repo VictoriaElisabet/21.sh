@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   create_word.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgrankul <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 11:28:19 by vgrankul          #+#    #+#             */
-/*   Updated: 2019/10/31 13:49:20 by vgrankul         ###   ########.fr       */
+/*   Updated: 2020/09/16 15:17:34 by vgrankul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "./includes/minishell.h"
 
 int		is_separator(int c)
 {
@@ -42,6 +42,7 @@ int		create_word(t_token **head, char *command)
 
 	i = 0;
 	tmp = NULL;
+	flags = 0;
 	while (is_separator(command[i]) == 0 && command[i] != '\0')
 	{
 		if (command[i] == '"')

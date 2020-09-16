@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgrankul <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 11:28:19 by vgrankul          #+#    #+#             */
-/*   Updated: 2019/10/31 13:49:20 by vgrankul         ###   ########.fr       */
+/*   Updated: 2020/09/16 15:18:47 by vgrankul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../includes/minishell.h"
 
 int		run_builtin(t_command *command, t_command **commands, char ***env,
 int status)
@@ -21,8 +21,8 @@ int status)
 		return (ft_echo(command->argv));
 	if (ft_strcmp(command->argv[0], "exit") == 0)
 		return (ft_exit(command, commands, env, status));
-	if (ft_strcmp(command->argv[0], "env") == 0)
-		return (ft_env(command, *env));
+	//if (ft_strcmp(command->argv[0], "env") == 0)
+	//	return (ft_env(command, *env));
 	if (ft_strcmp(command->argv[0], "setenv") == 0)
 	{
 		return (ft_setenv(command->argc, command->argv[1],

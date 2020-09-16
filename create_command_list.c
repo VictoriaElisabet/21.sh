@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   create_command_list.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgrankul <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 11:28:19 by vgrankul          #+#    #+#             */
-/*   Updated: 2019/10/31 13:49:20 by vgrankul         ###   ########.fr       */
+/*   Updated: 2020/09/16 15:35:30 by vgrankul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "./includes/minishell.h"
 
 void		get_index(char *token, int *ctrl_op)
 {
@@ -126,6 +126,7 @@ t_command	**create_command_list(char *prt_str, char **env)
 	int			i;
 
 	tokens = create_tokens(prt_str);
+	print_token(tokens);
 	tmp = tokens;
 	comm_nbr = count_ctrl_op(tokens);
 	i = 0;
