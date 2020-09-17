@@ -117,19 +117,19 @@ int			count_ctrl_op(t_token *tokens)
 	return (count);
 }
 
-t_command	**create_command_list(char *prt_str, char **env)
+t_command	**create_command_list(t_token **tokens, char **env)
 {
-	t_token		*tokens;
+	//t_token		*tokens;
 	t_token		*tmp;
 	t_command	**commands;
 	int			comm_nbr;
 	int			i;
 
 	//ft_printf("%s\n", prt_str);
-	tokens = create_tokens(prt_str);
+	//tokens = create_tokens(prt_str);
 	//print_token(tokens);
-	tmp = tokens;
-	comm_nbr = count_ctrl_op(tokens);
+	tmp = *tokens;
+	comm_nbr = count_ctrl_op(*tokens);
 	i = 0;
 	if ((commands = (t_command**)malloc(comm_nbr * sizeof(t_command*) + 1)))
 	{
@@ -142,6 +142,6 @@ t_command	**create_command_list(char *prt_str, char **env)
 		}
 	}
 	commands[i] = NULL;
-	destroy_tok_list(tokens);
+	destroy_tok_list(*tokens);
 	return (commands);
 }

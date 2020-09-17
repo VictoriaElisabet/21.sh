@@ -10,30 +10,27 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-//#include "../minishell.h"
+#include "../includes/minishell.h"
 
-/*char	*new_command(char **argv, char *ctrl_op, int i)
+void	remove_env_arg(char ***argv, int i)
 {
-	char	*arg;
-	char	*tmp;
-	char	*command;
+	char	**new;
+	int		j;
 
-	command = ft_strnew(1);
-	while (argv[i] != NULL)
+	j = 0;
+	new = (char**)malloc(count_arr(&(*argv)[i]) * sizeof(char*) + 1);
+	while((*argv)[i] != NULL)
 	{
-		arg = ft_strjoin(argv[i], " ");
-		tmp = ft_strjoin(command, arg);
-		free(arg);
-		free(command);
-		command = tmp;
+		if (ft_strcmp((*argv)[i], "env") != 0)
+		{
+			new[j] = ft_strdup((*argv)[i]);
+			j++;
+		}
 		i++;
 	}
-	arg = ft_strjoin(ctrl_op, " ");
-	tmp = ft_strjoin(command, arg);
-	free(arg);
-	free(command);
-	command = tmp;
-	return (command);
+	new[j] = NULL;
+	destroy_arr(*argv);
+	*argv = new;
 }
 
 int		update_env(char *argv, char ***tmp)
@@ -51,24 +48,20 @@ int		update_env(char *argv, char ***tmp)
 	return (status);
 }
 
-int		run_env_cmd(t_command *command, char ***tmp, int i)
+int		run_env_cmd(t_command *command, t_command **commands, char ***tmp, int i)
 {
-	char	*comm;
-	char	**command_list;
 	int		status;
+	pid_t	pid;
 
 	status = 0;
-	if ((comm = new_command(command->argv, command->ctrl_op, i)))
-	{
-		if ((command_list = create_command_list(comm)))
-			status = handle_command_list(command_list, tmp);
-	}
-	free(comm);
-	destroy_arr(command_list);
+	pid = fork();
+	remove_env_arg(&command->argv, i);
+	exec_command(command, commands, pid ,tmp);
+	waitpid(pid, &status, 0);
 	return (status);
 }
 
-int		ft_env(t_command *command, char **env)
+int		ft_env(t_command *command, t_command **commands, char **env)
 {
 	char	**tmp;
 	int		i;
@@ -88,10 +81,10 @@ int		ft_env(t_command *command, char **env)
 			i++;
 		}
 		if (command->argv[i] != NULL)
-			status = run_env_cmd(command, &tmp, i);
+			status = run_env_cmd(command, commands, &tmp, i);
 		else
 			print_env(tmp);
 	}
 	destroy_arr(tmp);
 	return (status);
-}*/
+}

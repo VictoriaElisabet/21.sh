@@ -49,17 +49,17 @@ int		handle_command_list(t_command **commands, char ***env)
 	while (commands[i] != NULL)
 	{
 		if (commands[i]->ctrl_op & PIPE_OP)
-		{
 			status = create_pipe(&commands[i], env, &i);
-			//i = i + 2;
-		}
-		else if (is_builtin(commands[i]) == 1)
-			status = run_builtin(commands[i], commands, env, status);
 		else
 		{
-			pid = fork(); // om he failar
-			exec_command(commands[i], commands, pid, env);
-			waitpid(pid, &status, 0);
+			if (commands[i]->argc != 0 && is_builtin(commands[i]) == 1)
+				status = exec_command(commands[i], commands, -1, env);
+			else
+			{
+				pid = fork();
+				status = exec_command(commands[i], commands, pid, env);
+				waitpid(pid, &status, 0);
+			}
 		}
 		if (ctrl_function(commands[i]->ctrl_op, status) != 1)
 		{

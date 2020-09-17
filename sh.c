@@ -63,6 +63,7 @@ int		ft_sh(t_sh *sh, char **env)
 {
 	int			prompt;
 	t_command	**commands;
+	t_token		*tokens;
 	int			status;
 
 	ft_init(sh);
@@ -86,7 +87,8 @@ int		ft_sh(t_sh *sh, char **env)
 				tputs(tgetstr("cr", NULL), 1, ft_putint);
 				tputs(tgetstr("do", NULL), 1, ft_putint);
 				//ft_putstr(sh->in->input); //TEMP for testing
-				commands = create_command_list(sh->in->input, env);
+				tokens = create_tokens(sh->in->input);
+				commands = create_command_list(&tokens, env);
 				if (commands != NULL)
 					status = handle_command_list(commands, &env);
 				ft_history_add(sh);

@@ -14,6 +14,9 @@
 
 int	ft_exit(t_command *command, t_command **commands, char ***env, int status)
 {
+	int exit_code;
+
+	exit_code = command->argv[1] != NULL ? ft_atoi(command->argv[1]) : status;
 	if (command->argc > 2)
 		ft_printf("%s: too many arguments\n", command->argv[0]);
 	else if (command->argc < 2)
@@ -26,7 +29,7 @@ int	ft_exit(t_command *command, t_command **commands, char ***env, int status)
 	{
 		destroy_command(commands);
 		destroy_arr(*env);
-		exit(ft_atoi(command->argv[1]));
+		exit(exit_code);
 	}
 	return (0);
 }

@@ -98,7 +98,7 @@ int				run_builtin(t_command *command, t_command **commands,
 int				exec_command(t_command *command, t_command **commands,
 				pid_t pid, char ***env);
 int				find_env(const char *name, char **env);
-int				ft_env(t_command *command, char **env);
+int				ft_env(t_command *command, t_command **commands, char **env);
 int				ft_exit(t_command *command, t_command **commands, char ***env,
 				int status);
 int				handle_command_list(t_command **command_list, char ***env);
@@ -141,7 +141,7 @@ void			add_token(t_token **head, int tok_type, char *tok, int flags);
 void			reset_redirections(int fd[3]);
 void			set_fd(int fd[3]);
 
-t_command		**create_command_list(char *prt_str, char **env);
+t_command		**create_command_list(t_token **tokens, char **env);
 
 t_token			*create_tokens(char *command);
 

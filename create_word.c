@@ -34,6 +34,18 @@ int		count_quoting_word(char *command)
 	return (i);
 }
 
+int		check_prev_word(t_token **head)
+{
+	t_token *tmp;
+
+	tmp = *head;
+	while(tmp->next != NULL)
+		tmp = tmp->next;
+	if (tmp->type != WORD)
+		return(1);
+	return(0);
+}
+
 int		create_word(t_token **head, char *command)
 {
 	int		i;
@@ -59,7 +71,7 @@ int		create_word(t_token **head, char *command)
 	}
 	if ((tmp = ft_strsub(command, 0, i)))
 	{
-		if (str_chr(tmp, '=') == 1)
+		if (str_chr(tmp, '=') == 1 && check_prev_word(head) == 1)
 			add_token(head, WORD_ASSIGN, tmp, flags);
 		else
 			add_token(head, WORD, tmp, flags);
