@@ -125,8 +125,9 @@ t_command	**create_command_list(char *prt_str, char **env)
 	int			comm_nbr;
 	int			i;
 
+	//ft_printf("%s\n", prt_str);
 	tokens = create_tokens(prt_str);
-	print_token(tokens);
+	//print_token(tokens);
 	tmp = tokens;
 	comm_nbr = count_ctrl_op(tokens);
 	i = 0;
@@ -139,9 +140,8 @@ t_command	**create_command_list(char *prt_str, char **env)
 			tmp = tmp->next;
 			i++;
 		}
-		commands[i] = NULL;
 	}
+	commands[i] = NULL;
 	destroy_tok_list(tokens);
 	return (commands);
-	//free tokens;
 }

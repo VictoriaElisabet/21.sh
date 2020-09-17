@@ -25,13 +25,14 @@ void	ft_history_scroll(t_sh *sh, int motion)
 	ft_bzero(sh->in->buffer, ft_strlen(sh->in->buffer));
 	sh->in->index = 0;
 	sh->in->line = 0;
-	if (sh->in->hss++)
+	if (sh->in->hss)
 	{
 		if (motion == UP)
 			sh->in->hs = sh->in->hs->next;
 		if (motion == DOWN)
 			sh->in->hs = sh->in->hs->prev;
 	}
+	sh->in->hss = 1;
 	if (!*(sh->in->hs->hist))
 		ft_reprint(sh);
 	else
