@@ -30,13 +30,13 @@ void	ft_prompt(t_sh *sh, int prompt)
 
 static void	ft_init(t_sh *sh)
 {
-	//change back to ARG_MAX
+	//change back 4096 to ARG_MAX
 	sh->in->prompt= ft_memalloc(7);
-	sh->in->buffer = ft_memalloc(_SC_ARG_MAX);
+	sh->in->buffer = ft_memalloc(4096);
 	sh->in->index = 0;
 	sh->in->line = 0;
-	sh->in->input = ft_memalloc(_SC_ARG_MAX);
-	sh->in->clipboard = ft_memalloc(_SC_ARG_MAX);
+	sh->in->input = ft_memalloc(4096);
+	sh->in->clipboard = ft_memalloc(4096);
 	sh->in->cp_range[0] = -1;
 	sh->in->cp_range[1] = -1;
 	sh->in->hs = NULL;
@@ -52,7 +52,7 @@ static void	ft_init(t_sh *sh)
 
 static void	ft_reset_buffer(t_sh *sh)
 {
-	ft_bzero(sh->in->buffer, _SC_ARG_MAX);
+	ft_bzero(sh->in->buffer, 4096);
 	sh->in->index = 0;
 	sh->in->line = 0;
 	sh->in->cp_range[0] = -1;
@@ -91,8 +91,6 @@ int		ft_sh(t_sh *sh, char **env)
 					status = handle_command_list(commands, &env);
 				ft_history_add(sh);
 			}
-			tputs(tgetstr("cr", NULL), 1, ft_putint);
-			tputs(tgetstr("do", NULL), 1, ft_putint);
 			ft_bzero(sh->in->input, ft_strlen(sh->in->input));
 		}
 		else
