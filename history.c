@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   history.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rklein <rklein@student.hive.fi>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/09/17 16:21:44 by rklein            #+#    #+#             */
+/*   Updated: 2020/09/17 16:22:30 by rklein           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "./includes/sh.h"
 
 void	ft_history_add(t_sh *sh)
@@ -5,16 +17,13 @@ void	ft_history_add(t_sh *sh)
 	t_hs *new;
 
 	new = (t_hs*)malloc(sizeof(t_hs));
-	new->hist = ft_strdup(sh->in->input);
-	//connecting new with last
+	//new->hist = ft_strdup(sh->in->input); OLD
+	new->hist = ft_strsub(sh->in->input, 0, ft_strlen(sh->in->input) - 1);
 	new->prev = sh->in->hs_last;
 	sh->in->hs_last->next = new;
-	//connecting new with old begin
 	new->next = sh->in->hs_begin;
 	sh->in->hs_begin->prev = new;
-	//change begin to new
 	sh->in->hs_begin = new;
-	//reset pointer to beginning
 	sh->in->hs = sh->in->hs_begin;
 	sh->in->hss = 0;
 }

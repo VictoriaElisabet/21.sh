@@ -70,18 +70,19 @@ int		set_redir_out(t_token *tmp, int r_type)
 	int dash;
 
 	dash = 0;
-	fd = 0; //check if ok
+	fd = 1; //check if ok
 	//clobber?
+	ft_printf("hii");
 	if (tmp->prev != NULL)
 		n = tmp->prev->type == IO_NUM ? ft_atoi(tmp->token) : STDOUT_FILENO;
 	if (r_type == G && tmp->next != NULL)
 	{
-		if ((fd = open(tmp->next->token, O_WRONLY | O_CREAT | O_TRUNC)) == -1)
+		if ((fd = open(tmp->next->token, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)) == -1)
 			return (-1);
 	}
 	else if (r_type == GG)
 	{
-		if ((fd = open(tmp->next->token, O_WRONLY | O_CREAT | O_APPEND)) == -1)
+		if ((fd = open(tmp->next->token, O_WRONLY | O_CREAT | O_APPEND, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)) == -1)
 			return (-1);
 	}
 	else if (r_type == G_AND)
@@ -90,8 +91,9 @@ int		set_redir_out(t_token *tmp, int r_type)
 		{
 			if (n == 1 && is_digits(tmp) == 0)
 			{
-				if ((fd = open(tmp->next->token, O_WRONLY | O_CREAT | O_TRUNC)) == -1)
+				if ((fd = open(tmp->next->token, O_WRONLY | O_CREAT | O_TRUNC , S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)) == -1)
 					return (-1);
+				dup2_fd(2, fd, dash, r_type);
 			}
 			else
 			{
@@ -103,6 +105,7 @@ int		set_redir_out(t_token *tmp, int r_type)
 		}
 	}
 	dup2_fd(n, fd, dash, r_type);
+	close(fd);
 	return (0);
 }
 
@@ -153,7 +156,18 @@ int		set_redir_in(t_token *tmp, int r_type)
 	}
 	dup2_fd(n, fd, dash, r_type);
 	close(fds[0]);
+	close(fd);
 	return (0);
+}
+
+int		set_redir_in_out(t_token *tmp)
+{
+	int status; 
+
+	status = 0;
+	status = set_redir_in(tmp, L);
+	status = set_redir_out(tmp, G);
+	return(status);
 }
 
 int		is_redir_in(int r_type)
@@ -210,7 +224,7 @@ int		set_redirections(t_command *command)
 			else if (is_redir_out(r_type) == 1)
 				set_redir_out(tmp, r_type);
 			else if (r_type == LG)
-				ft_printf("Both");
+				set_redir_in_out(tmp);
 		}
 		tmp = tmp->next;
 	}
