@@ -6,7 +6,7 @@
 /*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/18 11:00:23 by rklein            #+#    #+#             */
-/*   Updated: 2020/09/16 15:31:26 by vgrankul         ###   ########.fr       */
+/*   Updated: 2020/09/18 11:30:46 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,22 +77,16 @@ int		ft_sh(t_sh *sh, char **env)
 		ft_readkey(sh);
 		ft_resetmode(sh); //NEW moved from main
 		ft_reset_buffer(sh);
-		if (!sh->in->qph)
+		if (!sh->in->qph && *(sh->in->input))
 		{
-			//Prepare input string
-			//Send to command handling function
-			if (*(sh->in->input))
-			{
-				sh->in->input[ft_strlen(sh->in->input)] = '\n';
-				tputs(tgetstr("cr", NULL), 1, ft_putint);
-				tputs(tgetstr("do", NULL), 1, ft_putint);
-				//ft_putstr(sh->in->input); //TEMP for testing
-				tokens = create_tokens(sh->in->input);
-				commands = create_command_list(&tokens, env);
-				if (commands != NULL)
-					status = handle_command_list(commands, &env);
-				ft_history_add(sh);
-			}
+			sh->in->input[ft_strlen(sh->in->input)] = '\n';
+			tputs(tgetstr("cr", NULL), 1, ft_putint);
+			tputs(tgetstr("do", NULL), 1, ft_putint);
+			tokens = create_tokens(sh->in->input);
+			commands = create_command_list(&tokens, env);
+			if (commands != NULL)
+			status = handle_command_list(commands, &env);
+			ft_history_add(sh);
 			ft_bzero(sh->in->input, ft_strlen(sh->in->input));
 		}
 		else

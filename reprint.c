@@ -6,7 +6,7 @@
 /*   By: rklein <rklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 12:51:07 by rklein            #+#    #+#             */
-/*   Updated: 2020/09/17 15:51:48 by rklein           ###   ########.fr       */
+/*   Updated: 2020/09/18 13:54:21 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ static void	ft_cursor(t_sh *sh)
 	int	row;
 	int	cursor;
 	int	i;
+	int nl; //TEST
 
 	row = ft_count_line(sh, (int)ft_strlen(sh->in->buffer) - 1);
 	tputs(tgetstr("cr", NULL), 1, ft_putint);
@@ -69,7 +70,9 @@ static void	ft_cursor(t_sh *sh)
 		{	
 			tputs(tgetstr("cr", NULL), 1, ft_putint);
 			tputs(tgetstr("do", NULL), 1, ft_putint);
-			cursor = 0;
+			//cursor = 0;
+			cursor = nl ? -1 : 0; //TEST
+			nl = sh->in->buffer[i] == '\n' ? 1 : nl; //TEST	
 		}
 		if (!(i >= 0 && sh->in->buffer[i] == '\n'))
 			tputs(tgetstr("nd", NULL), 1, ft_putint);
