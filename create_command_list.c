@@ -96,6 +96,7 @@ t_token **tok_ls, char **env)
 	set_struct(command);
 	copy_tokens(command, tok_ls);
 	token_expansion(&command->tokens, env);
+	remove_quoting(&command->tokens);
 	command->argc = count_words(command->tokens);
 	set_argv(command, command->tokens, command->argc);
 	return (command);
@@ -127,7 +128,7 @@ t_command	**create_command_list(t_token **tokens, char **env)
 
 	//ft_printf("%s\n", prt_str);
 	//tokens = create_tokens(prt_str);
-	//print_token(tokens);
+	//print_token(*tokens);
 	tmp = *tokens;
 	comm_nbr = count_ctrl_op(*tokens);
 	i = 0;

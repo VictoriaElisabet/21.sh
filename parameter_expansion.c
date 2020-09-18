@@ -45,7 +45,7 @@ int		get_param(char *word, char **param)
 	}
 	else
 	{
-		while (word[i] != '$' && word[i] != '"' && word[i] != '\0' &&
+		while (word[i] != '$' && word[i] != '"' && word[i] != '\'' && word[i] != '\0' &&
 		word[i] != '}')
 			i++;
 	}

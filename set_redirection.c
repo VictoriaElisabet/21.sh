@@ -72,7 +72,6 @@ int		set_redir_out(t_token *tmp, int r_type)
 	dash = 0;
 	fd = 1; //check if ok
 	//clobber?
-	ft_printf("hii");
 	if (tmp->prev != NULL)
 		n = tmp->prev->type == IO_NUM ? ft_atoi(tmp->token) : STDOUT_FILENO;
 	if (r_type == G && tmp->next != NULL)

@@ -63,7 +63,6 @@ t_token		*create_tokens(char *command)
 	i = 0;
 	while (command[i] != '\0')
 	{
-		// if i -1 isnt backslash
 		if (is_part_op(command[i]) == 1)
 			i = i + create_op(&head, &command[i]);
 		else if (is_redir(command[i]) == 1)

@@ -115,7 +115,11 @@ pid_t pid, char ***env)
 
 	status = 0;
 	if (set_redirections(command) == -1)
-		return (-1); // printa error ?
+	{
+		reset_redirections(command->fd);
+		return (-1); 
+	}// printa error ?
+	
 	if (command->argc != 0)
 	{
 		if (is_builtin(command) == 1)

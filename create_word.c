@@ -12,6 +12,83 @@
 
 #include "./includes/minishell.h"
 
+void	remove_squotes(char **token)
+{
+	int i;
+	char *new;
+
+	i = 1;
+	while ((*token)[i] != '\0' && (*token)[i] != '\'')
+	{
+		if ((*token)[i] == '\\')
+			i++;
+		i++;
+	}
+	new = ft_strsub(*token, 1, i - 1);
+	free(*token);
+	(*token) = new;
+}
+
+void	remove_dquotes(char **token)
+{
+	int i;
+	char *new;
+
+	i = 1;
+	while ((*token)[i] != '\0' && (*token)[i] != '"')
+	{
+		if ((*token)[i] == '\\')
+			i++;
+		i++;
+	}
+	new = ft_strsub(*token, 1, i - 1);
+	free(*token);
+	(*token) = new;
+}
+
+void	remove_backslash(char **token)
+{
+	char	*new;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	new = ft_strnew(ft_strlen(*token) - 1);
+	while ((*token)[i] != '\0')
+	{
+		if ((*token)[i] != '\\')
+		{
+			new[j] = (*token)[i];
+			j++;
+		}
+		i++;
+	}
+	new[j] = '\0';
+	free(*token);
+	(*token) = new;
+}
+
+void	remove_quoting(t_token **head)
+{
+	t_token *tmp;
+
+	tmp = *head;
+	while(tmp != NULL)
+	{
+		if (tmp->type == WORD)
+		{
+			if (tmp->flags & SQ)
+				remove_squotes(&tmp->token);
+			if (tmp->flags & DQ)
+				remove_dquotes(&tmp->token);
+			if (tmp->flags & ESC)
+				remove_backslash(&tmp->token);
+		}
+		tmp = tmp->next;
+	}
+}
+
 int		is_separator(int c)
 {
 	if (c == ' ' || c == '\t' || c == '|' || c == '&' ||
@@ -20,15 +97,45 @@ int		is_separator(int c)
 	return (0);
 }
 
-int		count_quoting_word(char *command)
+int		count_squoting_word(char *command, int *flags)
 {
 	int i;
 
 	i = 0;
-	if (command[i] == '"' || command[i] == '\'')
+	*flags |= SQ;
+	if (command[i] == '\'')
 		i++;
-	while (command[i] != '"' && command[i] != '\'' && command[i] != '\0')
+	while (command[i] != '\'' && command[i] != '\0')
+	{
+		if (command[i] == '\\')
+		{
+			*flags |= ESC;
+			i++;
+		}
 		i++;
+	}
+	if (is_separator(command[i]) == 1)
+		i = i - 1;
+	return (i);
+}
+
+int		count_dquoting_word(char *command, int *flags)
+{
+	int i;
+
+	i = 0;
+	*flags |= DQ;
+	if (command[i] == '"')
+		i++;
+	while (command[i] != '"' && command[i] != '\0')
+	{
+		if (command[i] == '\\')
+		{
+			*flags |= ESC;
+			i++;
+		}
+		i++;
+	}
 	if (is_separator(command[i]) == 1)
 		i = i - 1;
 	return (i);
@@ -57,16 +164,15 @@ int		create_word(t_token **head, char *command)
 	flags = 0;
 	while (is_separator(command[i]) == 0 && command[i] != '\0')
 	{
-		if (command[i] == '"')
+		if (command[i] == '\\')
 		{
-			flags |= DQ;
-			i = i + count_quoting_word(&command[i]);
+			flags |= ESC;
+			i++;
 		}
 		if (command[i] == '\'')
-		{
-			flags |= SQ;
-			i = i + count_quoting_word(&command[i]);
-		}
+			i = i + count_squoting_word(&command[i], &flags);
+		if (command[i] == '"')
+			i = i + count_dquoting_word(&command[i], &flags);
 		i++;
 	}
 	if ((tmp = ft_strsub(command, 0, i)))

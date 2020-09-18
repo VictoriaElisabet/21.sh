@@ -62,9 +62,9 @@ void	token_expansion(t_token **head, char **env)
 	//hoppa över tokens med IO NUM eller REDIR
 	while (tmp != NULL)
 	{
-		if (str_chr(tmp->token, '\'') != 1 && tmp->type == WORD)
+		if ((tmp->flags & SQ) == 0 && tmp->type == WORD)
 		{
-			if (str_chr(tmp->token, '"') != 1)
+			if ((tmp->flags & DQ) == 0)
 				tmp->token = tilde_expansion(tmp->token, env);
 			if (ft_strcmp((tmp->token =
 			parameter_expansion(tmp->token, env)), "\0") == 0)
