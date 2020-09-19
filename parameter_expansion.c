@@ -46,7 +46,7 @@ int		get_param(char *word, char **param)
 	else
 	{
 		while (word[i] != '$' && word[i] != '"' && word[i] != '\'' && word[i] != '\0' &&
-		word[i] != '}')
+		word[i] != '}' && word[i] != '\n')
 			i++;
 	}
 	*param = ft_strsub(word, 0, i);
