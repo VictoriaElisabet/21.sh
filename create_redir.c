@@ -33,7 +33,31 @@ void		get_io_num(t_token **head)
 	}
 }
 
-int			create_heredoc_word(char *command, char *delim, char **doc)
+void		add_quotes(char **doc, int flags)
+{
+	int		c;
+	int		j;
+	int		i;
+	char	*new;
+
+	c = flags & SQ ? '\'' : '"';
+	i = 0;
+	j = 0;
+	new = ft_strnew(ft_strlen(*doc) + 2);
+	new[i] = c;
+	while((*doc)[j] != '\0')
+	{
+		new[i] = (*doc)[j];
+		j++;
+		i++;
+	}
+	new[i] = c;
+	new[i++] = '\0';
+	free(*doc);
+	(*doc) = new;
+}
+
+int			create_heredoc_word(char *command, char *delim, char **doc, int flags)
 {
 	int		i;
 	int		j;
@@ -54,6 +78,8 @@ int			create_heredoc_word(char *command, char *delim, char **doc)
 		}
 		i++;
 	}
+	if (flags & SQ || flags & DQ)
+		add_quotes(doc, flags);
 	//om int e hittas borde kanske -1 returnas och men he bord ju hittas..
 	return (i);
 }
@@ -61,16 +87,26 @@ int			create_heredoc_word(char *command, char *delim, char **doc)
 int			create_delim(char *command, char **delim, int *flags)
 {
 	int i;
+	int end;
+	int start;
 
 	i = 0;
+	end = 0;
+	start = 0;
 	while (command[i] != '\0' && command[i] != '\n')
+	{
+		if (command[i] == '\'' || command[i] == '"')
+		{
+			start = 1;
+			*flags |= command[i] == '\'' ? SQ : DQ;
+			end = get_quote_index(&command[i], *flags);
+		}
 		i++;
-	if (!(*delim = ft_strsub(command, 0, i)))
+	}
+	if (*flags & SQ || *flags & DQ)
+		i = end;
+	if (!(*delim = ft_strsub(command, start, i)))
 		*delim = NULL;
-	if (str_chr(*delim, '"') == 1)
-		*flags |= DQ;
-	if (str_chr(*delim, '\'') == 1)
-		*flags |= SQ;
 	return (i + 1);
 }
 
@@ -88,7 +124,7 @@ int			create_heredoc(t_token **head, char *command, char **doc)
 	i = i + create_delim(command, &delim, &flags);
 	if (delim)
 	{
-		i = i + create_heredoc_word(&command[i], delim, doc);
+		i = i + create_heredoc_word(&command[i], delim, doc, flags);
 		while (command[i] != '\0' && command[i] == delim[j])
 		{
 			i++;

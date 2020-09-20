@@ -40,7 +40,7 @@ int	create_pipe(t_command **commands, char ***env, int *i)
 		close(fdout);
 		if ((pid = fork()) == 0)
 			exit((status = exec_command(commands[*i], commands, pid, env)));
-		if (!(commands[*i]->ctrl_op & PIPE_OP))
+		if ((commands[*i]->ctrl_op & PIPE_OP) == 0)
 			break ;
 		(*i)++;
 	}
@@ -51,5 +51,6 @@ int	create_pipe(t_command **commands, char ***env, int *i)
 	while ((pid = wait(&status)) > 0)
 	{
 	}
+	write(commands[*i]->fd[1], "hii", 3);
 	return (status);
 }

@@ -49,7 +49,7 @@ int		handle_command_list(t_command **commands, char ***env)
 	while (commands[i] != NULL)
 	{
 		if (commands[i]->ctrl_op & PIPE_OP)
-			status = create_pipe(&commands[i], env, &i);
+			status = create_pipe(commands, env, &i);
 		else
 		{
 			if (commands[i]->argc != 0 && is_builtin(commands[i]) == 1)
