@@ -62,12 +62,12 @@ void	token_expansion(t_token **head, char **env)
 	//hoppa över tokens med IO NUM eller REDIR
 	while (tmp != NULL)
 	{
-		if ((tmp->flags & SQ) == 0 && tmp->type == WORD)
+		if (tmp->type == WORD)
 		{
-			if ((tmp->flags & DQ) == 0)
+			if (tmp->token[0] == '~')
 				tmp->token = tilde_expansion(tmp->token, env);
 			if (ft_strcmp((tmp->token =
-			parameter_expansion(tmp->token, env)), "\0") == 0)
+			parameter_expansion(tmp, tmp->token, env)), "\0") == 0)
 			{
 				remove_token(head, tmp);
 			}

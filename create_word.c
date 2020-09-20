@@ -79,6 +79,28 @@ void	remove_esc_sign(char **token, int index)
 	(*token) = new;
 }
 
+void	remove_esc(t_token **tokens)
+{
+	int	i;
+	int flags;
+
+	i = 0;
+	flags = 0;
+	while ((*tokens)->token[i] != '\0')
+	{
+		if ((*tokens)->flags & SQ && (*tokens)->token[i] == '\'')
+			i = i + count_squoting_word(&(*tokens)->token[i], &flags);
+		else if ((*tokens)->flags & DQ && (*tokens)->token[i] == '"')
+		{
+			
+			i = i + count_dquoting_word(&(*tokens)->token[i], &flags);
+		}
+		else if ((*tokens)->token[i] == '\\')
+			remove_esc_sign(&(*tokens)->token, i);
+		i++;
+	}
+}
+
 int		get_quote_index(char *token, int flags)
 {
 	int len;
@@ -117,7 +139,9 @@ void	remove_squotes(t_token **tokens, int sindex)
 		//if ((*token)[i] == '\\')
 		//	i++;
 		i++;
-	}
+	}~~
+	new[j] = '\0';
+	(*tokens)->flags &= ~SQ;
 	free((*tokens)->token);
 	(*tokens)->token = new;
 }
@@ -137,7 +161,7 @@ void	remove_dquotes(t_token **tokens, int sindex)
 	{
 		/*if ((*tokens)->token[i] == '\\' && ((*tokens)->token[i + 1] == '$' || (*tokens)->token[i + 1] == '\'' ||
 		(*tokens)->token[i + 1] == '"' || (*tokens)->token[i + 1] == '\\'))
-			remove_esc_sign(&(*tokens)->token, i);*/
+			i++;*/
 		if (i != sindex && i != eindex)
 		{
 			new[j] = (*tokens)->token[i];
@@ -145,55 +169,33 @@ void	remove_dquotes(t_token **tokens, int sindex)
 		}
 		i++;
 	}
+	new[j] = '\0';
+	ft_printf("new %s\n", new);
+	(*tokens)->flags &= ~DQ;
 	free((*tokens)->token);
 	(*tokens)->token = new;
+	remove_esc(tokens);
 }
 
-int		remove_quotes(t_token **tokens)
+void	remove_quotes(t_token **tokens)
 {
 	int i;
-	int len;
 
 	i = 0;
-	len = get_quote_index((*tokens)->token, (*tokens)->flags);
+	//len = get_quote_index((*tokens)->token, (*tokens)->flags);
 	while((*tokens)->token[i] != '\0')
 	{
 		if ((*tokens)->token[i] == '\\')
-		{
 			i++;
-		}
 		else if ((*tokens)->flags & SQ && (*tokens)->token[i] == '\'')
 			remove_squotes(tokens, i);
 		else if((*tokens)->flags & DQ && (*tokens)->token[i] == '"')
 			remove_dquotes(tokens, i);
 		i++;
 	}
-	return(len);
 }
 
 
-
-void	remove_esc(char **token)
-{
-	int	i;
-	int flags;
-
-	i = 0;
-	flags = 0;
-	while ((*token)[i] != '\0')
-	{
-		if ((*token)[i] == '\'')
-			i = i + count_squoting_word(&(*token)[i], &flags);
-		else if ((*token)[i] == '"')
-		{
-			
-			i = i + count_dquoting_word(&(*token)[i], &flags);
-		}
-		else if ((*token)[i] == '\\')
-			remove_esc_sign(token, i);
-		i++;
-	}
-}
 
 void	remove_quoting(t_token **head)
 {
@@ -207,18 +209,17 @@ void	remove_quoting(t_token **head)
 		if (tmp->type == WORD)
 		{
 			i = 0;
+			remove_esc(&tmp);
 			while(tmp->token[i] != '\0')
 			{
 				if (tmp->token[i] == '\\')
 					i++;
 				else if ((tmp->flags & SQ && tmp->token[i] == '\'') || (tmp->flags & DQ && tmp->token[i] == '"'))
 				{
-					i = i + remove_quotes(&tmp);
-					if(tmp->flags & DQ)
-						remove_esc(&tmp->token);
+					remove_quotes(&tmp);
+					//if(tmp->flags & DQ)
+					//	remove_esc(&tmp->token);
 				}
-				if (tmp->flags & ESC)
-					remove_esc_sign(&tmp->token, i);
 				i++;
 			}
 

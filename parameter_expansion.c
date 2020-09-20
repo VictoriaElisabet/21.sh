@@ -91,7 +91,7 @@ void	set_word(char **word, char *temp, char *value, int i)
 	(*word) = temp;
 }
 
-char	*parameter_expansion(char *word, char **env)
+char	*parameter_expansion(t_token *token, char *word, char **env)
 {
 	int		i;
 	char	*value;
@@ -101,7 +101,9 @@ char	*parameter_expansion(char *word, char **env)
 	i = 0;
 	while (word[i] != '\0')
 	{
-		if (word[i] == '$')
+		if(word[i] == '\'')
+			i = get_quote_index(word, token->flags);
+		else if (word[i] == '$')
 		{
 			if ((temp = ft_strsub(word, 0, i)))
 			{
