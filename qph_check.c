@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   qph_check.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rklein <rklein@student.hive.fi>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/09/21 10:55:32 by rklein            #+#    #+#             */
+/*   Updated: 2020/09/21 13:42:19 by rklein           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "./includes/sh.h"
 
 static char	ft_q_track(char s, char q)
@@ -39,7 +51,7 @@ static void	ft_copy_hdoc(t_sh *sh, char *str)
 	}
 }
 
-static void	ft_hdoc(t_sh *sh)
+void	ft_hdoc(t_sh *sh)
 {
 	char	*first;
 	char	*last;
@@ -54,7 +66,8 @@ static void	ft_hdoc(t_sh *sh)
 			sh->in->qph = (sh->in->hdoc[0]) ? sh->in->qph + 8 : sh->in->qph;
 		}
 	}
-	else if (ft_strequ(sh->in->buffer, sh->in->hdoc))
+	else if (ft_strequ(sh->in->buffer, sh->in->hdoc) || 
+			(ft_strequ(sh->in->hdoc, "EOF") && !sh->in->buffer[0]))
 	{
 		sh->in->qph -= 8;
 		ft_bzero(sh->in->hdoc, ft_strlen(sh->in->hdoc));

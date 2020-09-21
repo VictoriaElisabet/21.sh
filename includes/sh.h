@@ -6,7 +6,7 @@
 /*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/13 12:35:43 by rklein            #+#    #+#             */
-/*   Updated: 2020/09/16 15:20:20 by vgrankul         ###   ########.fr       */
+/*   Updated: 2020/09/21 13:42:16 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # include <limits.h>
 # include "../libft/libft.h"
 
-#include <syslimits.h> // remove
+#include <limits.h>
 
 # include <signal.h>
 # include <dirent.h>
@@ -98,6 +98,7 @@ void	ft_readkey(t_sh *sh);
 void	ft_resetmode(t_sh *sh);
 int	ft_putint(int c);
 void	ft_check_qph(t_sh *sh);
+void	ft_hdoc(t_sh *sh);
 /*
 ** line edit: input
 */

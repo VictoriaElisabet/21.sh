@@ -6,7 +6,7 @@
 /*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 15:04:40 by rklein            #+#    #+#             */
-/*   Updated: 2020/09/16 15:16:25 by vgrankul         ###   ########.fr       */
+/*   Updated: 2020/09/21 13:42:21 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,18 @@ static _Bool ft_readsum(t_sh *sh, int sum)
 		ft_bzero(sh->in->input, ft_strlen(sh->in->input));
 		return (1);
 	}
-	if (sum == 4/*^D*/)
+	if (sum == 4/*^D*/)//handle heredoc
 	{
 		if (!sh->in->buffer[0] && !sh->in->input[0])
 		{
 			ft_resetmode(sh); //NEW moved from main
 			exit(1);
+		}
+		if (!sh->in->buffer[0] && sh->in->input && sh->in->qph / 8 && 
+				ft_strequ(sh->in->hdoc, "EOF"))
+		{
+			ft_hdoc(sh);
+			return (1);
 		}
 		else
 			sum = DEL;

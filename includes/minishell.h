@@ -38,6 +38,13 @@
 # define SEMI			32
 # define NEWLINE		64
 
+# define FD_ERR		"21sh: bad filedescriptor"
+# define FILE_ERR	"21sh: failed to open file"
+# define SYNTAX_ERR	"21sh: syntax error"
+# define DUP2_FAIL	"21sh: dup2 failed"
+# define CLOSE_ERR	"21sh: close failed"
+# define PIPE_ERR	"21sh: pipe failed"
+
 enum			redir_type
 {
 	L,
