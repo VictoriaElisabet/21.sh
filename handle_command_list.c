@@ -42,7 +42,6 @@ int		handle_command_list(t_command **commands, char ***env)
 {
 	int			status;
 	int			i;
-	pid_t		pid;
 
 	status = 0;
 	i = 0;
@@ -55,11 +54,7 @@ int		handle_command_list(t_command **commands, char ***env)
 			if (commands[i]->argc != 0 && is_builtin(commands[i]) == 1)
 				status = exec_command(commands[i], commands, -1, env);
 			else
-			{
-				pid = fork();
-				status = exec_command(commands[i], commands, pid, env);
-				waitpid(pid, &status, 0);
-			}
+				status = exec_command(commands[i], commands, -1, env);
 		}
 		if (ctrl_function(commands[i]->ctrl_op, status) != 1)
 		{

@@ -12,16 +12,21 @@
 
 #include "./includes/minishell.h"
 
-int		is_digits(t_token *tmp)
+int		is_digits(t_token *tmp, int *dash)
 {
-	int i;
+	int len;
 
-	i = 0;
-	while (tmp->token[i] != '\0')
+	len = ft_strlen(tmp->token) - 1;
+	if (tmp->token[len] == '-')
+	{		
+		len--;
+		*dash = 1;
+	}
+	while (len > 0)
 	{
-		if (ft_isdigit(tmp->token[i]) == 0)
+		if (ft_isdigit(tmp->token[len]) == 0)
 			return (0);
-		i++;
+		len--;
 	}
 	return (1);
 }
@@ -88,8 +93,9 @@ int		set_redir_out(t_token *tmp, int r_type)
 	{
 		if (tmp->next != NULL)
 		{
-			if (n == 1 && is_digits(tmp) == 0)
+			if (n == 1 && is_digits(tmp->next, &dash) == 0)
 			{
+				//if dash == 1 redir error
 				if ((fd = open(tmp->next->token, O_WRONLY | O_CREAT | O_TRUNC , S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)) == -1)
 					return (-1);
 				dup2_fd(2, fd, dash, r_type);
@@ -98,8 +104,6 @@ int		set_redir_out(t_token *tmp, int r_type)
 			{
 				if (isatty((fd = ft_atoi(tmp->next->token)) == 0))
 					return (-1);
-				if (str_chr(tmp->next->token, '-') == 1)
-					dash = 1;
 			}
 		}
 	}
@@ -139,7 +143,7 @@ int		set_redir_in(t_token *tmp, int r_type)
 	{
 		if (tmp->next != NULL)
 		{
-			if (n == 0 && is_digits(tmp) == 0)
+			if (n == 0 && is_digits(tmp->next, &dash) == 0)
 			{
 				if ((fd = open(tmp->next->token, O_RDONLY)) == -1)
 					return (-1);

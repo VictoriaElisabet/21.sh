@@ -21,6 +21,7 @@
 # include <fcntl.h>
 # include <dirent.h>
 # include <sys/wait.h>
+# include <signal.h>
 # include "../libft/libft.h"
 
 # define BUF_SIZE		32
@@ -85,6 +86,7 @@ typedef struct	s_command
 	int			argc;
 	int			ctrl_op;
 	int			fd[3];
+	int			fork;
 }				t_command;
 
 int				str_chr(char *str, int c);
@@ -96,8 +98,7 @@ int				ft_echo(char **argv);
 int				is_builtin(t_command *command);
 int				run_builtin(t_command *command, t_command **commands,
 				char ***env, int status);
-int				exec_command(t_command *command, t_command **commands,
-				pid_t pid, char ***env);
+int				exec_command(t_command *command, t_command **commands, pid_t pid, char ***env);
 int				find_env(const char *name, char **env);
 int				ft_env(t_command *command, t_command **commands, char **env);
 int				ft_exit(t_command *command, t_command **commands, char ***env,

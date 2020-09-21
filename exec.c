@@ -94,7 +94,8 @@ int		run_command(t_command *command, pid_t pid, char **env)
 	status = 0;
 	if ((status = set_file_path(command, &file_path, env)) != 0)
 		return (print_exec_error(command, status, file_path));
-	//pid = fork();
+	if(command->fork == 0)
+		pid = fork();
 	if (pid == -1)
 		return (print_exec_error(command, EXIT_FAILURE, file_path));
 	if (pid == 0)
@@ -103,13 +104,12 @@ int		run_command(t_command *command, pid_t pid, char **env)
 			return (print_exec_error(command, status, file_path));
 		free(file_path);
 	}
-	//else
-		//pid = waitpid(pid, &status, 0);
+	if ((command->ctrl_op & PIPE_OP) == 0)
+		pid = waitpid(pid, &status, 0);
 	return ((print_exec_error(command, status, file_path)));
 }
 
-int		exec_command(t_command *command, t_command **commands,
-pid_t pid, char ***env)
+int		exec_command(t_command *command, t_command **commands, pid_t pid, char ***env)
 {
 	int status;
 
@@ -117,7 +117,7 @@ pid_t pid, char ***env)
 	if (set_redirections(command) == -1)
 	{
 		reset_redirections(command->fd);
-		return (-1); 
+		return (-1); // return print_redir error
 	}// printa error ?
 	
 	if (command->argc != 0)
