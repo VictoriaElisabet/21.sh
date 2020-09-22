@@ -6,7 +6,7 @@
 /*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/18 11:00:23 by rklein            #+#    #+#             */
-/*   Updated: 2020/09/21 13:42:07 by rklein           ###   ########.fr       */
+/*   Updated: 2020/09/22 11:31:54 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	ft_prompt(t_sh *sh, int prompt)
 		ft_strcpy(sh->in->prompt, "> ");
 	}
 	sh->in->prompt_size = ft_strlen(sh->in->prompt);
-	//ft_putstr_fd(sh->in->prompt, STDOUT_FILENO);
 }
 
 static void	ft_init(t_sh *sh)
@@ -59,17 +58,28 @@ static void	ft_reset_buffer(t_sh *sh)
 	sh->in->cp_range[1] = -1;
 }
 
-static void	ft_sig_kill(int signum)
+static int	ft_process_input(t_sh *sh, char **env)
 {
-	if (signum)
-		ioctl(STDIN_FILENO, TIOCSTI, "");
+	t_command	**commands;
+	t_token		*tokens;
+	int			status;
+
+	status = 0;
+	sh->in->input[ft_strlen(sh->in->input)] = '\n';
+	tputs(tgetstr("cr", NULL), 1, ft_putint);
+	tputs(tgetstr("do", NULL), 1, ft_putint);
+	tokens = create_tokens(sh->in->input);
+	commands = create_command_list(&tokens, env);
+	if (commands != NULL)
+		status = handle_command_list(commands, &env);
+	ft_history_add(sh);
+	ft_bzero(sh->in->input, ft_strlen(sh->in->input));
+	return (status);
 }
 
 int		ft_sh(t_sh *sh, char **env) 
 {
 	int			prompt;
-	t_command	**commands;
-	t_token		*tokens;
 	int			status;
 
 	ft_init(sh);
@@ -78,24 +88,13 @@ int		ft_sh(t_sh *sh, char **env)
 	while (1)
 	{
 		ft_rawmode(sh);
-		signal(SIGINT, ft_sig_kill);//SIGNAL HANDLING QUICK FIX
 		ft_prompt(sh, prompt++);
 		ft_reprint(sh);
 		ft_readkey(sh);
 		ft_resetmode(sh);
 		ft_reset_buffer(sh);
 		if (!sh->in->qph && *(sh->in->input))
-		{
-			sh->in->input[ft_strlen(sh->in->input)] = '\n';
-			tputs(tgetstr("cr", NULL), 1, ft_putint);
-			tputs(tgetstr("do", NULL), 1, ft_putint);
-			tokens = create_tokens(sh->in->input);
-			commands = create_command_list(&tokens, env);
-			if (commands != NULL)
-			status = handle_command_list(commands, &env);
-			ft_history_add(sh);
-			ft_bzero(sh->in->input, ft_strlen(sh->in->input));
-		}
+			status = ft_process_input(sh, env);
 		else
 		{
 			tputs(tgetstr("cr", NULL), 1, ft_putint);

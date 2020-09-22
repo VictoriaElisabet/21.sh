@@ -59,7 +59,6 @@ void	token_expansion(t_token **head, char **env)
 	t_token *tmp;
 
 	tmp = *head;
-	//hoppa över tokens med IO NUM eller REDIR
 	while (tmp != NULL)
 	{
 		if (tmp->type == WORD)

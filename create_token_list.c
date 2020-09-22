@@ -24,6 +24,8 @@ void		print_token(t_token *head)
 			ft_printf("DQ");
 		if (tmp->flags & SQ)
 			ft_printf("SQ");
+		if (tmp->type == IO_NUM)
+			ft_printf("io num");
 		ft_printf("%s\n", tmp->token);
 		tmp = tmp->next;
 	}
@@ -76,7 +78,7 @@ void		add_token(t_token **head, int tok_type, char *tok, int flags)
 			while (tmp->next != NULL)
 				tmp = tmp->next;
 			tmp->next = new;
-			tmp->prev = tmp;
+			new->prev = tmp;
 		}
 	}
 }

@@ -18,9 +18,7 @@ int		get_quote_index(char *token, int flags)
 	int c;
 
 	len = ft_strlen(token);
-    
 	c = (flags & SQ) ? '\'' : '"';
-    ft_printf("tpk %s %c %d\n", token, c, len);
 	while (len > 0)
 	{
 		if (token[len] == c)

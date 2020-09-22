@@ -6,7 +6,7 @@
 /*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/13 12:35:43 by rklein            #+#    #+#             */
-/*   Updated: 2020/09/21 13:42:16 by rklein           ###   ########.fr       */
+/*   Updated: 2020/09/22 14:15:24 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,8 @@ void	ft_backspace(t_sh *sh);
 void	ft_arrow_motion(t_sh *sh, int motion);
 void	ft_word_motion(t_sh *sh, int motion);
 void	ft_he_motion(t_sh *sh, int motion);
-void	ft_line_motion(t_sh *sh, int motion);		
+void	ft_line_up(t_sh *sh);		
+void	ft_line_down(t_sh *sh);		
 /*
 ** line edit: reprint
 */

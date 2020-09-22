@@ -121,14 +121,12 @@ int			count_ctrl_op(t_token *tokens)
 
 t_command	**create_command_list(t_token **tokens, char **env)
 {
-	//t_token		*tokens;
 	t_token		*tmp;
 	t_command	**commands;
 	int			comm_nbr;
 	int			i;
 
-	//tokens = create_tokens(prt_str);
-	print_token(*tokens);
+	print_token(*tokens); // ta bort
 	tmp = *tokens;
 	comm_nbr = count_ctrl_op(*tokens);
 	i = 0;

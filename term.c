@@ -6,7 +6,7 @@
 /*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/18 10:54:16 by rklein            #+#    #+#             */
-/*   Updated: 2020/09/16 15:13:54 by vgrankul         ###   ########.fr       */
+/*   Updated: 2020/09/22 14:18:36 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,28 @@ void	ft_resetmode(t_sh *sh)
 	tcsetattr(STDIN_FILENO, TCSANOW, &sh->orig);
 }
 
+static void	ft_sig_kill(int signum)
+{
+	if (signum)
+		ioctl(STDIN_FILENO, TIOCSTI, "");
+}
+
+/*
+** ICRNL: Ctrl-M; IXON: Ctrl-S and Ctrl-X
+** OPOST (O-output, POST-postprocessing)
+** ISIG: Ctrl-C, Ctrl-Z, etc. 
+** IEXTEN: Ctrl-V and Ctrl-O
+*/
+
 void	ft_rawmode(t_sh	*sh)
 {
-//	tcgetattr(STDIN_FILENO, &sh->orig);
 	sh->raw = sh->orig;
-	ioctl(STDIN_FILENO, TIOCGWINSZ, &sh->ws);//retrieves terminal window size
-	sh->raw.c_iflag &= ~(ICRNL | IXON);//ICRNL: Ctrl-M; IXON: Ctrl-S and Ctrl-X
-	sh->raw.c_oflag &= ~(OPOST); //OPOST (O-output, POST-postprocessing)
-	sh->raw.c_lflag &= ~(ICANON | ECHO | IEXTEN | ISIG); //ISIG: Ctrl-C, Ctrl-Z, etc. IEXTEN: Ctrl-V and Ctrl-O
+	ioctl(STDIN_FILENO, TIOCGWINSZ, &sh->ws);
+	sh->raw.c_iflag &= ~(ICRNL | IXON);
+	sh->raw.c_oflag &= ~(OPOST);
+	sh->raw.c_lflag &= ~(ICANON | ECHO | IEXTEN | ISIG);
 	sh->raw.c_cc[VMIN] = 1;
 	sh->raw.c_cc[VTIME] = 0;
 	tcsetattr(STDIN_FILENO, TCSANOW, &sh->raw);
+	signal(SIGINT, ft_sig_kill);
 }

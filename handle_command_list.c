@@ -64,5 +64,5 @@ int		handle_command_list(t_command **commands, char ***env)
 		i++;
 	}
 	destroy_command(commands);
-	return (status); // return print _exec erro
+	return (status);
 }

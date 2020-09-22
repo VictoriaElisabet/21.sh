@@ -122,6 +122,15 @@ int				create_word(t_token **head, char *command);
 int				set_redirections(t_command *command);
 int				get_quote_index(char *token, int flags);
 int				count_squoting_word(char *command, int *flags);
+int				is_redir_in(int r_type);
+int				is_redir_out(int r_type);
+int				dup2_fd(int n, int fd, int dash, int r_type);
+int				open_fd(t_token *tmp, int fd, int r_type, int *dash);
+int				open_heredoc_fd(t_token *tmp, int n, int dash, int r_type);
+int				print_redir_error(char *str);
+int				get_redir(char *token);
+int				is_digits(t_token *tmp, int *dash);
+int				file_aggr(t_token *tmp, int fd, int *dash);
 
 char			**word_splitting(char *command, int count);
 
@@ -155,6 +164,9 @@ void			remove_quoting(t_token **head);
 void			remove_squotes(t_token **tokens, int sindex);
 void			remove_dquotes(t_token **tokens, int sindex);
 void			remove_esc(t_token **tokens);
+void			set_fd(int fd[3]);
+void			set_redir_list(char redir[11][4]);
+void			reset_redirections(int fd[3]);
 
 t_command		**create_command_list(t_token **tokens, char **env);
 

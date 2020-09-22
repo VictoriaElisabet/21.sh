@@ -15,21 +15,23 @@
 void		get_io_num(t_token **head)
 {
 	t_token *tmp;
-	int		i;
+	int		len;
 
-	i = 0;
 	if (*head != NULL)
 	{
 		tmp = *head;
 		while (tmp->next != NULL)
 			tmp = tmp->next;
-		while (tmp->token[i] != '\0')
+		len = ft_strlen(tmp->token) - 1;
+		if (tmp->token[len] == '-')
+			len--;
+		while (len > 0 && ft_isdigit(tmp->token[len]) == 1)
+			len--;
+		if (len == 0)
 		{
-			if (ft_isdigit(tmp->token[i]) == 0)
-				return ;
-			i++;
+			ft_printf("%s\n", tmp->token);
+			tmp->type = IO_NUM;
 		}
-		tmp->type = IO_NUM;
 	}
 }
 
@@ -45,7 +47,7 @@ void		add_quotes(char **doc, int flags)
 	j = 0;
 	new = ft_strnew(ft_strlen(*doc) + 2);
 	new[i] = c;
-	while((*doc)[j] != '\0')
+	while ((*doc)[j] != '\0')
 	{
 		new[i] = (*doc)[j];
 		j++;
@@ -57,7 +59,8 @@ void		add_quotes(char **doc, int flags)
 	(*doc) = new;
 }
 
-int			create_heredoc_word(char *command, char *delim, char **doc, int flags)
+int			create_heredoc_word(char *command, char *delim, char **doc,
+int flags)
 {
 	int		i;
 	int		j;

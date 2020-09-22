@@ -6,7 +6,7 @@
 /*   By: rklein <rklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/01 12:51:07 by rklein            #+#    #+#             */
-/*   Updated: 2020/09/18 13:54:21 by rklein           ###   ########.fr       */
+/*   Updated: 2020/09/22 13:57:30 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,19 +49,26 @@ static int ft_count_line(t_sh *sh, int n)
 	return (row);
 }
 
+static void ft_cursor_cont(t_sh *sh, int cursor, int i)
+{
+	if (i == (int)ft_strlen(sh->in->buffer) && sh->in->buffer[i - 1] == '\n')
+		tputs(tgetstr("cr", NULL), 1, ft_putint);
+	if (cursor / sh->ws.ws_col && cursor % sh->ws.ws_col == 0)
+	{
+	   	tputs(tgetstr("cr", NULL), 1, ft_putint);
+	   	tputs(tgetstr("do", NULL), 1, ft_putint);
+	}
+}
+
 static void	ft_cursor(t_sh *sh)
 {
-	int	row;
 	int	cursor;
 	int	i;
-	int nl; //TEST
+	int nl;
 
-	row = ft_count_line(sh, (int)ft_strlen(sh->in->buffer) - 1);
-	tputs(tgetstr("cr", NULL), 1, ft_putint);
-	while (row--)
-		tputs(tgetstr("up", NULL), 1, ft_putint);
 	cursor = 0;
 	i = 0 - sh->in->prompt_size;
+	nl = 0;
 	while (i < sh->in->index)
 	{
 		if (((i >= 0 && sh->in->buffer[i] == '\n') ||
@@ -70,22 +77,15 @@ static void	ft_cursor(t_sh *sh)
 		{	
 			tputs(tgetstr("cr", NULL), 1, ft_putint);
 			tputs(tgetstr("do", NULL), 1, ft_putint);
-			//cursor = 0;
-			cursor = nl ? -1 : 0; //TEST
-			nl = sh->in->buffer[i] == '\n' ? 1 : nl; //TEST	
+			cursor = nl ? -1 : 0;
+			nl = sh->in->buffer[i] == '\n' ? 1 : nl;
 		}
 		if (!(i >= 0 && sh->in->buffer[i] == '\n'))
 			tputs(tgetstr("nd", NULL), 1, ft_putint);
 		cursor++;
 		i++;
 	}
-	if (i == (int)ft_strlen(sh->in->buffer) && sh->in->buffer[i - 1] == '\n')
-		tputs(tgetstr("cr", NULL), 1, ft_putint);
-	if (cursor / sh->ws.ws_col && cursor % sh->ws.ws_col == 0)
-	{
-	   	tputs(tgetstr("cr", NULL), 1, ft_putint);
-	   	tputs(tgetstr("do", NULL), 1, ft_putint);
-	}
+	ft_cursor_cont(sh, cursor, i);
 }
 
 void	ft_reprint(t_sh *sh)
@@ -99,6 +99,10 @@ void	ft_reprint(t_sh *sh)
 	tputs(tgetstr("cd", NULL), 1, ft_putint);
 	ft_putstr_fd(sh->in->prompt, STDOUT_FILENO);	
 	ft_print_str(sh);
+	row = ft_count_line(sh, (int)ft_strlen(sh->in->buffer) - 1);
+	tputs(tgetstr("cr", NULL), 1, ft_putint);
+	while (row--)
+		tputs(tgetstr("up", NULL), 1, ft_putint);
 	ft_cursor(sh);
 	sh->in->line = ft_count_line(sh, sh->in->index);
 }

@@ -51,6 +51,5 @@ int	create_pipe(t_command **commands, char ***env, int *i)
 	while ((pid = wait(&status)) > 0)
 	{
 	}
-	write(commands[*i]->fd[1], "hii", 3);
 	return (status);
 }

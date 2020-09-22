@@ -11,8 +11,8 @@
 # **************************************************************************** #
 
 NAME = 21sh
-SRC = minishell.c create_command_list.c environ.c parameter_expansion.c tilde_expansion.c handle_command_list.c expansions.c exec.c functions.c ./builtins/builtins.c ./builtins/setenv.c ./builtins/unsetenv.c ./builtins/cd.c ./builtins/echo.c ./builtins/env.c ./builtins/exit.c pipe.c set_redirection.c tokens.c create_token_list.c create_redir.c create_word.c term.c sh.c key.c input.c motion.c copy.c history.c reprint.c putint.c qph_check.c esc_removal.c quote_removal.c 
-OBJECTS = minishell.o create_command_list.o environ.o parameter_expansion.o tilde_expansion.o handle_command_list.o expansions.o exec.o functions.o builtins.o setenv.o unsetenv.o cd.o echo.o env.o exit.o pipe.o set_redirection.o tokens.o create_token_list.o create_redir.o create_word.o term.o sh.o key.o input.o motion.o copy.o history.o reprint.o putint.o qph_check.o esc_removal.o quote_removal.o
+SRC = minishell.c create_command_list.c environ.c parameter_expansion.c tilde_expansion.c handle_command_list.c expansions.c exec.c functions.c ./builtins/builtins.c ./builtins/setenv.c ./builtins/unsetenv.c ./builtins/cd.c ./builtins/echo.c ./builtins/env.c ./builtins/exit.c pipe.c set_redirection.c tokens.c create_token_list.c create_redir.c create_word.c term.c sh.c key.c input.c motion.c copy.c history.c reprint.c putint.c qph_check.c esc_removal.c quote_removal.c redir_functions.c set_fd.c 
+OBJECTS = minishell.o create_command_list.o environ.o parameter_expansion.o tilde_expansion.o handle_command_list.o expansions.o exec.o functions.o builtins.o setenv.o unsetenv.o cd.o echo.o env.o exit.o pipe.o set_redirection.o tokens.o create_token_list.o create_redir.o create_word.o term.o sh.o key.o input.o motion.o copy.o history.o reprint.o putint.o qph_check.o esc_removal.o quote_removal.o redir_functions.o set_fd.o
 INC = includes
 
 all: $(NAME)

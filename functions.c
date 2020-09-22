@@ -48,7 +48,7 @@ int		print_exec_error(t_command *command, int status, char *file_path)
 		if (WTERMSIG(status) == 11)
 			ft_printf("Segmentation fault\n");
 	}
-	return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }
 
 void	print_env(char **env)

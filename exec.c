@@ -94,10 +94,10 @@ int		run_command(t_command *command, pid_t pid, char **env)
 	status = 0;
 	if ((status = set_file_path(command, &file_path, env)) != 0)
 		return (print_exec_error(command, status, file_path));
-	if(command->fork == 0)
+	if (command->fork == 0)
 		pid = fork();
 	if (pid == -1)
-		return (print_exec_error(command, EXIT_FAILURE, file_path));
+		return (print_exec_error(command, -1, file_path));
 	if (pid == 0)
 	{
 		if ((execve(file_path, command->argv, env)) == -1)
@@ -109,7 +109,8 @@ int		run_command(t_command *command, pid_t pid, char **env)
 	return ((print_exec_error(command, status, file_path)));
 }
 
-int		exec_command(t_command *command, t_command **commands, pid_t pid, char ***env)
+int		exec_command(t_command *command, t_command **commands,
+pid_t pid, char ***env)
 {
 	int status;
 
@@ -117,9 +118,9 @@ int		exec_command(t_command *command, t_command **commands, pid_t pid, char ***e
 	if (set_redirections(command) == -1)
 	{
 		reset_redirections(command->fd);
+		ft_printf("something went wrong");
 		return (-1); // return print_redir error
 	}// printa error ?
-	
 	if (command->argc != 0)
 	{
 		if (is_builtin(command) == 1)

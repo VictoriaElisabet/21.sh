@@ -67,7 +67,6 @@ t_token		*create_tokens(char *command)
 			i = i + create_op(&head, &command[i]);
 		else if (is_redir(command[i]) == 1)
 			i = i + create_redir(&head, &command[i]);
-		//else if (command[i] == '\n')
 		else if (is_word(command[i]) == 1)
 			i = i + create_word(&head, &command[i]);
 		else
