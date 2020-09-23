@@ -56,14 +56,6 @@ int		count_dquoting_word(char *command, int *flags)
 	return (i);
 }
 
-int		is_separator(int c)
-{
-	if (c == ' ' || c == '\t' || c == '|' || c == '&' ||
-		c == ';' || c == '\n' || c == '<' || c == '>')
-		return (1);
-	return (0);
-}
-
 int		check_prev_word(t_token **head)
 {
 	t_token *tmp;

@@ -77,7 +77,7 @@ int			ft_strequ(char const *s1, char const *s2);
 int			ft_strnequ(char const *s1, char const *s2, size_t n);
 int			ft_count_digits(long long n, int base);
 int			ft_count_udigits(unsigned long long n, int base);
-int         ft_isspace(int c);
+int			ft_isspace(int c);
 
 long long	ft_power_of(int base, int exp);
 

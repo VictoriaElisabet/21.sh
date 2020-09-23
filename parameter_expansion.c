@@ -62,6 +62,7 @@ char	*expand_param(char *param, char **env)
 	i = 0;
 	if ((name = get_name(param)))
 	{
+		free(param);
 		while (env[i] != NULL)
 		{
 			if (find_env(name, env) == 0)
@@ -112,7 +113,6 @@ char	*parameter_expansion(t_token *token, char *word, char **env)
 				{
 					value = expand_param(param, env);
 					set_word(&word, temp, value, i);
-					free(param);
 				}
 			}
 		}

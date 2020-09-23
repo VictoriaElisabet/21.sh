@@ -19,7 +19,7 @@ void	remove_env_arg(char ***argv, int i)
 
 	j = 0;
 	new = (char**)malloc(count_arr(&(*argv)[i]) * sizeof(char*) + 1);
-	while((*argv)[i] != NULL)
+	while ((*argv)[i] != NULL)
 	{
 		if (ft_strcmp((*argv)[i], "env") != 0)
 		{
@@ -48,7 +48,8 @@ int		update_env(char *argv, char ***tmp)
 	return (status);
 }
 
-int		run_env_cmd(t_command *command, t_command **commands, char ***tmp, int i)
+int		run_env_cmd(t_command *command, t_command **commands,
+char ***tmp, int i)
 {
 	int		status;
 	pid_t	pid;
@@ -56,7 +57,7 @@ int		run_env_cmd(t_command *command, t_command **commands, char ***tmp, int i)
 	status = 0;
 	pid = fork();
 	remove_env_arg(&command->argv, i);
-	exec_command(command, commands, pid ,tmp);
+	exec_command(command, commands, pid, tmp);
 	waitpid(pid, &status, 0);
 	return (status);
 }

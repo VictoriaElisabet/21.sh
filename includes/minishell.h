@@ -132,6 +132,8 @@ int				print_redir_error(char *str);
 int				get_redir(char *token);
 int				is_digits(t_token *tmp, int *dash);
 int				file_aggr(t_token *tmp, int fd, int *dash);
+int				count_words(t_token *tokens);
+int				count_ctrl_op(t_token *tokens);
 
 char			**word_splitting(char *command, int count);
 
@@ -168,6 +170,7 @@ void			remove_esc(t_token **tokens);
 void			set_fd(int fd[3]);
 void			set_redir_list(char redir[11][4]);
 void			reset_redirections(int fd[3]);
+void			get_index(char *token, int *ctrl_op);
 
 t_command		**create_command_list(t_token **tokens, char **env);
 

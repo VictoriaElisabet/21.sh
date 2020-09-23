@@ -41,7 +41,6 @@ int		dup2_fd(int n, int fd, int dash, int r_type)
 	}
 	else if (r_type == G_AND || r_type == L_AND)
 	{
-		
 		if ((dup2(fd, n)) == -1)
 			return (print_redir_error(DUP2_FAIL));
 		if (dash == 1 || r_type == G_AND_H || r_type == L_AND_H)
@@ -58,22 +57,10 @@ int		dup2_fd(int n, int fd, int dash, int r_type)
 	return (0);
 }
 
-/*int		file_aggr(t_token *tmp, int fd, int *dash)
-{
-	if (is_digits(tmp->next, dash) == 0)
-		return (print_redir_error(SYNTAX_ERR));
-	else
-	{
-		if (isatty((fd = ft_atoi(tmp->next->token))) == 0)
-			return (print_redir_error(FD_ERR));	
-	}
-	return (fd);
-}*/
-
 int		open_fd(t_token *tmp, int fd, int r_type, int *dash)
 {
 	if (tmp->next == NULL || tmp->next->type != WORD)
-		return(print_redir_error(SYNTAX_ERR));
+		return (print_redir_error(SYNTAX_ERR));
 	if (r_type == G || r_type == G_AND || r_type == L_AND)
 	{
 		if (*dash == 1)

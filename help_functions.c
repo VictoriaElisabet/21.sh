@@ -1,19 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isspace.c                                       :+:      :+:    :+:   */
+/*   help_functions.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rklein <rklein@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/10 11:46:46 by rklein            #+#    #+#             */
-/*   Updated: 2020/09/10 11:54:40 by rklein           ###   ########.fr       */
+/*   Created: 2019/10/22 11:28:19 by vgrankul          #+#    #+#             */
+/*   Updated: 2020/09/16 15:17:34 by vgrankul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_isspace(int c)
+#include "./includes/minishell.h"
+
+int		is_separator(int c)
 {
-	if (c == ' ' || c == '\n' || c == '\t')
+	if (c == ' ' || c == '\t' || c == '|' || c == '&' ||
+		c == ';' || c == '\n' || c == '<' || c == '>')
 		return (1);
-	else
-		return (0);
+	return (0);
 }
