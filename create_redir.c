@@ -89,20 +89,20 @@ int flags)
 
 	i = 0;
 	j = 0;
-	while (command[i] != '\0')
+	while (command[i] != '\0' && command[i] != EOF)
 	{
 		j = 0;
+		if (command[i] == '\n' && command[i + 1] == '\0')
+			break ;
 		while (command[i + j] == delim[j] && delim[j] != '\0'
-				&& command[i + j] != '\0')
+				&& command[i + j] != '\0' && command[i + j] != EOF)
 			j++;
 		if (delim[j] == '\0')
-		{
-			if (!(*doc = ft_strsub(command, 0, i)))
-				*doc = NULL;
 			break ;
-		}
 		i++;
 	}
+	if (!(*doc = ft_strsub(command, 0, i)))
+		*doc = NULL;
 	if ((flags & SQ || flags & DQ) && *doc != NULL)
 		add_quotes(doc, flags);
 	return (i);
@@ -144,34 +144,34 @@ int		create_delim(char *command, char **delim, int *flags)
 	}
 	*delim = ft_strsub(command, 0, i);
 	delim_quotes(delim, *flags);
-	return (i);
+	return (i + 1);
 }
 
 int		create_heredoc(t_token **head, char *command, char **doc)
 {
 	char	*delim;
 	int		i;
-	int		j;
 	int		flags;
 
 	i = 0;
-	j = 0;
 	flags = 0;
 	// remove tabs if <<-
-	i = i + create_delim(command, &delim, &flags);
-	if (delim)
+	while (command[i] != '\0' && is_word(command[i]) != 1)
+		i++;
+	i = i + create_delim(&command[i], &delim, &flags);
+	if (delim && ft_strlen(delim) != 0)
 	{
 		i = i + create_heredoc_word(&command[i], delim, doc, flags);
-		while (command[i] != '\0' && command[i] == delim[j])
-		{
-			i++;
-			j++;
-		} // i = i + ft_strlen(delim);
+		i = i + ft_strlen(delim);
 		if (*doc)
 			add_token(head, WORD, *doc, flags);
+		if (command[i] == '\0')
+			add_token(head, OPERATOR, "\n", 0);
 		free(delim);
 		free(*doc);
 	}
+	else
+		print_redir_error(SYNTAX_ERR);
 	return (i);
 }
 

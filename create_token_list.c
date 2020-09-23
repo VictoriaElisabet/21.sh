@@ -26,6 +26,8 @@ void		print_token(t_token *head)
 			ft_printf("SQ");
 		if (tmp->type == IO_NUM)
 			ft_printf("io num");
+		if (tmp->type == OPERATOR)
+			ft_printf("OP");
 		ft_printf("%s\n", tmp->token);
 		tmp = tmp->next;
 	}

@@ -134,6 +134,7 @@ int				is_digits(t_token *tmp, int *dash);
 int				file_aggr(t_token *tmp, int fd, int *dash);
 int				count_words(t_token *tokens);
 int				count_ctrl_op(t_token *tokens);
+int				is_word(int c);
 
 char			**word_splitting(char *command, int count);
 

@@ -92,7 +92,7 @@ typedef struct	s_sh
 
 void	ft_validate_term(void);
 void	ft_rawmode(t_sh *sh);
-int		ft_sh(t_sh *sh, char **env);
+int		ft_sh(t_sh *sh, char ***env);
 void	ft_prompt(t_sh *sh, int prompt);
 void	ft_readkey(t_sh *sh);
 void	ft_resetmode(t_sh *sh);

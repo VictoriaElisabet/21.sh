@@ -6,7 +6,7 @@
 /*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/18 10:54:16 by rklein            #+#    #+#             */
-/*   Updated: 2020/09/22 14:18:36 by rklein           ###   ########.fr       */
+/*   Updated: 2020/09/23 16:56:48 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,9 @@ void	ft_rawmode(t_sh	*sh)
 	sh->raw.c_cc[VTIME] = 0;
 	tcsetattr(STDIN_FILENO, TCSANOW, &sh->raw);
 	signal(SIGINT, ft_sig_kill);
+	signal(SIGSTOP, ft_sig_kill);
+	signal(SIGKILL, ft_sig_kill);
+	signal(SIGQUIT, ft_sig_kill);
+	signal(SIGABRT, ft_sig_kill);
+	
 }

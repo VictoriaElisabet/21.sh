@@ -39,7 +39,7 @@ int		main(void)
 	sh->in = (t_in*)malloc(sizeof(t_in));
 	ft_validate_term();
 	tcgetattr(STDIN_FILENO, &sh->orig);
-	status = ft_sh(sh, env);
+	status = ft_sh(sh, &env);
 	destroy_arr(env);
 	return (status);
 }

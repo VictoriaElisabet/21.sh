@@ -58,7 +58,7 @@ static void	ft_reset_buffer(t_sh *sh)
 	sh->in->cp_range[1] = -1;
 }
 
-static int	ft_process_input(t_sh *sh, char **env)
+static int	ft_process_input(t_sh *sh, char ***env)
 {
 	t_command	**commands;
 	t_token		*tokens;
@@ -69,15 +69,15 @@ static int	ft_process_input(t_sh *sh, char **env)
 	tputs(tgetstr("cr", NULL), 1, ft_putint);
 	tputs(tgetstr("do", NULL), 1, ft_putint);
 	tokens = create_tokens(sh->in->input);
-	commands = create_command_list(&tokens, env);
+	commands = create_command_list(&tokens, *env);
 	if (commands != NULL)
-		status = handle_command_list(commands, &env);
+		status = handle_command_list(commands, env);
 	ft_history_add(sh);
 	ft_bzero(sh->in->input, ft_strlen(sh->in->input));
 	return (status);
 }
 
-int		ft_sh(t_sh *sh, char **env) 
+int		ft_sh(t_sh *sh, char ***env) 
 {
 	int			prompt;
 	int			status;

@@ -46,16 +46,18 @@ void		set_struct(t_command *command)
 
 void		copy_tokens(t_command *command, t_token **tok_ls)
 {
-	while ((*tok_ls)->type != OPERATOR)
+	while ((*tok_ls) != NULL && (*tok_ls)->type != OPERATOR)
 	{
 		add_token(&command->tokens, (*tok_ls)->type, (*tok_ls)->token,
 		(*tok_ls)->flags);
 		(*tok_ls) = (*tok_ls)->next;
 	}
-	add_token(&command->tokens, (*tok_ls)->type, (*tok_ls)->token,
-	(*tok_ls)->flags);
-	if ((*tok_ls)->type == OPERATOR)
+	if ((*tok_ls) != NULL && (*tok_ls)->type == OPERATOR)
+	{
+		add_token(&command->tokens, (*tok_ls)->type, (*tok_ls)->token,
+		(*tok_ls)->flags);
 		get_index((*tok_ls)->token, &command->ctrl_op);
+	}
 }
 
 t_command	*fill_command_struct(t_command *command,
@@ -78,6 +80,7 @@ t_command	**create_command_list(t_token **tokens, char **env)
 	int			comm_nbr;
 	int			i;
 
+	//print_token(*tokens);
 	tmp = *tokens;
 	comm_nbr = count_ctrl_op(*tokens);
 	i = 0;
