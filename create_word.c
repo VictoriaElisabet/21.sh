@@ -76,6 +76,15 @@ int		check_prev_word(t_token **head)
 	return (0);
 }
 
+void	add_word(t_token **head, char *tmp, int flags)
+{
+	if (str_chr(tmp, '=') == 1 && check_prev_word(head) == 1)
+		add_token(head, WORD_ASSIGN, tmp, flags);
+	else
+		add_token(head, WORD, tmp, flags);
+	free(tmp);
+}
+
 int		create_word(t_token **head, char *command)
 {
 	int		i;
@@ -99,12 +108,6 @@ int		create_word(t_token **head, char *command)
 		i++;
 	}
 	if ((tmp = ft_strsub(command, 0, i)))
-	{
-		if (str_chr(tmp, '=') == 1 && check_prev_word(head) == 1)
-			add_token(head, WORD_ASSIGN, tmp, flags);
-		else
-			add_token(head, WORD, tmp, flags);
-		free(tmp);
-	}
+		add_word(head, tmp, flags);
 	return (i);
 }

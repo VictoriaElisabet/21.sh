@@ -122,6 +122,7 @@ int				create_word(t_token **head, char *command);
 int				set_redirections(t_command *command);
 int				get_quote_index(char *token, int flags);
 int				count_squoting_word(char *command, int *flags);
+int				count_dquoting_word(char *command, int *flags);
 int				is_redir_in(int r_type);
 int				is_redir_out(int r_type);
 int				dup2_fd(int n, int fd, int dash, int r_type);

@@ -12,7 +12,7 @@
 
 #include "./includes/minishell.h"
 
-void		get_io_num(t_token **head)
+void	get_io_num(t_token **head)
 {
 	t_token *tmp;
 	int		len;
@@ -28,14 +28,11 @@ void		get_io_num(t_token **head)
 		while (len > 0 && ft_isdigit(tmp->token[len]) == 1)
 			len--;
 		if (len == 0)
-		{
-			ft_printf("%s\n", tmp->token);
 			tmp->type = IO_NUM;
-		}
 	}
 }
 
-void		add_quotes(char **doc, int flags)
+void	add_quotes(char **doc, int flags)
 {
 	int		c;
 	int		j;
@@ -46,20 +43,45 @@ void		add_quotes(char **doc, int flags)
 	i = 0;
 	j = 0;
 	new = ft_strnew(ft_strlen(*doc) + 2);
-	new[i] = c;
+	new[i++] = c;
 	while ((*doc)[j] != '\0')
 	{
 		new[i] = (*doc)[j];
 		j++;
 		i++;
 	}
-	new[i] = c;
-	new[i++] = '\0';
+	new[i++] = c;
+	new[i] = '\0';
 	free(*doc);
 	(*doc) = new;
 }
 
-int			create_heredoc_word(char *command, char *delim, char **doc,
+void	rem_delim_quotes(char **delim, int flags, int sindex)
+{
+	int		i;
+	int		j;
+	int		eindex;
+	char	*new;
+
+	i = 0;
+	j = 0;
+	new = ft_strnew(ft_strlen(*delim) - 2);
+	eindex = get_quote_index(*delim, flags);
+	while ((*delim)[i] != '\0')
+	{
+		if (i != sindex && i != eindex)
+		{
+			new[j] = (*delim)[i];
+			j++;
+		}
+		i++;
+	}
+	new[j] = '\0';
+	free(*delim);
+	(*delim) = new;
+}
+
+int		create_heredoc_word(char *command, char *delim, char **doc,
 int flags)
 {
 	int		i;
@@ -81,39 +103,51 @@ int flags)
 		}
 		i++;
 	}
-	if (flags & SQ || flags & DQ)
+	if ((flags & SQ || flags & DQ) && *doc != NULL)
 		add_quotes(doc, flags);
-	//om int e hittas borde kanske -1 returnas och men he bord ju hittas..
 	return (i);
 }
 
-int			create_delim(char *command, char **delim, int *flags)
+void	delim_quotes(char **delim, int flags)
 {
 	int i;
-	int end;
-	int start;
 
 	i = 0;
-	end = 0;
-	start = 0;
-	while (command[i] != '\0' && command[i] != '\n')
+	while ((*delim)[i] != '\0')
 	{
-		if (command[i] == '\'' || command[i] == '"')
-		{
-			start = 1;
-			*flags |= command[i] == '\'' ? SQ : DQ;
-			end = get_quote_index(&command[i], *flags);
-		}
+		if (flags & DQ && (*delim)[i] == '"')
+			rem_delim_quotes(delim, flags, i);
+		if (flags & SQ && (*delim)[i] == '\'')
+			rem_delim_quotes(delim, flags, i);
 		i++;
 	}
-	if (*flags & SQ || *flags & DQ)
-		i = end;
-	if (!(*delim = ft_strsub(command, start, i)))
-		*delim = NULL;
-	return (i + 1);
 }
 
-int			create_heredoc(t_token **head, char *command, char **doc)
+int		create_delim(char *command, char **delim, int *flags)
+{
+	int		i;
+
+	i = 0;
+	while (is_separator(command[i]) == 0 && command[i] != '\0' &&
+	command[i] != '\n')
+	{
+		if (command[i] == '\\')
+		{
+			*flags |= ESC;
+			i++;
+		}
+		else if (command[i] == '\'')
+			i = i + count_squoting_word(&command[i], flags);
+		else if (command[i] == '"')
+			i = i + count_dquoting_word(&command[i], flags);
+		i++;
+	}
+	*delim = ft_strsub(command, 0, i);
+	delim_quotes(delim, *flags);
+	return (i);
+}
+
+int		create_heredoc(t_token **head, char *command, char **doc)
 {
 	char	*delim;
 	int		i;
@@ -132,7 +166,7 @@ int			create_heredoc(t_token **head, char *command, char **doc)
 		{
 			i++;
 			j++;
-		}
+		} // i = i + ft_strlen(delim);
 		if (*doc)
 			add_token(head, WORD, *doc, flags);
 		free(delim);
@@ -141,7 +175,7 @@ int			create_heredoc(t_token **head, char *command, char **doc)
 	return (i);
 }
 
-int			create_redir(t_token **head, char *command)
+int		create_redir(t_token **head, char *command)
 {
 	int		i;
 	char	*tmp;
