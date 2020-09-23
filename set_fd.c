@@ -38,16 +38,17 @@ int		dup2_fd(int n, int fd, int dash, int r_type)
 	{
 		if (dup2(fd, n) == -1)
 			return (print_redir_error(DUP2_FAIL));
-		close(fd);
 	}
 	else if (r_type == G_AND || r_type == L_AND)
 	{
-		if (dup2(fd, n) == -1)
+		
+		if ((dup2(fd, n)) == -1)
 			return (print_redir_error(DUP2_FAIL));
-		if (dash == 1)
-			if (close(n) == -1)
+		if (dash == 1 || r_type == G_AND_H || r_type == L_AND_H)
+		{
+			if (close(fd) == -1)
 				return (print_redir_error(CLOSE_ERR));
-		close(fd);
+		}
 	}
 	else if (r_type == G_AND_H || r_type == L_AND_H)
 	{
@@ -71,6 +72,8 @@ int		dup2_fd(int n, int fd, int dash, int r_type)
 
 int		open_fd(t_token *tmp, int fd, int r_type, int *dash)
 {
+	if (tmp->next == NULL || tmp->next->type != WORD)
+		return(print_redir_error(SYNTAX_ERR));
 	if (r_type == G || r_type == G_AND || r_type == L_AND)
 	{
 		if (*dash == 1)

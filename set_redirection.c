@@ -40,18 +40,20 @@ int		set_redir_out(t_token *tmp, int r_type)
 	dash = 0;
 	fd = 1;
 	n = STDOUT_FILENO;
-	if (tmp->prev != NULL)
-		n = tmp->prev->type == IO_NUM ? ft_atoi(tmp->token) : STDOUT_FILENO;
+	if (tmp->prev != NULL && tmp->prev->type == IO_NUM)
+		n = ft_atoi(tmp->prev->token);
 	if ((r_type == G || r_type == GG) && tmp->next != NULL)
-		fd = open_fd(tmp, fd, r_type, &dash);
-	else if (r_type == G_AND && tmp->next != NULL)
+		if((fd = open_fd(tmp, fd, r_type, &dash)) == -1)
+			return (-1);
+	if (r_type == G_AND && tmp->next != NULL)
 	{
 		if (n == 1 && is_digits(tmp->next, &dash) == 0)
 		{
-			fd = open_fd(tmp, fd, r_type, &dash);
+			if((fd = open_fd(tmp, fd, r_type, &dash)) == -1)
+				return (-1);
 			dup2(fd, 2);
 		}
-		else
+		else if (is_digits(tmp->next, &dash) == 1)
 		{
 			if ((isatty(fd = ft_atoi(tmp->next->token))) == 0)
 				return (print_redir_error(FD_ERR));
@@ -69,19 +71,23 @@ int		set_redir_in(t_token *tmp, int r_type)
 	dash = 0;
 	fd = 0;
 	n = STDIN_FILENO;
-	if (tmp->prev != NULL)
-		n = tmp->prev->type == IO_NUM ? ft_atoi(tmp->token) : STDIN_FILENO;
+	if (tmp->prev != NULL && tmp->prev->type == IO_NUM)
+		n = ft_atoi(tmp->prev->token);
 	if (r_type == L && tmp->next != NULL)
-		fd = open_fd(tmp, fd, r_type, &dash);
-	else if ((r_type == LL || r_type == LL_H) && tmp->next != NULL)
+		if((fd = open_fd(tmp, fd, r_type, &dash)) == -1)
+			return(-1);
+	if ((r_type == LL || r_type == LL_H) && tmp->next != NULL)
 		return (open_heredoc_fd(tmp, n, dash, r_type));
-	else if (r_type == L_AND && tmp->next != NULL)
+	if (r_type == L_AND && tmp->next != NULL)
 	{
 		if (n == 0 && is_digits(tmp->next, &dash) == 0)
-			fd = open_fd(tmp, fd, r_type, &dash);
-		else
 		{
-			if (isatty((fd = ft_atoi(tmp->next->token)) == 0))
+			if((fd = open_fd(tmp, fd, r_type, &dash)) == -1)
+				return (-1);
+		}
+		else if (is_digits(tmp->next, &dash) == 1)
+		{
+			if ((isatty(fd = ft_atoi(tmp->next->token))) == 0)
 				return (print_redir_error(FD_ERR));
 		}
 	}
