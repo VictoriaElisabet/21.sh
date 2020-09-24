@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./includes/minishell.h"
+#include "./includes/21sh.h"
 
 int		count_squoting_word(char *command, int *flags)
 {

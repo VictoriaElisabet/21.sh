@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./includes/minishell.h"
+#include "./includes/21sh.h"
 
 char	*search_path(char *name, char *path)
 {
@@ -118,7 +118,7 @@ pid_t pid, char ***env)
 	if (set_redirections(command) == -1)
 	{
 		reset_redirections(command->fd);
-		return (print_redir_error(REDIR));
+		return (print_redir_error(REDIR_ERR));
 	}
 	if (command->argc != 0)
 	{

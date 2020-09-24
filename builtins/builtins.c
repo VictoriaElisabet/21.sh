@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../includes/21sh.h"
 
 int		run_builtin(t_command *command, t_command **commands, char ***env,
 int status)

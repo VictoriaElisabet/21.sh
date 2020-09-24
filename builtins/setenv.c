@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../includes/21sh.h"
 
 char	**add_env(const char *name, const char *value, char **env, int count)
 {

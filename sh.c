@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "./includes/sh.h"
-#include "./includes/minishell.h"
+#include "./includes/21sh.h"
 
 void		ft_prompt(t_sh *sh, int prompt)
 {

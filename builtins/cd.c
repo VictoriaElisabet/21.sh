@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../includes/21sh.h"
 
 int		change_wdir(char *path, char **argv, char ***env)
 {
