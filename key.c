@@ -6,15 +6,15 @@
 /*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 15:04:40 by rklein            #+#    #+#             */
-/*   Updated: 2020/09/22 14:16:33 by rklein           ###   ########.fr       */
+/*   Updated: 2020/09/24 15:35:52 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./includes/sh.h"
 
-static void	ft_key_action(t_sh *sh, int sum)
+static void		ft_key_action(t_sh *sh, int sum)
 {
-	if (ft_isprint(sum))
+	if (ft_isprint(sum) || sum == 9)
 		ft_add_char(sh, sum);
 	if (sum == BS && sh->in->index > 0)
 		ft_backspace(sh);
@@ -54,7 +54,7 @@ static int		ft_ctrl_d(t_sh *sh)
 		ft_resetmode(sh);
 		exit(1);
 	}
-	if (!sh->in->buffer[0] && sh->in->input && sh->in->qph / 8 && 
+	if (!sh->in->buffer[0] && sh->in->input && sh->in->qph / 8 &&
 			ft_strequ(sh->in->hdoc, "EOF"))
 	{
 		ft_hdoc(sh);
@@ -87,7 +87,7 @@ static _Bool	ft_readsum(t_sh *sh, int sum)
 	return (0);
 }
 
-void	ft_readkey(t_sh *sh)
+void			ft_readkey(t_sh *sh)
 {
 	char	key[9];
 	int		bytes;
@@ -104,6 +104,6 @@ void	ft_readkey(t_sh *sh)
 		while (key[++i])
 			sum += key[i];
 		if (ft_readsum(sh, sum))
-			break;
+			break ;
 	}
 }

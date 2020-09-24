@@ -6,13 +6,13 @@
 /*   By: rklein <rklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 13:59:40 by rklein            #+#    #+#             */
-/*   Updated: 2020/09/22 14:16:30 by rklein           ###   ########.fr       */
+/*   Updated: 2020/09/24 13:03:17 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "./includes/sh.h"
+#include "./includes/sh.h"
 
-void	ft_arrow_motion(t_sh *sh, int motion)
+void		ft_arrow_motion(t_sh *sh, int motion)
 {
 	if (motion == LEFT && sh->in->index > 0)
 		sh->in->index--;
@@ -21,7 +21,7 @@ void	ft_arrow_motion(t_sh *sh, int motion)
 	ft_reprint(sh);
 }
 
-void	ft_word_motion(t_sh *sh, int motion)
+void		ft_word_motion(t_sh *sh, int motion)
 {
 	int	i;
 
@@ -50,7 +50,7 @@ void	ft_word_motion(t_sh *sh, int motion)
 	}
 }
 
-void	ft_he_motion(t_sh *sh, int motion)
+void		ft_he_motion(t_sh *sh, int motion)
 {
 	if (motion == HOME)
 	{
@@ -64,7 +64,7 @@ void	ft_he_motion(t_sh *sh, int motion)
 	}
 }
 
-void	ft_line_up(t_sh *sh)		
+void		ft_line_up(t_sh *sh)
 {
 	if (sh->in->index - sh->ws.ws_col > 0)
 	{
@@ -80,7 +80,7 @@ void	ft_line_up(t_sh *sh)
 	}
 }
 
-void	ft_line_down(t_sh *sh)		
+void		ft_line_down(t_sh *sh)
 {
 	if (sh->in->index + sh->ws.ws_col < (int)ft_strlen(sh->in->buffer))
 	{

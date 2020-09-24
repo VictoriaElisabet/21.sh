@@ -81,30 +81,37 @@ void	rem_delim_quotes(char **delim, int flags, int sindex)
 	(*delim) = new;
 }
 
-int		create_heredoc_word(char *command, char *delim, char **doc,
+int		create_heredoc_word(char *command, int i, char *delim, char **doc,
 int flags)
 {
-	int		i;
+	//int		i;
 	int		j;
+	int		k;
 
-	i = 0;
+	//i = 0;
 	j = 0;
-	while (command[i] != '\0' && command[i] != EOF)
+	k = 0;
+	while (command[i] != '\n')
+		i++;
+	i++;
+	ft_printf("efter i %s", &command[i]);
+	while (command[k + i] != '\0' && command[k + i] != EOF)
 	{
 		j = 0;
-		if (command[i] == '\n' && command[i + 1] == '\0')
-			break ;
-		while (command[i + j] == delim[j] && delim[j] != '\0'
-				&& command[i + j] != '\0' && command[i + j] != EOF)
+		while (command[(k + i) + j] == delim[j] && delim[j] != '\0'
+				&& command[(k + i) + j] != '\0' && command[(k + i) + j] != EOF)
 			j++;
 		if (delim[j] == '\0')
 			break ;
-		i++;
+		k++;
 	}
-	if (!(*doc = ft_strsub(command, 0, i)))
+	ft_printf("k = %d", k);
+	if (!(*doc = ft_strsub(command, i, k)))
 		*doc = NULL;
+	ft_printf("doc %s stop\n", *doc);
 	if ((flags & SQ || flags & DQ) && *doc != NULL)
 		add_quotes(doc, flags);
+	
 	return (i);
 }
 
@@ -123,85 +130,99 @@ void	delim_quotes(char **delim, int flags)
 	}
 }
 
-int		create_delim(char *command, char **delim, int *flags)
+int		create_delim(char *command, int i, char **delim, int *flags)
 {
-	int		i;
+	int j;
 
-	i = 0;
-	while (is_separator(command[i]) == 0 && command[i] != '\0' &&
-	command[i] != '\n')
+	j = 0;
+	ft_printf("delimstr %s \n", &command[i]);
+	while (is_separator(command[i + j]) == 0 && command[i + j] != '\0' &&
+	command[i + j] != '\n')
 	{
-		if (command[i] == '\\')
+		if (command[i + j] == '\\')
 		{
 			*flags |= ESC;
-			i++;
+			j++;
 		}
-		else if (command[i] == '\'')
-			i = i + count_squoting_word(&command[i], flags);
-		else if (command[i] == '"')
-			i = i + count_dquoting_word(&command[i], flags);
-		i++;
+		else if (command[i + j] == '\'')
+			j = j + count_squoting_word(&command[i + j], flags);
+		else if (command[i + j] == '"')
+			j = j + count_dquoting_word(&command[i + j], flags);
+		j++;
 	}
-	*delim = ft_strsub(command, 0, i);
+	*delim = ft_strsub(command, i, j);
 	delim_quotes(delim, *flags);
-	return (i + 1);
+	return (j);
 }
 
-int		create_heredoc(t_token **head, char *command, char **doc)
+int		create_heredoc(t_token **head, int i, char **doc, char **comm)
 {
 	char	*delim;
-	int		i;
 	int		flags;
+	char	*tmp;
+	int		j;
 
-	i = 0;
 	flags = 0;
+	j = 0;
 	// remove tabs if <<-
-	while (command[i] != '\0' && is_word(command[i]) != 1)
-		i++;
-	i = i + create_delim(&command[i], &delim, &flags);
+	ft_printf("%s %d\n", &(*comm)[i], i);
+	while ((*comm)[i + j] != '\0' && is_word((*comm)[i + j]) != 1)
+		j++;
+	j = j + create_delim((*comm), i, &delim, &flags);
+	ft_printf("delim%s stop\n", delim);
 	if (delim && ft_strlen(delim) != 0)
 	{
-		i = i + create_heredoc_word(&command[i], delim, doc, flags);
-		i = i + ft_strlen(delim);
+		//create_heredoc_word(&command[i], command, delim, doc, flags);
+		tmp = ft_strsub((*comm), 0, create_heredoc_word((*comm), i + j, delim, doc, flags));
+		free((*comm));
+		(*comm) = tmp;
+		ft_printf("comm %sstop", (*comm));
 		if (*doc)
+		{
 			add_token(head, WORD, *doc, flags);
-		if (command[i] == '\0')
-			add_token(head, OPERATOR, "\n", 0);
+			free(*doc);
+		}
+		//if (command[i] == '\0')
+		//	add_token(head, OPERATOR, "\n", 0);
 		free(delim);
-		free(*doc);
 	}
 	else
+	{
 		print_redir_error(SYNTAX_ERR);
-	return (i);
+		return (0);
+	}
+	ft_printf("jjj %d\n", j);
+	return (j);
 }
 
-int		create_redir(t_token **head, char *command)
+int		create_redir(t_token **head, char **command, int i)
 {
-	int		i;
 	char	*tmp;
 	char	*doc;
 	int		flags;
+	int		j;
 
-	i = 0;
 	tmp = NULL;
 	doc = NULL;
 	flags = 0;
-	if (is_redir(command[i]) == 1)
+	j = 0;
+	if (is_redir((*command)[i + j]) == 1)
 	{
-		i++;
+		j++;
 		get_io_num(head);
-		if (command[i] == '>' || command[i] == '<' || command[i] == '|' ||
-		command[i] == '&')
+		if ((*command)[i + j] == '>' || (*command)[i + j] == '<' || (*command)[i + j] == '|' ||
+		(*command)[i + j] == '&')
 		{
-			i++;
-			if (command[i] == '-')
-				i++;
+			j++;
+			if ((*command)[i + j] == '-')
+				j++;
 		}
-		if ((tmp = ft_strsub(command, 0, i)))
+		if ((tmp = ft_strsub(&(*command)[i], 0, j)))
 			add_token(head, REDIR, tmp, flags);
 		if (ft_strcmp(tmp, "<<") == 0 || ft_strcmp(tmp, "<<-") == 0)
-			i = i + create_heredoc(head, &command[i], &doc);
+			j = j + create_heredoc(head, i + j, &doc, command);
 	}
 	free(tmp);
-	return (i);
+	ft_printf(" j%d\n", j);
+	return (j);
 }

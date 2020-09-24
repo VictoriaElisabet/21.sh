@@ -6,7 +6,7 @@
 /*   By: rklein <rklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 16:21:44 by rklein            #+#    #+#             */
-/*   Updated: 2020/09/17 16:22:30 by rklein           ###   ########.fr       */
+/*   Updated: 2020/09/24 15:35:48 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	ft_history_add(t_sh *sh)
 	t_hs *new;
 
 	new = (t_hs*)malloc(sizeof(t_hs));
-	//new->hist = ft_strdup(sh->in->input); OLD
 	new->hist = ft_strsub(sh->in->input, 0, ft_strlen(sh->in->input) - 1);
 	new->prev = sh->in->hs_last;
 	sh->in->hs_last->next = new;

@@ -6,7 +6,7 @@
 /*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/14 10:24:31 by rklein            #+#    #+#             */
-/*   Updated: 2020/09/16 15:16:33 by vgrankul         ###   ########.fr       */
+/*   Updated: 2020/09/24 15:29:30 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 void		ft_add_char(t_sh *sh, int c)
 {
-	if (sh->in->buffer[sh->in->index])	
+	if (sh->in->buffer[sh->in->index])
 		ft_memmove(sh->in->buffer + sh->in->index + 1, \
 		sh->in->buffer + sh->in->index, \
 		ft_strlen(sh->in->buffer + sh->in->index));
-	sh->in->buffer[sh->in->index] = c;
+	sh->in->buffer[sh->in->index] = c == 9 ? ' ' : c;
 	sh->in->index++;
 	ft_reprint(sh);
 }

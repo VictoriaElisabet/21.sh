@@ -6,13 +6,13 @@
 /*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/18 10:54:16 by rklein            #+#    #+#             */
-/*   Updated: 2020/09/23 16:56:48 by rklein           ###   ########.fr       */
+/*   Updated: 2020/09/24 12:49:43 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./includes/sh.h"
 
-void	ft_validate_term(void)
+void		ft_validate_term(void)
 {
 	char	*termtype;
 	char	term_buffer[2048];
@@ -20,7 +20,7 @@ void	ft_validate_term(void)
 
 	if (!(termtype = getenv("TERM")))
 	{
-		write(1, "Specify a terminal type with 'export TERM <yourtype>'.\n", 56);
+		write(1, "Specify terminal type with 'export TERM <yourtype>'.\n", 56);
 		exit(1);
 	}
 	if ((success = tgetent(term_buffer, termtype)) < 1)
@@ -33,7 +33,7 @@ void	ft_validate_term(void)
 	}
 }
 
-void	ft_resetmode(t_sh *sh)
+void		ft_resetmode(t_sh *sh)
 {
 	tcsetattr(STDIN_FILENO, TCSANOW, &sh->orig);
 }
@@ -47,11 +47,11 @@ static void	ft_sig_kill(int signum)
 /*
 ** ICRNL: Ctrl-M; IXON: Ctrl-S and Ctrl-X
 ** OPOST (O-output, POST-postprocessing)
-** ISIG: Ctrl-C, Ctrl-Z, etc. 
+** ISIG: Ctrl-C, Ctrl-Z, etc.
 ** IEXTEN: Ctrl-V and Ctrl-O
 */
 
-void	ft_rawmode(t_sh	*sh)
+void		ft_rawmode(t_sh *sh)
 {
 	sh->raw = sh->orig;
 	ioctl(STDIN_FILENO, TIOCGWINSZ, &sh->ws);
@@ -66,5 +66,4 @@ void	ft_rawmode(t_sh	*sh)
 	signal(SIGKILL, ft_sig_kill);
 	signal(SIGQUIT, ft_sig_kill);
 	signal(SIGABRT, ft_sig_kill);
-	
 }

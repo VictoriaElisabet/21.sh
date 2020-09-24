@@ -6,7 +6,7 @@
 /*   By: rklein <rklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/21 10:55:32 by rklein            #+#    #+#             */
-/*   Updated: 2020/09/21 13:42:19 by rklein           ###   ########.fr       */
+/*   Updated: 2020/09/24 12:40:33 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ static char	ft_q_track(char s, char q)
 
 static void	ft_copy_hdoc(t_sh *sh, char *str)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
 	char	q;
 
 	i = 0;
@@ -38,8 +38,8 @@ static void	ft_copy_hdoc(t_sh *sh, char *str)
 	while (str[i])
 	{
 		q = ft_q_track(str[i], q);
-		if (!q && (str[i] == ' ' || str[i] == '\t'))
-			break;
+		if (!q && (str[i] == ' ' || str[i] == '\t' || str[i] == '\n'))
+			break ;
 		else if (str[i] == 34 || str[i] == 39)
 		{
 			if (q && str[i] != q)
@@ -51,7 +51,7 @@ static void	ft_copy_hdoc(t_sh *sh, char *str)
 	}
 }
 
-void	ft_hdoc(t_sh *sh)
+void		ft_hdoc(t_sh *sh)
 {
 	char	*first;
 	char	*last;
@@ -66,7 +66,7 @@ void	ft_hdoc(t_sh *sh)
 			sh->in->qph = (sh->in->hdoc[0]) ? sh->in->qph + 8 : sh->in->qph;
 		}
 	}
-	else if (ft_strequ(sh->in->buffer, sh->in->hdoc) || 
+	else if (ft_strequ(sh->in->buffer, sh->in->hdoc) ||
 			(ft_strequ(sh->in->hdoc, "EOF") && !sh->in->buffer[0]))
 	{
 		sh->in->qph -= 8;
@@ -82,7 +82,7 @@ static void	ft_quotes(t_sh *sh, int q)
 		sh->in->qph -= q;
 }
 
-void	ft_check_qph(t_sh *sh)
+void		ft_check_qph(t_sh *sh)
 {
 	int	i;
 
@@ -90,15 +90,15 @@ void	ft_check_qph(t_sh *sh)
 	while (sh->in->buffer[++i])
 	{
 		if (sh->in->buffer[i] == 39 && sh->in->buffer[i - 1] != 92)
-			ft_quotes(sh, 1); 
-		if (sh->in->buffer[i] == 34 && sh->in->buffer[i - 1] != 92) 
-			ft_quotes(sh, 2); 
-		if (sh->in->buffer[i] == 124 && sh->in->buffer[i - 1] != 92 && 
+			ft_quotes(sh, 1);
+		if (sh->in->buffer[i] == 34 && sh->in->buffer[i - 1] != 92)
+			ft_quotes(sh, 2);
+		if (sh->in->buffer[i] == 124 && sh->in->buffer[i - 1] != 92 &&
 			sh->in->buffer[i - 1] != 124 && !sh->in->qph)
 			sh->in->qph += 4;
-		if ((sh->in->buffer[i] != 124 || 
+		if ((sh->in->buffer[i] != 124 ||
 			(sh->in->buffer[i] == 124 && sh->in->buffer[i - 1] == 124))
-			&& sh->in->buffer[i] != ' ' && sh->in->qph == 4)	
+			&& sh->in->buffer[i] != ' ' && sh->in->qph == 4)
 			sh->in->qph -= 4;
 	}
 	ft_hdoc(sh);
