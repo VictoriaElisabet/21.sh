@@ -52,10 +52,7 @@ int		set_redir_out(t_token *tmp, int r_type, int dash)
 			dup2(fd, 2);
 		}
 		else if (is_digits(tmp->next, &dash) == 1)
-		{
-			if ((isatty(fd = ft_atoi(tmp->next->token))) == 0)
-				return (print_redir_error(FD_ERR));
-		}
+			fd = ft_atoi(tmp->next->token);
 	}
 	return (dup2_fd(n, fd, dash, r_type));
 }
@@ -82,8 +79,7 @@ int		set_redir_in(t_token *tmp, int r_type, int dash)
 				return (-1);
 		}
 		else if (is_digits(tmp->next, &dash) == 1)
-			if ((isatty(fd = ft_atoi(tmp->next->token))) == 0)
-				return (print_redir_error(FD_ERR));
+			fd = ft_atoi(tmp->next->token);
 	}
 	return (dup2_fd(n, fd, dash, r_type));
 }
