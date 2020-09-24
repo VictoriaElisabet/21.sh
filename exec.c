@@ -118,9 +118,8 @@ pid_t pid, char ***env)
 	if (set_redirections(command) == -1)
 	{
 		reset_redirections(command->fd);
-		ft_printf("something went wrong");
-		return (-1); // return print_redir error
-	}// printa error ?
+		return (print_redir_error(REDIR));
+	}
 	if (command->argc != 0)
 	{
 		if (is_builtin(command) == 1)

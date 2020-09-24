@@ -94,7 +94,7 @@ int flags)
 	while (command[i] != '\n')
 		i++;
 	i++;
-	ft_printf("efter i %s", &command[i]);
+	//ft_printf("efter i %s", &command[i]);
 	while (command[k + i] != '\0' && command[k + i] != EOF)
 	{
 		j = 0;
@@ -105,7 +105,7 @@ int flags)
 			break ;
 		k++;
 	}
-	ft_printf("k = %d", k);
+	//ft_printf("k = %d", k);
 	if (!(*doc = ft_strsub(command, i, k)))
 		*doc = NULL;
 	ft_printf("doc %s stop\n", *doc);
@@ -135,7 +135,7 @@ int		create_delim(char *command, int i, char **delim, int *flags)
 	int j;
 
 	j = 0;
-	ft_printf("delimstr %s \n", &command[i]);
+	//ft_printf("delimstr %s \n", &command[i]);
 	while (is_separator(command[i + j]) == 0 && command[i + j] != '\0' &&
 	command[i + j] != '\n')
 	{
@@ -165,7 +165,7 @@ int		create_heredoc(t_token **head, int i, char **doc, char **comm)
 	flags = 0;
 	j = 0;
 	// remove tabs if <<-
-	ft_printf("%s %d\n", &(*comm)[i], i);
+	ft_printf("COMMAND %s %d\n", (*comm), i);
 	while ((*comm)[i + j] != '\0' && is_word((*comm)[i + j]) != 1)
 		j++;
 	j = j + create_delim((*comm), i, &delim, &flags);
@@ -184,14 +184,16 @@ int		create_heredoc(t_token **head, int i, char **doc, char **comm)
 		}
 		//if (command[i] == '\0')
 		//	add_token(head, OPERATOR, "\n", 0);
-		free(delim);
+		//free(delim);
 	}
 	else
 	{
+		free(delim);
 		print_redir_error(SYNTAX_ERR);
 		return (0);
 	}
-	ft_printf("jjj %d\n", j);
+	free(delim);
+	//ft_printf("jjj %d\n", j);
 	return (j);
 }
 
@@ -223,6 +225,6 @@ int		create_redir(t_token **head, char **command, int i)
 			j = j + create_heredoc(head, i + j, &doc, command);
 	}
 	free(tmp);
-	ft_printf(" j%d\n", j);
+	//ft_printf(" j%d\n", j);
 	return (j);
 }

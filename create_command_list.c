@@ -80,7 +80,6 @@ t_command	**create_command_list(t_token **tokens, char **env)
 	int			comm_nbr;
 	int			i;
 
-	//print_token(*tokens);
 	tmp = *tokens;
 	comm_nbr = count_ctrl_op(*tokens);
 	i = 0;

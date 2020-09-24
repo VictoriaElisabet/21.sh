@@ -6,7 +6,7 @@
 /*   By: rklein <rklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/21 10:55:32 by rklein            #+#    #+#             */
-/*   Updated: 2020/09/24 12:40:33 by rklein           ###   ########.fr       */
+/*   Updated: 2020/09/24 17:43:54 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,16 +53,14 @@ static void	ft_copy_hdoc(t_sh *sh, char *str)
 
 void		ft_hdoc(t_sh *sh)
 {
-	char	*first;
-	char	*last;
+	char	*hd;
 
 	if (!(sh->in->qph / 8))
 	{
-		first = ft_strchr(sh->in->buffer, 60);
-		last = ft_strrchr(sh->in->buffer, 60);
-		if (last - first == 1)
+		hd = ft_strstr(sh->in->buffer, "<<");
+		if (hd && hd != sh->in->buffer)
 		{
-			ft_copy_hdoc(sh, last + 1);
+			ft_copy_hdoc(sh, hd + 2);
 			sh->in->qph = (sh->in->hdoc[0]) ? sh->in->qph + 8 : sh->in->qph;
 		}
 	}
