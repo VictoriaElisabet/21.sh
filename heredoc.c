@@ -6,7 +6,7 @@
 /*   By: rklein <rklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 11:01:28 by rklein            #+#    #+#             */
-/*   Updated: 2020/09/25 15:12:21 by rklein           ###   ########.fr       */
+/*   Updated: 2020/09/25 16:04:20 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,19 @@
 
 static void	ft_hd_setup(t_sh *sh, char *str)
 {
+	int		len;
+
 	sh->in = (t_in*)malloc(sizeof(t_in));
 	tcgetattr(STDIN_FILENO, &sh->orig);
 	ft_init(sh);
 	sh->in->qph = 8;
-	ft_strcpy(sh->in->hdoc, str);
+	if (str[0] == 34 || str[0] == 39)
+	{
+		len = ft_strlen(str) - 2;
+		ft_strncpy(sh->in->hdoc, &str[1], len);
+	}
+	else
+		ft_strcpy(sh->in->hdoc, str);
 }
 
 static char	*ft_hd_free(t_sh *sh)

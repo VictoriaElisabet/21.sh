@@ -37,15 +37,18 @@ int		get_param(char *word, char **param)
 	int		i;
 
 	i = 1;
-	/*if (word[i] == '{')
+	if (word[i] == '{')
 	{
 		while (word[i] != '}')
 			i++;
 		i++;
-	}*/
-	while (is_separator(word[i]) == 0 && word[i] != '\0' &&
-	word[i] != '\n')
-		i++;
+	}
+	else
+	{
+		while (is_separator(word[i]) == 0 && word[i] != '\0' &&
+		word[i] != '\n')
+			i++;
+	}
 	*param = ft_strsub(word, 0, i);
 	return (i);
 }
@@ -59,6 +62,7 @@ char	*expand_param(char *param, char **env)
 	i = 0;
 	if ((name = get_name(param)))
 	{
+		free(param);
 		while (env[i] != NULL)
 		{
 			if (find_env(name, env) == 0)
@@ -109,7 +113,6 @@ char	*parameter_expansion(t_token *token, char *word, char **env)
 				{
 					value = expand_param(param, env);
 					set_word(&word, temp, value, i);
-					free(param);
 				}
 			}
 		}

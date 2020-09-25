@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "./includes/21sh.h"
+#include "./includes/sh.h"
 
 void	reset_redirections(int fd[3])
 {
@@ -79,33 +80,31 @@ int		open_fd(t_token *tmp, int fd, int r_type, int *dash)
 	return (fd);
 }
 
-int		open_heredoc_fd(t_token *tmp, int n, int dash, int r_type)
+int		open_heredoc_fd(t_token *tmp, int n, int dash, int r_type, char **env)
 {
 	int fds[2];
 	int fd;
 	int status;
 	char *str;
 	t_token *heredoc;
-	extern char	**environ; // byt till ede kopiera version
 
-	// create heredoc, prompt for it
-	//str = ft_hd_doc(tmp->next->token); 
-	ft_printf("delimiter %s\n", tmp->next->token);
-	str = "\n $SHELL text tesx \n femton \n $SHELL delimiter\n"; // hu ere me tilde
-	//flags sku böv va DQ SQ ESC?
+	if (tmp->next == NULL || tmp->next->type != WORD)
+		return(print_redir_error(SYNTAX_ERR));
+	str = ft_hd_doc(tmp->next->token);
+	if (ft_strcmp(str, "\0") == 0)
+		return(-1);
+	// hu ere me ESC
 	heredoc = create_token(WORD, str, 0);
-	//if delim has quotes exp or not to exp. do not add quotes. check delim SQ and DQ, it shouldnt exp on either of them
-	token_expansion(&heredoc, environ);
-	remove_quoting(&heredoc); // maybe no quoterem
+	if ((tmp->next->flags & SQ) == 0 && (tmp->next->flags & DQ) == 0)
+		token_expansion(&heredoc, env);
 	if (pipe(fds) == -1)
 		return (print_redir_error(PIPE_ERR));
 	write(fds[1], heredoc->token, ft_strlen(heredoc->token));
-	//write(fds[1], tmp->next->token, ft_strlen(tmp->next->token));
 	close(fds[1]);
 	fd = fds[0];
 	status = dup2_fd(n, fd, dash, r_type);
 	close(fds[0]);
 	destroy_tok_list(heredoc);
-	//free str
+	free (str);
 	return (status);
 }

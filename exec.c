@@ -115,10 +115,10 @@ pid_t pid, char ***env)
 	int status;
 
 	status = 0;
-	if (set_redirections(command) == -1)
+	if (set_redirections(command, *env) == -1)
 	{
 		reset_redirections(command->fd);
-		return (print_redir_error(REDIR_ERR));
+		return (-1);
 	}
 	if (command->argc != 0)
 	{

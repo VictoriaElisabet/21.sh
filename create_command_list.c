@@ -70,6 +70,7 @@ t_token **tok_ls, char **env)
 	command->argc = count_words(command->tokens);
 	set_argv(command, command->tokens, command->argc);
 	command->fork = 0;
+	print_token(command->tokens);
 	return (command);
 }
 

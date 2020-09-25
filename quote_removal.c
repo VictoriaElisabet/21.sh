@@ -110,12 +110,12 @@ void	remove_quoting(t_token **head)
 	i = 0;
 	while (tmp != NULL)
 	{
-		if (tmp->type == WORD)
+		if (ft_strcmp(tmp->token, "<<") == 0 || ft_strcmp(tmp->token, "<<-") == 0)
+			tmp = tmp->next;
+		else if (tmp->type == WORD)
 		{
 			i = 0;
 			remove_esc(&tmp);
-			// if tmp->prev != NULL && tmp->prev->token != <<
-			//{}
 			while (tmp->token[i] != '\0')
 			{
 				if (tmp->token[i] == '\\')

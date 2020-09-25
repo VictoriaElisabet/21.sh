@@ -57,7 +57,7 @@ int		set_redir_out(t_token *tmp, int r_type, int dash)
 	return (dup2_fd(n, fd, dash, r_type));
 }
 
-int		set_redir_in(t_token *tmp, int r_type, int dash)
+int		set_redir_in(t_token *tmp, int r_type, int dash, char **env)
 {
 	int n;
 	int fd;
@@ -70,7 +70,7 @@ int		set_redir_in(t_token *tmp, int r_type, int dash)
 		if ((fd = open_fd(tmp, fd, r_type, &dash)) == -1)
 			return (-1);
 	if ((r_type == LL || r_type == LL_H) && tmp->next != NULL)
-		return (open_heredoc_fd(tmp, n, dash, r_type));
+		return (open_heredoc_fd(tmp, n, dash, r_type, env));
 	if (r_type == L_AND && tmp->next != NULL)
 	{
 		if (n == 0 && is_digits(tmp->next, &dash) == 0)
@@ -84,17 +84,17 @@ int		set_redir_in(t_token *tmp, int r_type, int dash)
 	return (dup2_fd(n, fd, dash, r_type));
 }
 
-int		set_redir_in_out(t_token *tmp, int dash)
+int		set_redir_in_out(t_token *tmp, int dash, char **env)
 {
 	int status;
 
 	status = 0;
-	status = set_redir_in(tmp, L, dash);
+	status = set_redir_in(tmp, L, dash, env);
 	status = set_redir_out(tmp, G, dash);
 	return (status);
 }
 
-int		set_redirections(t_command *command)
+int		set_redirections(t_command *command, char **env)
 {
 	t_token	*tmp;
 	int		r_type;
@@ -112,11 +112,11 @@ int		set_redirections(t_command *command)
 		{
 			r_type = get_redir(tmp->token);
 			if (is_redir_in(r_type) == 1)
-				status = set_redir_in(tmp, r_type, dash);
+				status = set_redir_in(tmp, r_type, dash, env);
 			else if (is_redir_out(r_type) == 1)
 				status = set_redir_out(tmp, r_type, dash);
 			else if (r_type == LG)
-				status = set_redir_in_out(tmp, dash);
+				status = set_redir_in_out(tmp, dash, env);
 		}
 		tmp = tmp->next;
 	}

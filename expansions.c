@@ -61,18 +61,16 @@ void	token_expansion(t_token **head, char **env)
 	tmp = *head;
 	while (tmp != NULL)
 	{
-		if (tmp->type == WORD)
+		if (ft_strcmp(tmp->token, "<<") == 0 || ft_strcmp(tmp->token, "<<-") == 0)
+			tmp = tmp->next;
+		else if (tmp->type == WORD)
 		{
-			// if tmp->prev != NULL && tmp->prev->token != <<
-			//{}
 			if (tmp->token[0] == '~')
 				tmp->token = tilde_expansion(tmp->token, env);
 			if (ft_strcmp((tmp->token =
 			parameter_expansion(tmp, tmp->token, env)), "\0") == 0)
-			{
 				remove_token(head, tmp);
-			}
-		}
+		}	
 		tmp = tmp->next;
 	}
 }
