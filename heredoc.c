@@ -6,7 +6,7 @@
 /*   By: rklein <rklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 11:01:28 by rklein            #+#    #+#             */
-/*   Updated: 2020/09/25 13:47:00 by rklein           ###   ########.fr       */
+/*   Updated: 2020/09/25 15:12:21 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,22 @@ static char	*ft_hd_free(t_sh *sh)
 	char	*str;
 
 	str = ft_strdup(sh->in->input);
-	//Possibly need to free strings in structs
+	free(sh->in->prompt);
+	free(sh->in->buffer);
+	free(sh->in->input);
+	free(sh->in->clipboard);
+	free(sh->in->hdoc);
+	free(sh->in->hs->hist);
+	free(sh->in->hs);
 	free(sh->in);
 	free(sh);
 	return (str);
 }
 
-char	*ft_hd_doc(char *str)
+char		*ft_hd_doc(char *str)
 {
 	t_sh	*sh;
-	
+
 	sh = (t_sh*)malloc(sizeof(t_sh));
 	ft_hd_setup(sh, str);
 	while (1)

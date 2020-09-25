@@ -6,7 +6,7 @@
 /*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/13 12:35:43 by rklein            #+#    #+#             */
-/*   Updated: 2020/09/25 12:38:07 by rklein           ###   ########.fr       */
+/*   Updated: 2020/09/25 15:15:23 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,5 @@ void			ft_history_scroll(t_sh *sh, int motion);
 ** line edit: heredocs
 */
 char			*ft_hd_doc(char *str);
-
 
 #endif

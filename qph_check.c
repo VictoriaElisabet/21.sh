@@ -6,7 +6,7 @@
 /*   By: rklein <rklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/21 10:55:32 by rklein            #+#    #+#             */
-/*   Updated: 2020/09/25 12:38:05 by rklein           ###   ########.fr       */
+/*   Updated: 2020/09/25 15:13:48 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,9 @@ void		ft_check_qph(t_sh *sh)
 					sh->in->buffer[i - 1] != 124 && !sh->in->qph)
 				sh->in->qph += 4;
 			if ((sh->in->buffer[i] != 124 ||
-						(sh->in->buffer[i] == 124 && sh->in->buffer[i - 1] == 124))
+					(sh->in->buffer[i] == 124 && sh->in->buffer[i - 1] == 124))
 					&& sh->in->buffer[i] != ' ' && sh->in->qph == 4)
 				sh->in->qph -= 4;
 		}
-	}	
+	}
 }
