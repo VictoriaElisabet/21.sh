@@ -6,13 +6,13 @@
 /*   By: rklein <rklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 11:01:28 by rklein            #+#    #+#             */
-/*   Updated: 2020/09/25 12:37:56 by rklein           ###   ########.fr       */
+/*   Updated: 2020/09/25 13:47:00 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./includes/sh.h"
 
-static void	ft_hd_setup(t_sh *sh)
+static void	ft_hd_setup(t_sh *sh, char *str)
 {
 	sh->in = (t_in*)malloc(sizeof(t_in));
 	tcgetattr(STDIN_FILENO, &sh->orig);
@@ -21,7 +21,7 @@ static void	ft_hd_setup(t_sh *sh)
 	ft_strcpy(sh->in->hdoc, str);
 }
 
-static void	ft_hd_free(t_sh *sh)
+static char	*ft_hd_free(t_sh *sh)
 {
 	char	*str;
 
@@ -37,7 +37,7 @@ char	*ft_hd_doc(char *str)
 	t_sh	*sh;
 	
 	sh = (t_sh*)malloc(sizeof(t_sh));
-	ft_hd_setup(sh);
+	ft_hd_setup(sh, str);
 	while (1)
 	{
 		ft_rawmode(sh);
