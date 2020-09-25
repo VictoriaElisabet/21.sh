@@ -178,6 +178,7 @@ void			get_index(char *token, int *ctrl_op);
 t_command		**create_command_list(t_token **tokens, char **env);
 
 t_token			*create_tokens(char **command);
+t_token			*create_token(int tok_type, char *tok, int flags);
 
 void			print_token(t_token *head); // ta bort
 

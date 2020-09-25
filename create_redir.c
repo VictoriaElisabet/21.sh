@@ -32,7 +32,7 @@ void	get_io_num(t_token **head)
 	}
 }
 
-void	add_quotes(char **doc, int flags)
+/*void	add_quotes(char **doc, int flags)
 {
 	int		c;
 	int		j;
@@ -195,17 +195,17 @@ int		create_heredoc(t_token **head, int i, char **doc, char **comm)
 	free(delim);
 	//ft_printf("jjj %d\n", j);
 	return (j);
-}
+}*/
 
 int		create_redir(t_token **head, char **command, int i)
 {
 	char	*tmp;
-	char	*doc;
+	//char	*doc;
 	int		flags;
 	int		j;
 
 	tmp = NULL;
-	doc = NULL;
+	//doc = NULL;
 	flags = 0;
 	j = 0;
 	if (is_redir((*command)[i + j]) == 1)
@@ -221,8 +221,8 @@ int		create_redir(t_token **head, char **command, int i)
 		}
 		if ((tmp = ft_strsub(&(*command)[i], 0, j)))
 			add_token(head, REDIR, tmp, flags);
-		if (ft_strcmp(tmp, "<<") == 0 || ft_strcmp(tmp, "<<-") == 0)
-			j = j + create_heredoc(head, i + j, &doc, command);
+		//if (ft_strcmp(tmp, "<<") == 0 || ft_strcmp(tmp, "<<-") == 0)
+			//j = j + create_heredoc(head, i + j, &doc, command);
 	}
 	free(tmp);
 	//ft_printf(" j%d\n", j);

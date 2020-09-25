@@ -84,13 +84,28 @@ int		open_heredoc_fd(t_token *tmp, int n, int dash, int r_type)
 	int fds[2];
 	int fd;
 	int status;
+	char *str;
+	t_token *heredoc;
+	extern char	**environ; // byt till ede kopiera version
 
+	// create heredoc, prompt for it
+	//str = ft_hd_doc(tmp->next->token);
+	// delimiter(tmp->next_token) kan ha DQ SQ add isf he ti de str. 
+	ft_printf("delimiter %s\n", tmp->next->token);
+	str = "\n $SHELL text tesx \n femton \n $SHELL delimiter\n"; // hu ere me tilde
+	//flags sku böv va DQ SQ ESC?
+	heredoc = create_token(WORD, str, 0);
+	token_expansion(&heredoc, environ);
+	remove_quoting(&heredoc);
 	if (pipe(fds) == -1)
 		return (print_redir_error(PIPE_ERR));
-	write(fds[1], tmp->next->token, ft_strlen(tmp->next->token));
+	write(fds[1], heredoc->token, ft_strlen(heredoc->token));
+	//write(fds[1], tmp->next->token, ft_strlen(tmp->next->token));
 	close(fds[1]);
 	fd = fds[0];
 	status = dup2_fd(n, fd, dash, r_type);
 	close(fds[0]);
+	destroy_tok_list(heredoc);
+	//free str
 	return (status);
 }

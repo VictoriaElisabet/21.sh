@@ -72,6 +72,7 @@ t_token		*create_tokens(char **command)
 		else
 			i++;
 	}
+	// ta bor print
 	print_token(head);
 	return (head);
 }
