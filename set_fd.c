@@ -89,14 +89,14 @@ int		open_heredoc_fd(t_token *tmp, int n, int dash, int r_type)
 	extern char	**environ; // byt till ede kopiera version
 
 	// create heredoc, prompt for it
-	//str = ft_hd_doc(tmp->next->token);
-	// delimiter(tmp->next_token) kan ha DQ SQ add isf he ti de str. 
+	//str = ft_hd_doc(tmp->next->token); 
 	ft_printf("delimiter %s\n", tmp->next->token);
 	str = "\n $SHELL text tesx \n femton \n $SHELL delimiter\n"; // hu ere me tilde
 	//flags sku böv va DQ SQ ESC?
 	heredoc = create_token(WORD, str, 0);
+	//if delim has quotes exp or not to exp. do not add quotes. check delim SQ and DQ, it shouldnt exp on either of them
 	token_expansion(&heredoc, environ);
-	remove_quoting(&heredoc);
+	remove_quoting(&heredoc); // maybe no quoterem
 	if (pipe(fds) == -1)
 		return (print_redir_error(PIPE_ERR));
 	write(fds[1], heredoc->token, ft_strlen(heredoc->token));

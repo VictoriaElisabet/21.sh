@@ -54,21 +54,21 @@ int			create_op(t_token **head, char *command)
 	return (i);
 }
 
-t_token		*create_tokens(char **command)
+t_token		*create_tokens(char *command)
 {
 	t_token		*head;
 	int			i;
 
 	head = NULL;
 	i = 0;
-	while ((*command)[i] != '\0')
+	while (command[i] != '\0')
 	{
-		if (is_part_op((*command)[i]) == 1)
-			i = i + create_op(&head, &(*command)[i]);
-		else if (is_redir((*command)[i]) == 1)
-			i = i + create_redir(&head, command, i);
-		else if (is_word((*command)[i]) == 1)
-			i = i + create_word(&head, &(*command)[i]);
+		if (is_part_op(command[i]) == 1)
+			i = i + create_op(&head, &command[i]);
+		else if (is_redir(command[i]) == 1)
+			i = i + create_redir(&head, &command[i]);
+		else if (is_word(command[i]) == 1)
+			i = i + create_word(&head, &command[i]);
 		else
 			i++;
 	}

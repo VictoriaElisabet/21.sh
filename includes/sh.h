@@ -6,7 +6,7 @@
 /*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/13 12:35:43 by rklein            #+#    #+#             */
-/*   Updated: 2020/09/24 15:35:50 by rklein           ###   ########.fr       */
+/*   Updated: 2020/09/25 12:38:07 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,8 @@ typedef struct	s_sh
 void			ft_validate_term(void);
 void			ft_rawmode(t_sh *sh);
 int				ft_sh(t_sh *sh, char ***env);
+void			ft_init(t_sh *sh);
+void			ft_reset_buffer(t_sh *sh);
 void			ft_prompt(t_sh *sh, int prompt);
 void			ft_readkey(t_sh *sh);
 void			ft_resetmode(t_sh *sh);
@@ -125,5 +127,10 @@ void			ft_paste(t_sh *sh);
 */
 void			ft_history_add(t_sh *sh);
 void			ft_history_scroll(t_sh *sh, int motion);
+/*
+** line edit: heredocs
+*/
+char			*ft_hd_doc(char *str);
+
 
 #endif

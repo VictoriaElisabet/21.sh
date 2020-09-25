@@ -6,7 +6,7 @@
 /*   By: vgrankul <vgrankul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 15:04:40 by rklein            #+#    #+#             */
-/*   Updated: 2020/09/24 15:35:52 by rklein           ###   ########.fr       */
+/*   Updated: 2020/09/25 12:38:03 by rklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,15 @@ static void		ft_write_to_input(t_sh *sh)
 	ft_check_qph(sh);
 	if (sh->in->qph)
 		sh->in->buffer[ft_strlen(sh->in->buffer)] = '\n';
-	ft_strcat(sh->in->input, sh->in->buffer);
+	if (sh->in->hdoc[0] && ft_strequ(sh->in->buffer, sh->in->hdoc))
+		ft_bzero(sh->in->hdoc, ft_strlen(sh->in->hdoc));
+	else
+		ft_strcat(sh->in->input, sh->in->buffer);
 }
 
 static int		ft_ctrl_d(t_sh *sh)
 {
-	if (!sh->in->buffer[0] && !sh->in->input[0])
+	if (!sh->in->buffer[0] && !sh->in->input[0] && !(sh->in-qph / 8))
 	{
 		ft_resetmode(sh);
 		exit(1);
@@ -68,8 +71,10 @@ static _Bool	ft_readsum(t_sh *sh, int sum)
 {
 	if (sum == 3)
 	{
-		sh->in->qph = 0;
 		ft_bzero(sh->in->input, ft_strlen(sh->in->input));
+		if (sh->in->qph / 8)
+			sh->in->input[0] == 3;
+		sh->in->qph = 0;
 		return (1);
 	}
 	if (sum == 4)

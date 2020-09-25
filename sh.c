@@ -27,7 +27,7 @@ void		ft_prompt(t_sh *sh, int prompt)
 	sh->in->prompt_size = ft_strlen(sh->in->prompt);
 }
 
-static void	ft_init(t_sh *sh)
+void	ft_init(t_sh *sh)
 {
 	//change back 4096 to ARG_MAX
 	sh->in->prompt = ft_memalloc(7);
@@ -49,7 +49,7 @@ static void	ft_init(t_sh *sh)
 	sh->in->hs_last = sh->in->hs;
 }
 
-static void	ft_reset_buffer(t_sh *sh)
+void	ft_reset_buffer(t_sh *sh)
 {
 	ft_bzero(sh->in->buffer, 4096);
 	sh->in->index = 0;
@@ -68,7 +68,7 @@ static int	ft_process_input(t_sh *sh, char ***env)
 	sh->in->input[ft_strlen(sh->in->input)] = '\n';
 	tputs(tgetstr("cr", NULL), 1, ft_putint);
 	tputs(tgetstr("do", NULL), 1, ft_putint);
-	tokens = create_tokens(&sh->in->input);
+	tokens = create_tokens(sh->in->input);
 	commands = create_command_list(&tokens, *env);
 	if (commands != NULL)
 		status = handle_command_list(commands, env);

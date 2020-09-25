@@ -114,7 +114,8 @@ void	remove_quoting(t_token **head)
 		{
 			i = 0;
 			remove_esc(&tmp);
-			//if prev
+			// if tmp->prev != NULL && tmp->prev->token != <<
+			//{}
 			while (tmp->token[i] != '\0')
 			{
 				if (tmp->token[i] == '\\')

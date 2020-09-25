@@ -197,34 +197,33 @@ int		create_heredoc(t_token **head, int i, char **doc, char **comm)
 	return (j);
 }*/
 
-int		create_redir(t_token **head, char **command, int i)
+int		create_redir(t_token **head, char *command)
 {
 	char	*tmp;
 	//char	*doc;
 	int		flags;
-	int		j;
+	int		i;
 
 	tmp = NULL;
 	//doc = NULL;
 	flags = 0;
-	j = 0;
-	if (is_redir((*command)[i + j]) == 1)
+	i = 0;
+	if (is_redir(command[i]) == 1)
 	{
-		j++;
+		i++;
 		get_io_num(head);
-		if ((*command)[i + j] == '>' || (*command)[i + j] == '<' || (*command)[i + j] == '|' ||
-		(*command)[i + j] == '&')
+		if (command[i] == '>' || command[i] == '<' || command[i] == '|' ||
+		command[i] == '&')
 		{
-			j++;
-			if ((*command)[i + j] == '-')
-				j++;
+			i++;
+			if (command[i] == '-')
+				i++;
 		}
-		if ((tmp = ft_strsub(&(*command)[i], 0, j)))
+		if ((tmp = ft_strsub(command, 0, i)))
 			add_token(head, REDIR, tmp, flags);
 		//if (ft_strcmp(tmp, "<<") == 0 || ft_strcmp(tmp, "<<-") == 0)
 			//j = j + create_heredoc(head, i + j, &doc, command);
 	}
 	free(tmp);
-	//ft_printf(" j%d\n", j);
-	return (j);
+	return (i);
 }
