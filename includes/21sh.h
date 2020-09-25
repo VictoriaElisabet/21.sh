@@ -119,9 +119,9 @@ int				print_exec_error(t_command *command, int status,
 int				create_pipe(t_command **commands, char ***env, int *i);
 int				is_redir(int c);
 int				is_separator(int c);
-int				create_redir(t_token **head, char *command);
+int				create_redir(t_token **head, char *commands);
 int				create_word(t_token **head, char *command);
-int				set_redirections(t_command *command, char **env);
+int				set_redirections(t_command *command);
 int				get_quote_index(char *token, int flags);
 int				count_squoting_word(char *command, int *flags);
 int				count_dquoting_word(char *command, int *flags);
@@ -129,7 +129,7 @@ int				is_redir_in(int r_type);
 int				is_redir_out(int r_type);
 int				dup2_fd(int n, int fd, int dash, int r_type);
 int				open_fd(t_token *tmp, int fd, int r_type, int *dash);
-int				open_heredoc_fd(t_token *tmp, int n, int dash, int r_type, char **env);
+int				open_heredoc_fd(t_token *tmp, int n, int dash, int r_type);
 int				print_redir_error(char *str);
 int				get_redir(char *token);
 int				is_digits(t_token *tmp, int *dash);
@@ -137,6 +137,7 @@ int				file_aggr(t_token *tmp, int fd, int *dash);
 int				count_words(t_token *tokens);
 int				count_ctrl_op(t_token *tokens);
 int				is_word(int c);
+int				is_part_op(int c);
 
 char			**word_splitting(char *command, int count);
 

@@ -61,8 +61,12 @@ void	token_expansion(t_token **head, char **env)
 	tmp = *head;
 	while (tmp != NULL)
 	{
-		if (ft_strcmp(tmp->token, "<<") == 0 || ft_strcmp(tmp->token, "<<-") == 0)
+		if ((ft_strcmp(tmp->token, "<<") == 0 || ft_strcmp(tmp->token, "<<-") == 0) &&
+		(tmp->next->flags & DQ || tmp->next->flags & SQ))
+		{
+			ft_printf("hii");
 			tmp = tmp->next;
+		}
 		else if (tmp->type == WORD)
 		{
 			if (tmp->token[0] == '~')

@@ -115,7 +115,7 @@ pid_t pid, char ***env)
 	int status;
 
 	status = 0;
-	if (set_redirections(command, *env) == -1)
+	if (set_redirections(command) == -1)
 	{
 		reset_redirections(command->fd);
 		return (-1);
