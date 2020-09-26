@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./includes/21sh.h"
+#include "./includes/shell.h"
 
 void	remove_token(t_token **head, t_token *rem)
 {
@@ -61,7 +61,8 @@ void	token_expansion(t_token **head, char **env)
 	tmp = *head;
 	while (tmp != NULL)
 	{
-		if ((ft_strcmp(tmp->token, "<<") == 0 || ft_strcmp(tmp->token, "<<-") == 0) &&
+		if ((ft_strcmp(tmp->token, "<<") == 0
+		|| ft_strcmp(tmp->token, "<<-") == 0) &&
 		(tmp->next->flags & DQ || tmp->next->flags & SQ))
 		{
 			ft_printf("hii");
@@ -74,7 +75,7 @@ void	token_expansion(t_token **head, char **env)
 			if (ft_strcmp((tmp->token =
 			parameter_expansion(tmp, tmp->token, env)), "\0") == 0)
 				remove_token(head, tmp);
-		}	
+		}
 		tmp = tmp->next;
 	}
 }

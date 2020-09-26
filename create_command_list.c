@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./includes/21sh.h"
+#include "./includes/shell.h"
 
 void		set_argv(t_command *command, t_token *tokens, int argc)
 {
@@ -63,14 +63,16 @@ void		copy_tokens(t_command *command, t_token **tok_ls)
 t_command	*fill_command_struct(t_command *command,
 t_token **tok_ls, char **env)
 {
+	int i;
+
+	i = 0;
 	set_struct(command);
 	copy_tokens(command, tok_ls);
 	token_expansion(&command->tokens, env);
-	remove_quoting(&command->tokens);
+	remove_quoting(&command->tokens, i);
 	command->argc = count_words(command->tokens);
 	set_argv(command, command->tokens, command->argc);
 	command->fork = 0;
-	print_token(command->tokens);
 	return (command);
 }
 

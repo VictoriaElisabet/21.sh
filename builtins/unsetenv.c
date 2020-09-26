@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/21sh.h"
+#include "../includes/shell.h"
 
 char	**remove_env(const char *name, char **env)
 {

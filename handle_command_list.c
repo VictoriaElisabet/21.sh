@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./includes/21sh.h"
+#include "./includes/shell.h"
 
 void	destroy_command(t_command **command)
 {

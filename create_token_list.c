@@ -10,28 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./includes/21sh.h"
-
-//ta bort print token saan
-void		print_token(t_token *head)
-{
-	t_token *tmp;
-
-	tmp = head;
-	while (tmp != NULL)
-	{
-		if (tmp->flags & DQ)
-			ft_printf("DQ");
-		if (tmp->flags & SQ)
-			ft_printf("SQ");
-		if (tmp->type == IO_NUM)
-			ft_printf("io num");
-		if (tmp->type == OPERATOR)
-			ft_printf("OP");
-		ft_printf("%s\n", tmp->token);
-		tmp = tmp->next;
-	}
-}
+#include "./includes/shell.h"
 
 void		destroy_tok_list(t_token *head)
 {

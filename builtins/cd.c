@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/21sh.h"
+#include "../includes/shell.h"
 
 int		change_wdir(char *path, char **argv, char ***env)
 {

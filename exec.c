@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./includes/21sh.h"
+#include "./includes/shell.h"
 
 char	*search_path(char *name, char *path)
 {

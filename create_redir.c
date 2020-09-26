@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./includes/21sh.h"
+#include "./includes/shell.h"
 #include "./includes/sh.h"
 
 void	get_io_num(t_token **head)
@@ -38,8 +38,6 @@ int		create_delim(char *command, char **delim, int *flags)
 	int		i;
 
 	i = 0;
-	while (is_word(command[i]) != 1 && command[i] != '\0')
-		i++; 
 	while (is_separator(command[i]) == 0 && command[i] != '\0')
 	{
 		if (command[i] == '\\')
@@ -63,8 +61,11 @@ int		create_heredoc(t_token **head, char *command, int *flags)
 	char	*str;
 	int		i;
 
-	i = create_delim(command, &delim, flags);
-	if(delim)
+	i = 0;
+	while (is_word(command[i]) != 1 && command[i] != '\0')
+		i++;
+	i = i + create_delim(&command[i], &delim, flags);
+	if (delim)
 	{
 		str = ft_hd_doc(delim);
 		add_token(head, WORD, str, *flags);
@@ -74,14 +75,12 @@ int		create_heredoc(t_token **head, char *command, int *flags)
 	return (i);
 }
 
-int		create_redir(t_token **head, char *command)
+int		create_redir(t_token **head, char *command, int flags)
 {
 	char	*tmp;
-	int		flags;
 	int		i;
 
 	tmp = NULL;
-	flags = 0;
 	i = 0;
 	if (is_redir(command[i]) == 1)
 	{
@@ -91,12 +90,13 @@ int		create_redir(t_token **head, char *command)
 		command[i] == '&')
 		{
 			i++;
-			if (command[i] == '-')
+			if (command[i++] == '-')
 				i++;
 		}
 		if ((tmp = ft_strsub(command, 0, i)))
 			add_token(head, REDIR, tmp, flags);
-		if ((ft_strcmp(tmp, "<<") == 0 || ft_strcmp(tmp, "<<-") == 0) && is_part_op(command[i]) != 1)
+		if ((ft_strcmp(tmp, "<<") == 0 || ft_strcmp(tmp, "<<-") == 0) &&
+		is_part_op(command[i]) != 1)
 			i = i + create_heredoc(head, &command[i], &flags);
 	}
 	free(tmp);

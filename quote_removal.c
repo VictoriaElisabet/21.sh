@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./includes/21sh.h"
+#include "./includes/shell.h"
 
 int		get_quote_index(char *token, int flags)
 {
@@ -101,16 +101,15 @@ void	remove_quotes(t_token **tokens)
 	}
 }
 
-void	remove_quoting(t_token **head)
+void	remove_quoting(t_token **head, int i)
 {
 	t_token *tmp;
-	int		i;
 
 	tmp = *head;
-	i = 0;
 	while (tmp != NULL)
 	{
-		if (ft_strcmp(tmp->token, "<<") == 0 || ft_strcmp(tmp->token, "<<-") == 0)
+		if (ft_strcmp(tmp->token, "<<") == 0 ||
+		ft_strcmp(tmp->token, "<<-") == 0)
 			tmp = tmp->next;
 		else if (tmp->type == WORD)
 		{

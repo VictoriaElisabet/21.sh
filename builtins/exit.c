@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/21sh.h"
+#include "../includes/shell.h"
 
 int	ft_exit(t_command *command, t_command **commands, char ***env, int status)
 {

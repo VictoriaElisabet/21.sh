@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "./includes/sh.h"
-#include "./includes/21sh.h"
+#include "./includes/shell.h"
 
 void		ft_prompt(t_sh *sh, int prompt)
 {
@@ -27,7 +27,7 @@ void		ft_prompt(t_sh *sh, int prompt)
 	sh->in->prompt_size = ft_strlen(sh->in->prompt);
 }
 
-void	ft_init(t_sh *sh)
+void		ft_init(t_sh *sh)
 {
 	//change back 4096 to ARG_MAX
 	sh->in->prompt = ft_memalloc(7);
@@ -49,7 +49,7 @@ void	ft_init(t_sh *sh)
 	sh->in->hs_last = sh->in->hs;
 }
 
-void	ft_reset_buffer(t_sh *sh)
+void		ft_reset_buffer(t_sh *sh)
 {
 	ft_bzero(sh->in->buffer, 4096);
 	sh->in->index = 0;

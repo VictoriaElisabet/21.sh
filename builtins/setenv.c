@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/21sh.h"
+#include "../includes/shell.h"
 
 char	**add_env(const char *name, const char *value, char **env, int count)
 {

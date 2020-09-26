@@ -119,7 +119,7 @@ int				print_exec_error(t_command *command, int status,
 int				create_pipe(t_command **commands, char ***env, int *i);
 int				is_redir(int c);
 int				is_separator(int c);
-int				create_redir(t_token **head, char *commands);
+int				create_redir(t_token **head, char *commands, int flags);
 int				create_word(t_token **head, char *command);
 int				set_redirections(t_command *command);
 int				get_quote_index(char *token, int flags);
@@ -167,7 +167,7 @@ void			destroy_tok_list(t_token *head);
 void			add_token(t_token **head, int tok_type, char *tok, int flags);
 void			reset_redirections(int fd[3]);
 void			set_fd(int fd[3]);
-void			remove_quoting(t_token **head);
+void			remove_quoting(t_token **head, int i);
 void			remove_squotes(t_token **tokens, int sindex);
 void			remove_dquotes(t_token **tokens, int sindex);
 void			remove_esc(t_token **tokens);
@@ -180,7 +180,5 @@ t_command		**create_command_list(t_token **tokens, char **env);
 
 t_token			*create_tokens(char *command);
 t_token			*create_token(int tok_type, char *tok, int flags);
-
-void			print_token(t_token *head); // ta bort
 
 #endif

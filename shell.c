@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./includes/21sh.h"
+#include "./includes/shell.h"
 #include "./includes/sh.h"
 
 void	destroy_arr(char **arr)

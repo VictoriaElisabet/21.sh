@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./includes/21sh.h"
+#include "./includes/shell.h"
 
 int			is_part_op(int c)
 {
@@ -57,22 +57,22 @@ int			create_op(t_token **head, char *command)
 t_token		*create_tokens(char *command)
 {
 	t_token		*head;
+	int			flags;
 	int			i;
 
 	head = NULL;
 	i = 0;
+	flags = 0;
 	while (command[i] != '\0')
 	{
 		if (is_part_op(command[i]) == 1)
 			i = i + create_op(&head, &command[i]);
 		else if (is_redir(command[i]) == 1)
-			i = i + create_redir(&head, &command[i]);
+			i = i + create_redir(&head, &command[i], flags);
 		else if (is_word(command[i]) == 1)
 			i = i + create_word(&head, &command[i]);
 		else
 			i++;
 	}
-	// ta bor print
-	//print_token(head);
 	return (head);
 }
