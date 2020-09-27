@@ -90,7 +90,7 @@ int		create_redir(t_token **head, char *command, int flags)
 		command[i] == '&')
 		{
 			i++;
-			if (command[i++] == '-')
+			if (command[i] == '-')
 				i++;
 		}
 		if ((tmp = ft_strsub(command, 0, i)))
