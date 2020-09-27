@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./includes/sh.h"
+#include "../includes/sh.h"
 
 int	ft_putint(int c)
 {

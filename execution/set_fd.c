@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./includes/shell.h"
+#include "../includes/shell.h"
 
 void	reset_redirections(int fd[3])
 {

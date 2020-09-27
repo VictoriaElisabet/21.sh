@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./includes/shell.h"
+#include "../includes/shell.h"
 
 void	set_pipe_fd(t_command *command, int fdin, int fd[3])
 {

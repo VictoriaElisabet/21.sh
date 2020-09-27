@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./includes/shell.h"
+#include "../includes/shell.h"
 
 void		set_argv(t_command *command, t_token *tokens, int argc)
 {

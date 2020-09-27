@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./includes/sh.h"
+#include "../includes/sh.h"
 
 void		ft_arrow_motion(t_sh *sh, int motion)
 {

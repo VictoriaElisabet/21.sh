@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./includes/shell.h"
+#include "../includes/shell.h"
 
 int		get_quote_index(char *token, int flags)
 {

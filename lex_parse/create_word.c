@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./includes/shell.h"
+#include "../includes/shell.h"
 
 int		count_squoting_word(char *command, int *flags)
 {

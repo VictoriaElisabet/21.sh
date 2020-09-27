@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./includes/sh.h"
+#include "../includes/sh.h"
 
 void		ft_add_char(t_sh *sh, int c)
 {

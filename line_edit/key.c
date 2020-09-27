@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./includes/sh.h"
+#include "../includes/sh.h"
 
 static void		ft_key_action(t_sh *sh, int sum)
 {

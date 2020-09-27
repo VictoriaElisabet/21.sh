@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./includes/sh.h"
-#include "./includes/shell.h"
+#include "../includes/sh.h"
+#include "../includes/shell.h"
 
 void		ft_prompt(t_sh *sh, int prompt)
 {
@@ -29,7 +29,6 @@ void		ft_prompt(t_sh *sh, int prompt)
 
 void		ft_init(t_sh *sh)
 {
-	//change back 4096 to ARG_MAX
 	sh->in->prompt = ft_memalloc(7);
 	sh->in->buffer = ft_memalloc(4096);
 	sh->in->index = 0;

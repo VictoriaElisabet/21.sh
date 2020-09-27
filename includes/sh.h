@@ -19,11 +19,7 @@
 # include <termios.h>
 # include <ctype.h>
 # include <sys/ioctl.h>
-# include <limits.h>
 # include "../libft/libft.h"
-
-# include <limits.h>
-
 # include <signal.h>
 # include <dirent.h>
 # include <fcntl.h>

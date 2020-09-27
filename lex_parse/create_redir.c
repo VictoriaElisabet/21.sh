@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./includes/shell.h"
-#include "./includes/sh.h"
+#include "../includes/shell.h"
+#include "../includes/sh.h"
 
 void	get_io_num(t_token **head)
 {

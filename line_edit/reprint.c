@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./includes/sh.h"
+#include "../includes/sh.h"
 
 static void	ft_print_str(t_sh *sh)
 {
